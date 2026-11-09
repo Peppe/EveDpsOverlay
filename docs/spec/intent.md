@@ -76,9 +76,10 @@ change that implements them.
 
 Implementation order: phases ship by number, with one constraint:
 **6 (the primary-window selection) must precede 5 and 8**, since both HUD
-extensions bind to that selection. Done: 1–6 then 9 (replay as the visual
-verification tool), 5 on 2026-11-08, 7 the same day, 8 on 2026-11-09 —
-the planned milestone list is complete; backlog items below remain open.
+extensions bind to that selection. Done: phases 1–9 (5 on 2026-11-08, 7 the
+same day, 8 on 2026-11-09), then **10 — incoming damage types via two-tier
+weapon/attacker profiles** (2026-11-09), the first backlog item promoted to
+a full phase. Backlog items below remain open.
 
 ## Deferred backlog (not yet specced; revisit after a real play session)
 

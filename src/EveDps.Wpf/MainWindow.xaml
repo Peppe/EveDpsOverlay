@@ -44,6 +44,7 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
@@ -72,8 +73,10 @@
                            Foreground="#ff6b6b" HorizontalAlignment="Right" />
             </Grid>
 
-            <!-- Phase 5: outgoing damage-type bar. Outgoing only — incoming
-                 log lines carry no weapon name, so IN can't be attributed. -->
+            <!-- Phase 5: outgoing damage-type bar. The 2026-11-09 phase-10
+                 amendment replaces the old "IN can't be attributed" note:
+                 two-tier inference (weapon profiles + attacker profiles)
+                 gives incoming lines a type breakdown of their own. -->
             <Grid Grid.Row="2" Height="9" Margin="0,3,0,0" IsHitTestVisible="True">
                 <Border x:Name="TypeBarEmpty" CornerRadius="3"
                         Background="#3A414B" Visibility="Visible" />
@@ -108,12 +111,57 @@
                 </Grid>
             </Grid>
 
+            <!-- Phase 10: incoming damage-type bar — same five segments and
+                 colors as the OUT bar, but wrapped in a thin red-family
+                 border tying it to the IN number (decided 2026-11-09; the
+                 OUT bar stays borderless). Filled from DpsWindow.IncomingTypes
+                 by the same rules: star widths share out the dps, middle
+                 numbers only on ~30 px+ segments, idle = neutral gray. -->
+            <Grid Grid.Row="3" Height="11" Margin="0,3,0,0" IsHitTestVisible="True">
+                <Border x:Name="TypeBarInFrame" CornerRadius="3"
+                        BorderBrush="#66ff8a8a" BorderThickness="1" Padding="1">
+                    <Grid>
+                        <Border x:Name="TypeBarInEmpty" CornerRadius="2"
+                                Background="#3A414B" Visibility="Visible" />
+                        <Grid x:Name="TypeBarInSegs" SizeChanged="TypeBarIn_SizeChanged">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition x:Name="InColEm" Width="1*" />
+                                <ColumnDefinition x:Name="InColThermal" Width="1*" />
+                                <ColumnDefinition x:Name="InColKinetic" Width="1*" />
+                                <ColumnDefinition x:Name="InColExplosive" Width="1*" />
+                                <ColumnDefinition x:Name="InColUnknown" Width="1*" />
+                            </Grid.ColumnDefinitions>
+                            <Border Grid.Column="0" x:Name="InSegEm" Background="#4d7cff">
+                                <TextBlock x:Name="InEmLabel" FontSize="8" FontWeight="SemiBold"
+                                           Foreground="#bfd2ff" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                            </Border>
+                            <Border Grid.Column="1" x:Name="InSegThermal" Background="#ff5a4e">
+                                <TextBlock x:Name="InThermalLabel" FontSize="8" FontWeight="SemiBold"
+                                           Foreground="#ffc9c4" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                            </Border>
+                            <Border Grid.Column="2" x:Name="InSegKinetic" Background="#9aa3ad">
+                                <TextBlock x:Name="InKineticLabel" FontSize="8" FontWeight="SemiBold"
+                                           Foreground="#dde2e8" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                            </Border>
+                            <Border Grid.Column="3" x:Name="InSegExplosive" Background="#ff9854">
+                                <TextBlock x:Name="InExplosiveLabel" FontSize="8" FontWeight="SemiBold"
+                                           Foreground="#ffd8b4" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                            </Border>
+                            <Border Grid.Column="4" x:Name="InSegUnknown" Background="#565d66">
+                                <TextBlock x:Name="InUnknownLabel" FontSize="8" FontWeight="SemiBold"
+                                           Foreground="#a7adb5" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                            </Border>
+                        </Grid>
+                    </Grid>
+                </Border>
+            </Grid>
+
             <!-- Phase 8: incoming attackers panel — up to five rows, filled
                  in code from phase 7 snapshot rows; empty = collapsed so the
                  HUD never blocks view when idle. -->
-            <StackPanel Grid.Row="3" x:Name="AttackerRows" Margin="0,3,0,0" />
+            <StackPanel Grid.Row="4" x:Name="AttackerRows" Margin="0,3,0,0" />
 
-            <TextBlock Grid.Row="4" x:Name="StatusText"
+            <TextBlock Grid.Row="5" x:Name="StatusText"
                        Text="waiting for combat…" FontSize="10"
                        Foreground="#68707c" VerticalAlignment="Bottom" />
         </Grid>

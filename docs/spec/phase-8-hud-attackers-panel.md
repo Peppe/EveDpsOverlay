@@ -47,6 +47,9 @@ proportional to their share of the incoming dps, with name + dps written
   rule; if the grown window would leave the virtual screen, Top clamps.
 - Stack order top-to-bottom: title (buttons) → `OUT | IN` (single row) →
   type bar (phase 5) → attacker rows → status line.
+  Phase-10 amendment: the stack gains the IN type bar directly beneath the
+  phase-5 bar — title → `OUT | IN` → type bar → IN type bar → attacker
+  rows → status line.
 
 ### Compact layout amendment (amends phase 3's stacks)
 

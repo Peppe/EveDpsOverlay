@@ -7,6 +7,7 @@ public sealed record DpsWindow(
     double IncomingDps,
     int Shots,
     IReadOnlyList<DpsType> OutgoingTypes,
+    IReadOnlyList<DpsType> IncomingTypes,
     IReadOnlyList<AttackerRow> Attackers);
 
 /// <summary>One damage type's dps within a window. Buckets follow DamageTypes.All.</summary>
@@ -32,7 +33,8 @@ public sealed record DpsSnapshot(
     DateTimeOffset Reference,
     IReadOnlyList<DpsWindow> Windows,
     DpsSession Session,
-    IReadOnlyList<string> UnmappedWeapons);
+    IReadOnlyList<string> UnmappedWeapons,
+    IReadOnlyList<string> UnmappedAttackers);
 
 /// <summary>
 /// Aggregates CombatEvents into rolling-window DPS and monotonic session
@@ -45,8 +47,10 @@ public sealed class DpsAggregator
 {
     private readonly int[] _windowSeconds;
     private readonly WeaponTypeProfiles? _profiles;
+    private readonly AttackerTypeProfiles? _attackerProfiles;
     private readonly Queue<Attributed> _recent = new();
     private readonly HashSet<string> _unmappedWeapons = new(StringComparer.OrdinalIgnoreCase);
+    private readonly HashSet<string> _unmappedAttackers = new(StringComparer.OrdinalIgnoreCase);
     private long _outgoing;
     private long _incoming;
     private long _events;
@@ -60,7 +64,17 @@ public sealed class DpsAggregator
 
     public DpsAggregator(WeaponTypeProfiles? profiles) : this(DefaultWindows, profiles) { }
 
-    public DpsAggregator(IReadOnlyList<int> windowSeconds, WeaponTypeProfiles? profiles)
+    public DpsAggregator(IReadOnlyList<int> windowSeconds, WeaponTypeProfiles? profiles) :
+        this(windowSeconds, profiles, attackerProfiles: null) { }
+
+    /// <summary>Full shape (phase 10): weapon tier + attacker tier profiles.</summary>
+    public DpsAggregator(WeaponTypeProfiles? profiles, AttackerTypeProfiles? attackerProfiles) :
+        this(DefaultWindows, profiles, attackerProfiles) { }
+
+    public DpsAggregator(
+        IReadOnlyList<int> windowSeconds,
+        WeaponTypeProfiles? profiles = null,
+        AttackerTypeProfiles? attackerProfiles = null)
     {
         _windowSeconds = windowSeconds.Count == 0
             ? DefaultWindows
@@ -68,6 +82,7 @@ public sealed class DpsAggregator
         Array.Sort(_windowSeconds);
         Array.Reverse(_windowSeconds); // largest first; pruning bound uses [0]
         _profiles = profiles;
+        _attackerProfiles = attackerProfiles;
     }
 
     public DpsAggregator(params int[] windowSeconds) : this((IReadOnlyList<int>)windowSeconds) { }
@@ -76,8 +91,17 @@ public sealed class DpsAggregator
     public void Add(CombatEvent ev)
     {
         var attr = Attribute(ev);
-        if (attr.Unmapped && !string.IsNullOrEmpty(ev.Weapon))
-            _unmappedWeapons.Add(ev.Weapon);
+        if (attr.Unmapped)
+        {
+            // Fully-unattributed damage feeds the curation lists: outgoing
+            // unmapped weapons, and (phase 10) incoming events contribute
+            // the weapon name (if the line carries one) AND the attacker.
+            // Anything a tier claimed never shows up here.
+            if (!string.IsNullOrEmpty(ev.Weapon))
+                _unmappedWeapons.Add(ev.Weapon);
+            if (ev.Direction == CombatDirection.Incoming && !string.IsNullOrEmpty(ev.OtherParty))
+                _unmappedAttackers.Add(ev.OtherParty);
+        }
         if (ev.IsMiss) _misses++;
         else if (ev.Direction == CombatDirection.Outgoing) _outgoing += ev.Damage;
         else _incoming += ev.Damage;
@@ -86,29 +110,44 @@ public sealed class DpsAggregator
     }
 
     /// <summary>
-    /// Splits an outgoing hit's damage across EM/Thermal/Kinetic/Explosive by
-    /// the weapon's profile; unmapped weapons (or missing weapon names) put
-    /// everything into Unknown. Misses and incoming events carry no split.
-    /// Unknown damage is carried as "ex-free" zero splits; the take() step
-    /// reconstructs Unknown as damage minus the four attributed slices.
+    /// Splits a hit's damage across EM/Thermal/Kinetic/Explosive:
+    /// outgoing hits by the weapon's profile; incoming hits (phase 10) by a
+    /// two-tier priority — weapon profile when the line carries a known
+    /// weapon, else the attacker's profile, else Unknown. No mixing of tiers
+    /// or partial profiles within one event. Misses carry no split (and are
+    /// never flagged unmapped). Unmapped damage is carried as "ex-free" zero
+    /// splits; the take() step reconstructs Unknown as damage minus the four
+    /// attributed slices.
     /// </summary>
     private Attributed Attribute(CombatEvent ev)
     {
-        if (ev.IsMiss || ev.Direction != CombatDirection.Outgoing)
+        if (ev.IsMiss)
             return new Attributed(ev, 0, 0, 0, 0, unmapped: false);
 
-        double[]? weights = ev.Weapon is null ? null : _profiles?.GetWeights(ev.Weapon);
-        if (weights is null)
-            return new Attributed(ev, 0, 0, 0, 0, unmapped: true);
+        if (ev.Direction == CombatDirection.Outgoing)
+        {
+            var weights = ev.Weapon is null ? null : _profiles?.GetWeights(ev.Weapon);
+            if (weights is null)
+                return new Attributed(ev, 0, 0, 0, 0, unmapped: true);
+            return Scaled(ev, weights);
+        }
 
-        return new Attributed(
-            ev,
-            em: ev.Damage * weights[0],
-            thermal: ev.Damage * weights[1],
-            kinetic: ev.Damage * weights[2],
-            explosive: ev.Damage * weights[3],
-            unmapped: false);
+        // Incoming: weapon tier first (e.g. "... - Scourge Heavy Missile -
+        // Hits"), attacker tier second (weaponless turret hits), else Unknown.
+        var inWeights = ev.Weapon is null ? null : _profiles?.GetWeights(ev.Weapon);
+        inWeights ??= _attackerProfiles?.GetWeights(ev.OtherParty);
+        if (inWeights is null)
+            return new Attributed(ev, 0, 0, 0, 0, unmapped: true);
+        return Scaled(ev, inWeights);
     }
+
+    private static Attributed Scaled(CombatEvent ev, double[] weights) => new(
+        ev,
+        em: ev.Damage * weights[0],
+        thermal: ev.Damage * weights[1],
+        kinetic: ev.Damage * weights[2],
+        explosive: ev.Damage * weights[3],
+        unmapped: false);
 
     /// <summary>
     /// Computes current windows at <paramref name="reference"/> (a UTC time
@@ -125,6 +164,7 @@ public sealed class DpsAggregator
         var inSum = new double[_windowSeconds.Length];
         var shots = new int[_windowSeconds.Length];
         var typeSum = new double[_windowSeconds.Length][];
+        var inTypeSum = new double[_windowSeconds.Length][];
         // Phase 7: incoming events additionally bucket by attacker. A rat
         // that stops shooting decays out with the window — window-only rows,
         // no session totals (per the phase-7 spec).
@@ -135,6 +175,7 @@ public sealed class DpsAggregator
         for (var w = 0; w < _windowSeconds.Length; w++)
         {
             typeSum[w] = new double[DamageTypes.Attributed.Length];
+            inTypeSum[w] = new double[DamageTypes.Attributed.Length];
             attackerSums[w] = new Dictionary<string, (double, int)>(StringComparer.Ordinal);
         }
 
@@ -153,6 +194,12 @@ public sealed class DpsAggregator
                 else if (attr.Event.Direction == CombatDirection.Incoming)
                 {
                     inSum[w] += attr.Event.Damage;
+                    // Phase 10: incoming events attribute through the same
+                    // four slices (weapon or attacker tier). Same invariant
+                    // as outgoing: every unit of inSum[w] lands in exactly
+                    // one IncomingTypes bucket.
+                    for (var t = 0; t < DamageTypes.Attributed.Length; t++)
+                        inTypeSum[w][t] += attr.Type(t);
                     // Same events, same math: every unit of inSum[w] ends up
                     // in exactly one attacker row of window w (defensive
                     // "unknown" name for any hypothetical blank OtherParty —
@@ -180,6 +227,15 @@ public sealed class DpsAggregator
             perType[^1] = new DpsType(DamageTypes.Unknown,
                 (outSum[w] - typeSum[w].Sum()) / _windowSeconds[w]);
 
+            // Phase 10: the same five-bucket shape for IN. Unknown is the
+            // unclaimed remainder, clamped ≥ 0 (only rounding slack can make
+            // the slices exceed the damage sum).
+            var perInType = new DpsType[DamageTypes.All.Length];
+            for (var t = 0; t < DamageTypes.Attributed.Length; t++)
+                perInType[t] = new DpsType(DamageTypes.Attributed[t], inTypeSum[w][t] / _windowSeconds[w]);
+            perInType[^1] = new DpsType(DamageTypes.Unknown,
+                Math.Max(0, inSum[w] - inTypeSum[w].Sum()) / _windowSeconds[w]);
+
             // Phase 7 rows: every attacker with dps > 0 or ≥ 1 miss; sorted
             // descending by dps, ties by name (spec tie-breaking rule).
             var rows = new List<AttackerRow>(attackerSums[w].Count);
@@ -200,6 +256,7 @@ public sealed class DpsAggregator
                 inSum[w] / _windowSeconds[w],
                 shots[w],
                 perType,
+                perInType,
                 rows);
         }
 
@@ -207,7 +264,8 @@ public sealed class DpsAggregator
             reference,
             windows,
             new DpsSession(_outgoing, _incoming, _events, _misses),
-            [.. _unmappedWeapons.OrderBy(n => n, StringComparer.OrdinalIgnoreCase)]);
+            [.. _unmappedWeapons.OrderBy(n => n, StringComparer.OrdinalIgnoreCase)],
+            [.. _unmappedAttackers.OrderBy(n => n, StringComparer.OrdinalIgnoreCase)]);
     }
 
     /// <summary>Type-attributed view of one queued event plus its bookkeeping flags.</summary>

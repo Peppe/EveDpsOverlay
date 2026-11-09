@@ -90,8 +90,10 @@ public sealed class WeaponTypeProfiles
     /// Builds the fixed-order EM/Thermal/Kinetic/Explosive vector: negative
     /// weights clamp to 0, missing types default to 0, the vector sums to 1.
     /// A row with no positive weight is unusable → null (weapon = Unknown).
+    /// Shared with the attacker table (phase 10) — same file shape, same
+    /// normalization, same inert rules.
     /// </summary>
-    private static double[]? Normalize(Dictionary<string, double> weights)
+    internal static double[]? Normalize(Dictionary<string, double> weights)
     {
         var vector = new double[DamageTypes.Attributed.Length];
         for (var i = 0; i < vector.Length; i++)

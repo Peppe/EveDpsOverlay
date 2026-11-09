@@ -109,7 +109,7 @@ async Task<int> RunLiveAsync(CancellationTokenSource exitSignal, bool smoke, Rep
     var ct = exitSignal.Token;
     var events = 0;
     long outgoing = 0, incoming = 0, misses = 0;
-    var agg = new DpsAggregator(WeaponTypeProfiles.Load(ProfilePath()));
+    var agg = new DpsAggregator(WeaponTypeProfiles.Load(ProfilePath()), AttackerTypeProfiles.Load(AttackerProfilePath()));
     var aggGate = new object();
     var outGate = new object();
     var statusShown = false;
@@ -228,6 +228,7 @@ async Task<int> RunLiveAsync(CancellationTokenSource exitSignal, bool smoke, Rep
         {
             Console.WriteLine(FormatWindows(final));
             Console.WriteLine(FormatTypes(final));
+            Console.WriteLine(FormatIncomingTypes(final));
         }
         Summary(events, outgoing, incoming, misses);
     }
@@ -251,7 +252,7 @@ async Task<int> Replay()
         Console.WriteLine($"-- {Path.GetFileName(file)} --");
         var events = 0;
         long outgoing = 0, incoming = 0, misses = 0;
-        var agg = new DpsAggregator(WeaponTypeProfiles.Load(ProfilePath()));
+        var agg = new DpsAggregator(WeaponTypeProfiles.Load(ProfilePath()), AttackerTypeProfiles.Load(AttackerProfilePath()));
         DateTimeOffset last = DateTimeOffset.MinValue;
 
         foreach (var line in File.ReadLines(file, new UTF8Encoding(false, false)))
@@ -273,6 +274,7 @@ async Task<int> Replay()
         var snap = agg.Take(takeAt);
         Console.WriteLine(FormatWindows(snap));
         Console.WriteLine(FormatTypes(snap));
+        Console.WriteLine(FormatIncomingTypes(snap));
         Console.WriteLine(FormatAttackers(snap));
         Summary(events, outgoing, incoming, misses);
         Console.WriteLine();
@@ -316,9 +318,29 @@ static string TypeAbbrev(string name) => name switch
     _ => name, // "EM" prints as-is
 };
 
+/// <summary>
+/// Phase 10: the same five-bucket block for IN — incoming damage types over
+/// the largest window, plus the attacker-curation list (the attacker tier's
+/// counterpart of the weapon table's "unmapped" segment).
+/// </summary>
+static string FormatIncomingTypes(DpsSnapshot snap)
+{
+    var w = snap.Windows[0]; // aggregates sort windows largest-first
+    var parts = string.Join(" ", w.IncomingTypes.Select(t => $"{TypeAbbrev(t.Name)} {t.Dps:0.0}"));
+    var unmapped = snap.UnmappedAttackers.Count == 0
+        ? "none"
+        : string.Join(", ", snap.UnmappedAttackers);
+    return $"# in-types({w.Seconds:0}s) {parts} | unmapped attackers: {unmapped}";
+}
+
 static string ProfilePath() => Path.Combine(
     Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
     "EveDpsOverlay", "type-profiles.json");
+
+/// <summary>Phase 10: the attacker table behind the IN types block.</summary>
+static string AttackerProfilePath() => Path.Combine(
+    Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+    "EveDpsOverlay", "attacker-profiles.json");
 
 /// <summary>
 /// Phase 7: per-attacker block for --replay summaries — top attackers by dps
