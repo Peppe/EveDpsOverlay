@@ -524,5 +524,5 @@ public partial class MainWindow : Window
     private static DpsWindow WindowOf(IReadOnlyList<DpsWindow> windows, double seconds) =>
         windows.FirstOrDefault(w => w.Seconds == seconds)
         ?? new DpsWindow(seconds, OutgoingDps: 0, IncomingDps: 0, Shots: 0,
-            OutgoingTypes: [], Attackers: []);
+            OutgoingTypes: [], IncomingTypes: [], Attackers: []);
 }

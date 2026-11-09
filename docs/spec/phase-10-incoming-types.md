@@ -1,5 +1,5 @@
 ---
-status: draft
+status: accepted
 ---
 
 # Phase 10 — Incoming damage types (estimated)
@@ -46,10 +46,21 @@ model covers everything:
   bar: same five segments, same colors, same "dps in its middle" number
   rule, same ≥ ~30 px hide rule, still bound to the primary-window
   selection (one `DpsSnapshot`, one 200 ms tick — no second pipeline).
-- Visual distinction from the OUT bar (see the open questions below —
-  decided before implementation).
+- **Visual distinction (decided 2026-11-09)**: the IN bar gets a thin
+  red-family border around it, tying it to the `IN` number; the OUT bar
+  stays borderless. Stack order becomes: title → `OUT | IN` → type bar →
+  IN type bar → attackers panel → status (amends phase-8's stack list).
 - Right-click menu gains **Open attacker profiles file** (below the weapon
   one; same seed-if-missing + `Process.Start` mechanics).
+
+## Profile-table keying (decided 2026-11-09)
+
+- `attacker-profiles.json` keys support **prefix wildcards**: a key ending
+  in `*` (e.g. `Coreli*`) matches any attacker name starting with that
+  prefix, case-insensitively. Matching is longest-pattern-wins so
+  `Coreli Gu*` is more specific than `Coreli*`; an exact (non-wildcard)
+  name always beats any wildcard. Multiple matching wildcards are resolved
+  by pattern length, ties broken alphabetically for determinism.
 
 ## Console surface
 
