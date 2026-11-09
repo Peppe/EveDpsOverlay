@@ -30,6 +30,24 @@ dotnet test
 - A quick wiring check against the live log directory (no game needed):
   `dotnet run --project src/EveDps.Console -- --smoke`
 
+## Git workflow (user rule)
+
+- Every feature/phase is implemented on its own **feature branch**, never
+  directly on `main`. Branch names: `phase-<n>-<short-name>` or
+  `feat/<short-name>`.
+- **`main` must always be a known-good, buildable, tested state** — the
+  user can switch to it manually whenever something goes wrong. Do not
+  commit broken or unverified code to `main`, ever.
+- Only merge a feature branch back into `main` after its verification is
+  green (`dotnet build` 0 warnings, `dotnet test` all passed) and the
+  affected specs are updated in the same branch. Merge with
+  `git merge --no-ff <branch>` so the history keeps the branch shape, then
+  delete the branch.
+- Commit small and early while working on a branch; subject lines short and
+  imperative ("Add TimeKnown gate to ReplayFeed"). Never leave the user
+  without a committed working state at the end of a session — commit
+  whatever is complete before finishing, even if the feature isn't.
+
 ## Conventions
 
 - Target framework: `net10.0`. Windows-only; do not chase portability.
