@@ -26,7 +26,9 @@ public partial class MainWindow : Window
 
     private readonly HudSettings _settings = HudSettings.Load();
     private readonly object _aggGate = new();
-    private readonly DpsAggregator _agg = new(WeaponTypeProfiles.Load(ProfilePath()));
+    private readonly DpsAggregator _agg = new(
+        WeaponTypeProfiles.Load(ProfilePath()),
+        AttackerTypeProfiles.Load(AttackerProfilePath()));
     private readonly DispatcherTimer _timer = new() { Interval = TimeSpan.FromMilliseconds(200) };
     private readonly TrayIcon _tray;
     private GamelogTailer? _tailer;
@@ -40,8 +42,17 @@ public partial class MainWindow : Window
         Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
         "EveDpsOverlay", "type-profiles.json");
 
+    /// <summary>Phase 10: user-curated attacker → type table (inferred tier).</summary>
+    private static string AttackerProfilePath() => Path.Combine(
+        Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+        "EveDpsOverlay", "attacker-profiles.json");
+
     /// <summary>Segments in DamageTypes.All order, paired with their UI parts.</summary>
     private readonly (ColumnDefinition Col, Border Seg, TextBlock Label)[] _bar =
+        new (ColumnDefinition, Border, TextBlock)[DamageTypes.All.Length];
+
+    /// <summary>Phase 10: the IN bar's same-shape segment table.</summary>
+    private readonly (ColumnDefinition Col, Border Seg, TextBlock Label)[] _barIn =
         new (ColumnDefinition, Border, TextBlock)[DamageTypes.All.Length];
 
     /// <summary>Phase 8 row budget: five slots (4 names + Others when merging).</summary>
@@ -73,6 +84,13 @@ public partial class MainWindow : Window
         _bar[2] = (ColKinetic, SegKinetic, KineticLabel);
         _bar[3] = (ColExplosive, SegExplosive, ExplosiveLabel);
         _bar[4] = (ColUnknown, SegUnknown, UnknownLabel);
+
+        // Phase 10: the IN bar's table, same order, same mapping.
+        _barIn[0] = (InColEm, InSegEm, InEmLabel);
+        _barIn[1] = (InColThermal, InSegThermal, InThermalLabel);
+        _barIn[2] = (InColKinetic, InSegKinetic, InKineticLabel);
+        _barIn[3] = (InColExplosive, InSegExplosive, InExplosiveLabel);
+        _barIn[4] = (InColUnknown, InSegUnknown, InUnknownLabel);
 
         // Phase 8: five attacker-row slots (reused every tick, no child churn).
         for (var i = 0; i < AttackerRowBudget; i++)
@@ -201,39 +219,51 @@ public partial class MainWindow : Window
                 $"{snap.Session.Misses} misses";
     }
 
-    // ── phase 5: outgoing damage-type bar ─────────────────────────────────
+    // ── phase 5 / phase 10: damage-type bars ─────────────────────────────
 
     /// <summary>
-    /// Renders the phase-5 bar from the SAME window snapshot the text uses.
-    /// Star widths are set to each type's dps share (sum of stars is the
-    /// total, so segments always sum to exactly 100 % of bar width); a
-    /// zero-dps type occupies zero width; a fully idle pass-through shows
-    /// the neutral full-width gray bar.
+    /// Renders both bars from the SAME window snapshot the text uses. Stars
+    /// are set to each type's dps share (sum of stars is the total, so
+    /// segments always sum to exactly 100 % of bar width); a zero-dps type
+    /// occupies zero width; a fully idle pass-through shows the neutral
+    /// full-width gray bar. Phase 10 renders the IN bar from IncomingTypes
+    /// with identical rules (the IN frame adds no logic — Core already
+    /// guarantees the five buckets sum to the window's IncomingDps).
     /// </summary>
     private void UpdateTypeBar(DpsWindow primary)
     {
-        var total = primary.OutgoingTypes.Sum(t => t.Dps);
+        SetBar(_bar, primary.OutgoingTypes, TypeBarEmpty, TypeBarSegs);
+        SetBar(_barIn, primary.IncomingTypes, TypeBarInEmpty, TypeBarInSegs);
+    }
+
+    private static void SetBar(
+        (ColumnDefinition Col, Border Seg, TextBlock Label)[] bar,
+        IReadOnlyList<DpsType> types,
+        UIElement emptyFallback,
+        UIElement segments)
+    {
+        var total = types.Sum(t => t.Dps);
         if (total <= 0)
         {
-            TypeBarEmpty.Visibility = Visibility.Visible;
-            TypeBarSegs.Visibility = Visibility.Collapsed;
+            emptyFallback.Visibility = Visibility.Visible;
+            segments.Visibility = Visibility.Collapsed;
             return;
         }
 
-        TypeBarEmpty.Visibility = Visibility.Collapsed;
-        TypeBarSegs.Visibility = Visibility.Visible;
+        emptyFallback.Visibility = Visibility.Collapsed;
+        segments.Visibility = Visibility.Visible;
 
         // ActualWidth is 0 before first layout; numbers were hidden anyway.
-        var px = TypeBarSegs.ActualWidth;
-        for (var i = 0; i < _bar.Length; i++)
+        var px = ((FrameworkElement)segments).ActualWidth;
+        for (var i = 0; i < bar.Length; i++)
         {
-            var dps = primary.OutgoingTypes[i].Dps; // same fixed order as _bar
-            _bar[i].Col.Width = dps > 0
+            var dps = types[i].Dps; // same fixed order as bar
+            bar[i].Col.Width = dps > 0
                 ? new GridLength(dps / total, GridUnitType.Star)
                 : new GridLength(0, GridUnitType.Pixel);
             // Per-segment number only on segments ~30 logical px wide —
             // never overlap text between adjacent segments.
-            _bar[i].Label.Text =
+            bar[i].Label.Text =
                 dps > 0 && Double.IsFinite(px) && px * (dps / total) >= 30
                     ? dps.ToString("0.#")
                     : "";
@@ -244,6 +274,10 @@ public partial class MainWindow : Window
     private void TypeBar_SizeChanged(object sender, SizeChangedEventArgs e) =>
         TypeBarSegs.Clip = new RectangleGeometry(
             new Rect(0, 0, TypeBarSegs.ActualWidth, TypeBarSegs.ActualHeight), 3, 3);
+
+    private void TypeBarIn_SizeChanged(object sender, SizeChangedEventArgs e) =>
+        TypeBarInSegs.Clip = new RectangleGeometry(
+            new Rect(0, 0, TypeBarInSegs.ActualWidth, TypeBarInSegs.ActualHeight), 2, 2);
 
     // ── phase 8: incoming attackers panel ─────────────────────────────────
 
@@ -389,6 +423,30 @@ public partial class MainWindow : Window
         }
     }
 
+    /// <summary>
+    /// Phase 10: same seed-then-open mechanics for the attacker table. The
+    /// seed notes the wildcard key form; the missing/corrupt file stays inert
+    /// in Core either way.
+    /// </summary>
+    private void OpenAttackerProfilesFile()
+    {
+        try
+        {
+            if (!File.Exists(AttackerProfilePath()))
+                File.WriteAllText(AttackerProfilePath(),
+                    "{\n  \"attackers\": {\n    \"Coreli*\": { \"Explosive\": 0.7, \"Kinetic\": 0.3 }\n  }\n}\n");
+            System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+            {
+                FileName = AttackerProfilePath(),
+                UseShellExecute = true,
+            });
+        }
+        catch
+        {
+            // Never let menu actions kill the HUD.
+        }
+    }
+
     // ── position / opacity persistence ────────────────────────────────
 
     private void PlaceWindow()
@@ -511,6 +569,11 @@ public partial class MainWindow : Window
         var profiles = new MenuItem { Header = "Open profiles file" };
         profiles.Click += (_, _) => OpenProfilesFile();
         menu.Items.Add(profiles);
+
+        // Phase 10: the attacker table behind the IN bar's inferred tier.
+        var attackerProfiles = new MenuItem { Header = "Open attacker profiles file" };
+        attackerProfiles.Click += (_, _) => OpenAttackerProfilesFile();
+        menu.Items.Add(attackerProfiles);
 
         menu.Items.Add(new Separator());
 

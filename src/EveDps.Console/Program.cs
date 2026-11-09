@@ -228,6 +228,7 @@ async Task<int> RunLiveAsync(CancellationTokenSource exitSignal, bool smoke, Rep
         {
             Console.WriteLine(FormatWindows(final));
             Console.WriteLine(FormatTypes(final));
+            Console.WriteLine(FormatIncomingTypes(final));
         }
         Summary(events, outgoing, incoming, misses);
     }
@@ -273,6 +274,7 @@ async Task<int> Replay()
         var snap = agg.Take(takeAt);
         Console.WriteLine(FormatWindows(snap));
         Console.WriteLine(FormatTypes(snap));
+        Console.WriteLine(FormatIncomingTypes(snap));
         Console.WriteLine(FormatAttackers(snap));
         Summary(events, outgoing, incoming, misses);
         Console.WriteLine();
@@ -315,6 +317,21 @@ static string TypeAbbrev(string name) => name switch
     DamageTypes.Unknown => "UNK",
     _ => name, // "EM" prints as-is
 };
+
+/// <summary>
+/// Phase 10: the same five-bucket block for IN — incoming damage types over
+/// the largest window, plus the attacker-curation list (the attacker tier's
+/// counterpart of the weapon table's "unmapped" segment).
+/// </summary>
+static string FormatIncomingTypes(DpsSnapshot snap)
+{
+    var w = snap.Windows[0]; // aggregates sort windows largest-first
+    var parts = string.Join(" ", w.IncomingTypes.Select(t => $"{TypeAbbrev(t.Name)} {t.Dps:0.0}"));
+    var unmapped = snap.UnmappedAttackers.Count == 0
+        ? "none"
+        : string.Join(", ", snap.UnmappedAttackers);
+    return $"# in-types({w.Seconds:0}s) {parts} | unmapped attackers: {unmapped}";
+}
 
 static string ProfilePath() => Path.Combine(
     Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
