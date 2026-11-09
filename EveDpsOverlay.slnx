@@ -1,0 +1,8 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/EveDps.Console/EveDps.Console.csproj" />
+    <Project Path="src/EveDps.Core.Tests/EveDps.Core.Tests.csproj" />
+    <Project Path="src/EveDps.Core/EveDps.Core.csproj" />
+    <Project Path="src/EveDps.Wpf/EveDps.Wpf.csproj" />
+  </Folder>
+</Solution>

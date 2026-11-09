@@ -1,0 +1,327 @@
+------------------------------------------------------------
+  Gamelog
+  Listener: Artemis Lange
+  Session Started: 2026.11.01 17:19:24
+------------------------------------------------------------
+[ 2026.11.01 17:19:56 ] (question) Choosing a side to support means you will receive agency challenges with additional rewards every time you attack or hack the sites belonging to your side's enemies.
+[ 2026.11.01 17:23:08 ] (question) Would you like to set this Skill Plan as your currently tracked plan?
+[ 2026.11.01 17:25:03 ] (None) Undocking from Venerate VIII - AIR Laboratories to Venerate solar system.
+[ 2026.11.01 17:27:14 ] (None) Jumping from Venerate to Gallant
+[ 2026.11.01 17:28:06 ] (None) Jumping from Gallant to Celerity
+[ 2026.11.01 17:29:14 ] (None) Jumping from Celerity to Kita-Aino
+[ 2026.11.01 17:31:02 ] (None) Jumping from Kita-Aino to Aldoras
+[ 2026.11.01 17:31:43 ] (notify) Setting course to docking perimeter
+[ 2026.11.01 17:32:44 ] (None) Undocking from Aldoras VI - Science and Trade Institute to Aldoras solar system.
+[ 2026.11.01 17:33:32 ] (notify) The target <b>Pithi Arrogator</b> is too far away. It must be within <b>30 km</b>.
+[ 2026.11.01 17:34:46 ] (combat) <color=0xff00ffff><b>7</b> <color=0x77ffffff><font size=10>to</font> <b><color=0xffffffff>Pithi Arrogator</b><font size=10><color=0x77ffffff> - Civilian Gatling Railgun - Penetrates
+[ 2026.11.01 17:34:48 ] (combat) <color=0xff00ffff><b>4</b> <color=0x77ffffff><font size=10>to</font> <b><color=0xffffffff>Pithi Arrogator</b><font size=10><color=0x77ffffff> - Civilian Gatling Railgun - Grazes
+[ 2026.11.01 17:34:49 ] (combat) <color=0xff00ffff><b>6</b> <color=0x77ffffff><font size=10>to</font> <b><color=0xffffffff>Pithi Arrogator</b><font size=10><color=0x77ffffff> - Civilian Gatling Railgun - Hits
+[ 2026.11.01 17:34:51 ] (combat) <color=0xff00ffff><b>4</b> <color=0x77ffffff><font size=10>to</font> <b><color=0xffffffff>Pithi Arrogator</b><font size=10><color=0x77ffffff> - Civilian Gatling Railgun - Glances Off
+[ 2026.11.01 17:34:53 ] (combat) <color=0xff00ffff><b>7</b> <color=0x77ffffff><font size=10>to</font> <b><color=0xffffffff>Pithi Arrogator</b><font size=10><color=0x77ffffff> - Civilian Gatling Railgun - Penetrates
+[ 2026.11.01 17:34:54 ] (combat) <color=0xff00ffff><b>5</b> <color=0x77ffffff><font size=10>to</font> <b><color=0xffffffff>Pithi Arrogator</b><font size=10><color=0x77ffffff> - Civilian Gatling Railgun - Hits
+[ 2026.11.01 17:34:56 ] (combat) <color=0xff00ffff><b>6</b> <color=0x77ffffff><font size=10>to</font> <b><color=0xffffffff>Pithi Arrogator</b><font size=10><color=0x77ffffff> - Civilian Gatling Railgun - Hits
+[ 2026.11.01 17:34:58 ] (combat) <color=0xff00ffff><b>8</b> <color=0x77ffffff><font size=10>to</font> <b><color=0xffffffff>Pithi Arrogator</b><font size=10><color=0x77ffffff> - Civilian Gatling Railgun - Penetrates
+[ 2026.11.01 17:35:00 ] (combat) <color=0xff00ffff><b>5</b> <color=0x77ffffff><font size=10>to</font> <b><color=0xffffffff>Pithi Arrogator</b><font size=10><color=0x77ffffff> - Civilian Gatling Railgun - Glances Off
+[ 2026.11.01 17:35:01 ] (combat) <color=0xff00ffff><b>4</b> <color=0x77ffffff><font size=10>to</font> <b><color=0xffffffff>Pithi Arrogator</b><font size=10><color=0x77ffffff> - Civilian Gatling Railgun - Hits
+[ 2026.11.01 17:35:02 ] (bounty) <font size=12><b><color=0xff00aa00>3,000 ISK</b><color=0x77ffffff> added to next bounty payout
+[ 2026.11.01 17:36:00 ] (notify) The target <b>Pithi Arrogator</b> is too far away. It must be within <b>30 km</b>.
+[ 2026.11.01 17:36:29 ] (combat) Your Civilian Gatling Railgun misses Pithi Arrogator completely - Civilian Gatling Railgun
+[ 2026.11.01 17:36:31 ] (combat) <color=0xff00ffff><b>3</b> <color=0x77ffffff><font size=10>to</font> <b><color=0xffffffff>Pithi Arrogator</b><font size=10><color=0x77ffffff> - Civilian Gatling Railgun - Grazes
+[ 2026.11.01 17:36:33 ] (combat) <color=0xff00ffff><b>4</b> <color=0x77ffffff><font size=10>to</font> <b><color=0xffffffff>Pithi Arrogator</b><font size=10><color=0x77ffffff> - Civilian Gatling Railgun - Glances Off
+[ 2026.11.01 17:36:35 ] (combat) <color=0xff00ffff><b>3</b> <color=0x77ffffff><font size=10>to</font> <b><color=0xffffffff>Pithi Arrogator</b><font size=10><color=0x77ffffff> - Civilian Gatling Railgun - Grazes
+[ 2026.11.01 17:36:36 ] (combat) Pithi Arrogator misses you completely
+[ 2026.11.01 17:36:36 ] (combat) <color=0xff00ffff><b>9</b> <color=0x77ffffff><font size=10>to</font> <b><color=0xffffffff>Pithi Arrogator</b><font size=10><color=0x77ffffff> - Civilian Gatling Railgun - Smashes
+[ 2026.11.01 17:36:37 ] (combat) <color=0xffcc0000><b>2</b> <color=0x77ffffff><font size=10>from</font> <b><color=0xffffffff>Pithi Arrogator</b><font size=10><color=0x77ffffff> - Penetrates
+[ 2026.11.01 17:36:38 ] (combat) <color=0xff00ffff><b>7</b> <color=0x77ffffff><font size=10>to</font> <b><color=0xffffffff>Pithi Arrogator</b><font size=10><color=0x77ffffff> - Civilian Gatling Railgun - Penetrates
+[ 2026.11.01 17:36:38 ] (combat) <color=0xffcc0000><b>1</b> <color=0x77ffffff><font size=10>from</font> <b><color=0xffffffff>Pithi Arrogator</b><font size=10><color=0x77ffffff> - Glances Off
+[ 2026.11.01 17:36:39 ] (combat) Pithi Arrogator misses you completely
+[ 2026.11.01 17:36:40 ] (combat) <color=0xff00ffff><b>9</b> <color=0x77ffffff><font size=10>to</font> <b><color=0xffffffff>Pithi Arrogator</b><font size=10><color=0x77ffffff> - Civilian Gatling Railgun - Smashes
+[ 2026.11.01 17:36:41 ] (combat) <color=0xffcc0000><b>2</b> <color=0x77ffffff><font size=10>from</font> <b><color=0xffffffff>Pithi Arrogator</b><font size=10><color=0x77ffffff> - Penetrates
+[ 2026.11.01 17:36:41 ] (combat) <color=0xff00ffff><b>8</b> <color=0x77ffffff><font size=10>to</font> <b><color=0xffffffff>Pithi Arrogator</b><font size=10><color=0x77ffffff> - Civilian Gatling Railgun - Smashes
+[ 2026.11.01 17:36:42 ] (combat) <color=0xffcc0000><b>1</b> <color=0x77ffffff><font size=10>from</font> <b><color=0xffffffff>Pithi Arrogator</b><font size=10><color=0x77ffffff> - Hits
+[ 2026.11.01 17:36:43 ] (combat) <color=0xffcc0000><b>2</b> <color=0x77ffffff><font size=10>from</font> <b><color=0xffffffff>Pithi Arrogator</b><font size=10><color=0x77ffffff> - Penetrates
+[ 2026.11.01 17:36:43 ] (combat) <color=0xff00ffff><b>3</b> <color=0x77ffffff><font size=10>to</font> <b><color=0xffffffff>Pithi Arrogator</b><font size=10><color=0x77ffffff> - Civilian Gatling Railgun - Grazes
+[ 2026.11.01 17:36:44 ] (combat) <color=0xffcc0000><b>2</b> <color=0x77ffffff><font size=10>from</font> <b><color=0xffffffff>Pithi Arrogator</b><font size=10><color=0x77ffffff> - Penetrates
+[ 2026.11.01 17:36:45 ] (combat) <color=0xff00ffff><b>6</b> <color=0x77ffffff><font size=10>to</font> <b><color=0xffffffff>Pithi Arrogator</b><font size=10><color=0x77ffffff> - Civilian Gatling Railgun - Penetrates
+[ 2026.11.01 17:36:46 ] (combat) <color=0xffcc0000><b>2</b> <color=0x77ffffff><font size=10>from</font> <b><color=0xffffffff>Pithi Arrogator</b><font size=10><color=0x77ffffff> - Penetrates
+[ 2026.11.01 17:36:47 ] (combat) <color=0xff00ffff><b>3</b> <color=0x77ffffff><font size=10>to</font> <b><color=0xffffffff>Pithi Arrogator</b><font size=10><color=0x77ffffff> - Civilian Gatling Railgun - Grazes
+[ 2026.11.01 17:36:47 ] (combat) Pithi Arrogator misses you completely
+[ 2026.11.01 17:36:48 ] (combat) <color=0xffcc0000><b>1</b> <color=0x77ffffff><font size=10>from</font> <b><color=0xffffffff>Pithi Arrogator</b><font size=10><color=0x77ffffff> - Grazes
+[ 2026.11.01 17:36:48 ] (combat) <color=0xff00ffff><b>5</b> <color=0x77ffffff><font size=10>to</font> <b><color=0xffffffff>Pithi Arrogator</b><font size=10><color=0x77ffffff> - Civilian Gatling Railgun - Hits
+[ 2026.11.01 17:36:49 ] (combat) <color=0xffcc0000><b>1</b> <color=0x77ffffff><font size=10>from</font> <b><color=0xffffffff>Pithi Arrogator</b><font size=10><color=0x77ffffff> - Glances Off
+[ 2026.11.01 17:36:50 ] (combat) <color=0xff00ffff><b>8</b> <color=0x77ffffff><font size=10>to</font> <b><color=0xffffffff>Pithi Arrogator</b><font size=10><color=0x77ffffff> - Civilian Gatling Railgun - Smashes
+[ 2026.11.01 17:36:51 ] (combat) <color=0xffcc0000><b>1</b> <color=0x77ffffff><font size=10>from</font> <b><color=0xffffffff>Pithi Arrogator</b><font size=10><color=0x77ffffff> - Glances Off
+[ 2026.11.01 17:36:52 ] (combat) <color=0xff00ffff><b>7</b> <color=0x77ffffff><font size=10>to</font> <b><color=0xffffffff>Pithi Arrogator</b><font size=10><color=0x77ffffff> - Civilian Gatling Railgun - Penetrates
+[ 2026.11.01 17:36:52 ] (combat) <color=0xffcc0000><b>2</b> <color=0x77ffffff><font size=10>from</font> <b><color=0xffffffff>Pithi Arrogator</b><font size=10><color=0x77ffffff> - Penetrates
+[ 2026.11.01 17:36:53 ] (combat) <color=0xffcc0000><b>1</b> <color=0x77ffffff><font size=10>from</font> <b><color=0xffffffff>Pithi Arrogator</b><font size=10><color=0x77ffffff> - Hits
+[ 2026.11.01 17:36:53 ] (combat) Your Civilian Gatling Railgun misses Pithi Arrogator completely - Civilian Gatling Railgun
+[ 2026.11.01 17:36:54 ] (combat) Pithi Arrogator misses you completely
+[ 2026.11.01 17:36:55 ] (combat) Your Civilian Gatling Railgun misses Pithi Arrogator completely - Civilian Gatling Railgun
+[ 2026.11.01 17:36:56 ] (combat) <color=0xffcc0000><b>1</b> <color=0x77ffffff><font size=10>from</font> <b><color=0xffffffff>Pithi Arrogator</b><font size=10><color=0x77ffffff> - Hits
+[ 2026.11.01 17:36:57 ] (combat) <color=0xffcc0000><b>2</b> <color=0x77ffffff><font size=10>from</font> <b><color=0xffffffff>Pithi Arrogator</b><font size=10><color=0x77ffffff> - Hits
+[ 2026.11.01 17:36:57 ] (combat) <color=0xff00ffff><b>3</b> <color=0x77ffffff><font size=10>to</font> <b><color=0xffffffff>Pithi Arrogator</b><font size=10><color=0x77ffffff> - Civilian Gatling Railgun - Grazes
+[ 2026.11.01 17:36:58 ] (combat) <color=0xffcc0000><b>1</b> <color=0x77ffffff><font size=10>from</font> <b><color=0xffffffff>Pithi Arrogator</b><font size=10><color=0x77ffffff> - Hits
+[ 2026.11.01 17:36:58 ] (combat) Your Civilian Gatling Railgun misses Pithi Arrogator completely - Civilian Gatling Railgun
+[ 2026.11.01 17:36:59 ] (combat) <color=0xffcc0000><b>1</b> <color=0x77ffffff><font size=10>from</font> <b><color=0xffffffff>Pithi Arrogator</b><font size=10><color=0x77ffffff> - Grazes
+[ 2026.11.01 17:37:00 ] (combat) <color=0xff00ffff><b>4</b> <color=0x77ffffff><font size=10>to</font> <b><color=0xffffffff>Pithi Arrogator</b><font size=10><color=0x77ffffff> - Civilian Gatling Railgun - Glances Off
+[ 2026.11.01 17:37:01 ] (combat) <color=0xffcc0000><b>2</b> <color=0x77ffffff><font size=10>from</font> <b><color=0xffffffff>Pithi Arrogator</b><font size=10><color=0x77ffffff> - Penetrates
+[ 2026.11.01 17:37:02 ] (combat) <color=0xffcc0000><b>1</b> <color=0x77ffffff><font size=10>from</font> <b><color=0xffffffff>Pithi Arrogator</b><font size=10><color=0x77ffffff> - Hits
+[ 2026.11.01 17:37:02 ] (combat) <color=0xff00ffff><b>7</b> <color=0x77ffffff><font size=10>to</font> <b><color=0xffffffff>Pithi Arrogator</b><font size=10><color=0x77ffffff> - Civilian Gatling Railgun - Penetrates
+[ 2026.11.01 17:37:03 ] (combat) <color=0xffcc0000><b>2</b> <color=0x77ffffff><font size=10>from</font> <b><color=0xffffffff>Pithi Arrogator</b><font size=10><color=0x77ffffff> - Hits
+[ 2026.11.01 17:37:04 ] (combat) <color=0xff00ffff><b>5</b> <color=0x77ffffff><font size=10>to</font> <b><color=0xffffffff>Pithi Arrogator</b><font size=10><color=0x77ffffff> - Civilian Gatling Railgun - Hits
+[ 2026.11.01 17:37:04 ] (combat) <color=0xffcc0000><b>1</b> <color=0x77ffffff><font size=10>from</font> <b><color=0xffffffff>Pithi Arrogator</b><font size=10><color=0x77ffffff> - Hits
+[ 2026.11.01 17:37:05 ] (combat) Your Civilian Gatling Railgun misses Pithi Arrogator completely - Civilian Gatling Railgun
+[ 2026.11.01 17:37:06 ] (combat) <color=0xffcc0000><b>1</b> <color=0x77ffffff><font size=10>from</font> <b><color=0xffffffff>Pithi Arrogator</b><font size=10><color=0x77ffffff> - Glances Off
+[ 2026.11.01 17:37:07 ] (combat) <color=0xffcc0000><b>1</b> <color=0x77ffffff><font size=10>from</font> <b><color=0xffffffff>Pithi Arrogator</b><font size=10><color=0x77ffffff> - Hits
+[ 2026.11.01 17:37:07 ] (combat) <color=0xff00ffff><b>5</b> <color=0x77ffffff><font size=10>to</font> <b><color=0xffffffff>Pithi Arrogator</b><font size=10><color=0x77ffffff> - Civilian Gatling Railgun - Hits
+[ 2026.11.01 17:37:08 ] (combat) <color=0xffcc0000><b>5</b> <color=0x77ffffff><font size=10>from</font> <b><color=0xffffffff>Pithi Arrogator</b><font size=10><color=0x77ffffff> - Wrecks
+[ 2026.11.01 17:37:09 ] (combat) <color=0xff00ffff><b>5</b> <color=0x77ffffff><font size=10>to</font> <b><color=0xffffffff>Pithi Arrogator</b><font size=10><color=0x77ffffff> - Civilian Gatling Railgun - Hits
+[ 2026.11.01 17:37:09 ] (combat) Pithi Arrogator misses you completely
+[ 2026.11.01 17:37:10 ] (combat) Your Civilian Gatling Railgun misses Pithi Arrogator completely - Civilian Gatling Railgun
+[ 2026.11.01 17:37:11 ] (combat) <color=0xffcc0000><b>2</b> <color=0x77ffffff><font size=10>from</font> <b><color=0xffffffff>Pithi Arrogator</b><font size=10><color=0x77ffffff> - Penetrates
+[ 2026.11.01 17:37:12 ] (combat) <color=0xffcc0000><b>1</b> <color=0x77ffffff><font size=10>from</font> <b><color=0xffffffff>Pithi Arrogator</b><font size=10><color=0x77ffffff> - Hits
+[ 2026.11.01 17:37:12 ] (combat) <color=0xff00ffff><b>4</b> <color=0x77ffffff><font size=10>to</font> <b><color=0xffffffff>Pithi Arrogator</b><font size=10><color=0x77ffffff> - Civilian Gatling Railgun - Glances Off
+[ 2026.11.01 17:37:13 ] (combat) Pithi Arrogator misses you completely
+[ 2026.11.01 17:37:14 ] (combat) <color=0xff00ffff><b>3</b> <color=0x77ffffff><font size=10>to</font> <b><color=0xffffffff>Pithi Arrogator</b><font size=10><color=0x77ffffff> - Civilian Gatling Railgun - Grazes
+[ 2026.11.01 17:37:14 ] (combat) <color=0xffcc0000><b>2</b> <color=0x77ffffff><font size=10>from</font> <b><color=0xffffffff>Pithi Arrogator</b><font size=10><color=0x77ffffff> - Hits
+[ 2026.11.01 17:37:15 ] (combat) <color=0xff00ffff><b>6</b> <color=0x77ffffff><font size=10>to</font> <b><color=0xffffffff>Pithi Arrogator</b><font size=10><color=0x77ffffff> - Civilian Gatling Railgun - Penetrates
+[ 2026.11.01 17:37:16 ] (combat) <color=0xffcc0000><b>1</b> <color=0x77ffffff><font size=10>from</font> <b><color=0xffffffff>Pithi Arrogator</b><font size=10><color=0x77ffffff> - Grazes
+[ 2026.11.01 17:37:16 ] (bounty) <font size=12><b><color=0xff00aa00>3,000 ISK</b><color=0x77ffffff> added to next bounty payout
+[ 2026.11.01 17:37:18 ] (combat) <color=0xffcc0000><b>2</b> <color=0x77ffffff><font size=10>from</font> <b><color=0xffffffff>Pithi Arrogator</b><font size=10><color=0x77ffffff> - Hits
+[ 2026.11.01 17:37:21 ] (combat) <color=0xffcc0000><b>1</b> <color=0x77ffffff><font size=10>from</font> <b><color=0xffffffff>Pithi Arrogator</b><font size=10><color=0x77ffffff> - Hits
+[ 2026.11.01 17:37:23 ] (combat) <color=0xffcc0000><b>2</b> <color=0x77ffffff><font size=10>from</font> <b><color=0xffffffff>Pithi Arrogator</b><font size=10><color=0x77ffffff> - Penetrates
+[ 2026.11.01 17:37:26 ] (combat) <color=0xffcc0000><b>2</b> <color=0x77ffffff><font size=10>from</font> <b><color=0xffffffff>Pithi Arrogator</b><font size=10><color=0x77ffffff> - Penetrates
+[ 2026.11.01 17:37:28 ] (combat) Pithi Arrogator misses you completely
+[ 2026.11.01 17:37:31 ] (combat) Pithi Arrogator misses you completely
+[ 2026.11.01 17:37:34 ] (combat) <color=0xffcc0000><b>1</b> <color=0x77ffffff><font size=10>from</font> <b><color=0xffffffff>Pithi Arrogator</b><font size=10><color=0x77ffffff> - Grazes
+[ 2026.11.01 17:37:34 ] (combat) <color=0xff00ffff><b>4</b> <color=0x77ffffff><font size=10>to</font> <b><color=0xffffffff>Pithi Arrogator</b><font size=10><color=0x77ffffff> - Civilian Gatling Railgun - Grazes
+[ 2026.11.01 17:37:35 ] (combat) <color=0xff00ffff><b>4</b> <color=0x77ffffff><font size=10>to</font> <b><color=0xffffffff>Pithi Arrogator</b><font size=10><color=0x77ffffff> - Civilian Gatling Railgun - Grazes
+[ 2026.11.01 17:37:36 ] (combat) Pithi Arrogator misses you completely
+[ 2026.11.01 17:37:37 ] (combat) <color=0xff00ffff><b>6</b> <color=0x77ffffff><font size=10>to</font> <b><color=0xffffffff>Pithi Arrogator</b><font size=10><color=0x77ffffff> - Civilian Gatling Railgun - Penetrates
+[ 2026.11.01 17:37:39 ] (combat) Pithi Arrogator misses you completely
+[ 2026.11.01 17:37:39 ] (combat) <color=0xff00ffff><b>6</b> <color=0x77ffffff><font size=10>to</font> <b><color=0xffffffff>Pithi Arrogator</b><font size=10><color=0x77ffffff> - Civilian Gatling Railgun - Penetrates
+[ 2026.11.01 17:37:41 ] (combat) <color=0xff00ffff><b>6</b> <color=0x77ffffff><font size=10>to</font> <b><color=0xffffffff>Pithi Arrogator</b><font size=10><color=0x77ffffff> - Civilian Gatling Railgun - Penetrates
+[ 2026.11.01 17:37:41 ] (combat) Pithi Arrogator misses you completely
+[ 2026.11.01 17:37:42 ] (combat) Your Civilian Gatling Railgun misses Pithi Arrogator completely - Civilian Gatling Railgun
+[ 2026.11.01 17:37:44 ] (combat) Pithi Arrogator misses you completely
+[ 2026.11.01 17:37:44 ] (combat) Your Civilian Gatling Railgun misses Pithi Arrogator completely - Civilian Gatling Railgun
+[ 2026.11.01 17:37:46 ] (combat) <color=0xff00ffff><b>3</b> <color=0x77ffffff><font size=10>to</font> <b><color=0xffffffff>Pithi Arrogator</b><font size=10><color=0x77ffffff> - Civilian Gatling Railgun - Grazes
+[ 2026.11.01 17:37:46 ] (combat) Pithi Arrogator misses you completely
+[ 2026.11.01 17:37:47 ] (combat) Your Civilian Gatling Railgun misses Pithi Arrogator completely - Civilian Gatling Railgun
+[ 2026.11.01 17:37:49 ] (combat) Pithi Arrogator misses you completely
+[ 2026.11.01 17:37:49 ] (combat) Your Civilian Gatling Railgun misses Pithi Arrogator completely - Civilian Gatling Railgun
+[ 2026.11.01 17:37:51 ] (combat) Your Civilian Gatling Railgun misses Pithi Arrogator completely - Civilian Gatling Railgun
+[ 2026.11.01 17:37:51 ] (combat) Pithi Arrogator misses you completely
+[ 2026.11.01 17:37:53 ] (combat) Your Civilian Gatling Railgun misses Pithi Arrogator completely - Civilian Gatling Railgun
+[ 2026.11.01 17:37:54 ] (combat) Pithi Arrogator misses you completely
+[ 2026.11.01 17:37:54 ] (combat) Your Civilian Gatling Railgun misses Pithi Arrogator completely - Civilian Gatling Railgun
+[ 2026.11.01 17:37:56 ] (combat) Your Civilian Gatling Railgun misses Pithi Arrogator completely - Civilian Gatling Railgun
+[ 2026.11.01 17:37:56 ] (combat) Pithi Arrogator misses you completely
+[ 2026.11.01 17:37:58 ] (combat) Your Civilian Gatling Railgun misses Pithi Arrogator completely - Civilian Gatling Railgun
+[ 2026.11.01 17:37:59 ] (combat) Pithi Arrogator misses you completely
+[ 2026.11.01 17:37:59 ] (combat) Your Civilian Gatling Railgun misses Pithi Arrogator completely - Civilian Gatling Railgun
+[ 2026.11.01 17:38:01 ] (combat) Your Civilian Gatling Railgun misses Pithi Arrogator completely - Civilian Gatling Railgun
+[ 2026.11.01 17:38:01 ] (combat) Pithi Arrogator misses you completely
+[ 2026.11.01 17:38:03 ] (combat) Your Civilian Gatling Railgun misses Pithi Arrogator completely - Civilian Gatling Railgun
+[ 2026.11.01 17:38:04 ] (combat) Pithi Arrogator misses you completely
+[ 2026.11.01 17:38:05 ] (combat) Your Civilian Gatling Railgun misses Pithi Arrogator completely - Civilian Gatling Railgun
+[ 2026.11.01 17:38:06 ] (combat) Pithi Arrogator misses you completely
+[ 2026.11.01 17:38:06 ] (combat) Your Civilian Gatling Railgun misses Pithi Arrogator completely - Civilian Gatling Railgun
+[ 2026.11.01 17:38:08 ] (combat) Your Civilian Gatling Railgun misses Pithi Arrogator completely - Civilian Gatling Railgun
+[ 2026.11.01 17:38:09 ] (combat) Pithi Arrogator misses you completely
+[ 2026.11.01 17:38:10 ] (combat) Your Civilian Gatling Railgun misses Pithi Arrogator completely - Civilian Gatling Railgun
+[ 2026.11.01 17:38:11 ] (combat) Pithi Arrogator misses you completely
+[ 2026.11.01 17:38:11 ] (combat) Your Civilian Gatling Railgun misses Pithi Arrogator completely - Civilian Gatling Railgun
+[ 2026.11.01 17:38:13 ] (combat) Your Civilian Gatling Railgun misses Pithi Arrogator completely - Civilian Gatling Railgun
+[ 2026.11.01 17:38:14 ] (combat) Pithi Arrogator misses you completely
+[ 2026.11.01 17:38:15 ] (combat) Your Civilian Gatling Railgun misses Pithi Arrogator completely - Civilian Gatling Railgun
+[ 2026.11.01 17:38:16 ] (combat) Pithi Arrogator misses you completely
+[ 2026.11.01 17:38:16 ] (combat) Your Civilian Gatling Railgun misses Pithi Arrogator completely - Civilian Gatling Railgun
+[ 2026.11.01 17:38:18 ] (combat) Your Civilian Gatling Railgun misses Pithi Arrogator completely - Civilian Gatling Railgun
+[ 2026.11.01 17:38:19 ] (combat) Pithi Arrogator misses you completely
+[ 2026.11.01 17:38:20 ] (combat) Your Civilian Gatling Railgun misses Pithi Arrogator completely - Civilian Gatling Railgun
+[ 2026.11.01 17:38:21 ] (combat) Pithi Arrogator misses you completely
+[ 2026.11.01 17:38:22 ] (combat) Your Civilian Gatling Railgun misses Pithi Arrogator completely - Civilian Gatling Railgun
+[ 2026.11.01 17:38:23 ] (combat) Your Civilian Gatling Railgun misses Pithi Arrogator completely - Civilian Gatling Railgun
+[ 2026.11.01 17:38:24 ] (combat) Pithi Arrogator misses you completely
+[ 2026.11.01 17:38:25 ] (combat) Your Civilian Gatling Railgun misses Pithi Arrogator completely - Civilian Gatling Railgun
+[ 2026.11.01 17:38:26 ] (combat) Pithi Arrogator misses you completely
+[ 2026.11.01 17:38:27 ] (combat) Your Civilian Gatling Railgun misses Pithi Arrogator completely - Civilian Gatling Railgun
+[ 2026.11.01 17:38:28 ] (combat) Your Civilian Gatling Railgun misses Pithi Arrogator completely - Civilian Gatling Railgun
+[ 2026.11.01 17:38:29 ] (combat) Pithi Arrogator misses you completely
+[ 2026.11.01 17:38:30 ] (combat) Your Civilian Gatling Railgun misses Pithi Arrogator completely - Civilian Gatling Railgun
+[ 2026.11.01 17:38:31 ] (combat) Pithi Arrogator misses you completely
+[ 2026.11.01 17:38:32 ] (combat) Your Civilian Gatling Railgun misses Pithi Arrogator completely - Civilian Gatling Railgun
+[ 2026.11.01 17:38:34 ] (combat) Your Civilian Gatling Railgun misses Pithi Arrogator completely - Civilian Gatling Railgun
+[ 2026.11.01 17:38:34 ] (combat) Pithi Arrogator misses you completely
+[ 2026.11.01 17:38:35 ] (combat) Your Civilian Gatling Railgun misses Pithi Arrogator completely - Civilian Gatling Railgun
+[ 2026.11.01 17:38:36 ] (combat) Pithi Arrogator misses you completely
+[ 2026.11.01 17:38:37 ] (combat) Your Civilian Gatling Railgun misses Pithi Arrogator completely - Civilian Gatling Railgun
+[ 2026.11.01 17:38:39 ] (combat) Your Civilian Gatling Railgun misses Pithi Arrogator completely - Civilian Gatling Railgun
+[ 2026.11.01 17:38:39 ] (combat) Pithi Arrogator misses you completely
+[ 2026.11.01 17:38:40 ] (combat) Your Civilian Gatling Railgun misses Pithi Arrogator completely - Civilian Gatling Railgun
+[ 2026.11.01 17:38:41 ] (combat) Pithi Arrogator misses you completely
+[ 2026.11.01 17:38:42 ] (combat) Your Civilian Gatling Railgun misses Pithi Arrogator completely - Civilian Gatling Railgun
+[ 2026.11.01 17:38:44 ] (combat) Your Civilian Gatling Railgun misses Pithi Arrogator completely - Civilian Gatling Railgun
+[ 2026.11.01 17:38:44 ] (combat) Pithi Arrogator misses you completely
+[ 2026.11.01 17:38:45 ] (combat) Your Civilian Gatling Railgun misses Pithi Arrogator completely - Civilian Gatling Railgun
+[ 2026.11.01 17:38:46 ] (combat) Pithi Arrogator misses you completely
+[ 2026.11.01 17:38:47 ] (combat) Your Civilian Gatling Railgun misses Pithi Arrogator completely - Civilian Gatling Railgun
+[ 2026.11.01 17:38:49 ] (combat) Your Civilian Gatling Railgun misses Pithi Arrogator completely - Civilian Gatling Railgun
+[ 2026.11.01 17:38:49 ] (combat) Pithi Arrogator misses you completely
+[ 2026.11.01 17:38:51 ] (combat) Your Civilian Gatling Railgun misses Pithi Arrogator completely - Civilian Gatling Railgun
+[ 2026.11.01 17:38:51 ] (combat) Pithi Arrogator misses you completely
+[ 2026.11.01 17:38:52 ] (combat) Your Civilian Gatling Railgun misses Pithi Arrogator completely - Civilian Gatling Railgun
+[ 2026.11.01 17:38:54 ] (combat) Pithi Arrogator misses you completely
+[ 2026.11.01 17:38:54 ] (combat) Your Civilian Gatling Railgun misses Pithi Arrogator completely - Civilian Gatling Railgun
+[ 2026.11.01 17:38:56 ] (combat) Your Civilian Gatling Railgun misses Pithi Arrogator completely - Civilian Gatling Railgun
+[ 2026.11.01 17:38:57 ] (combat) Pithi Arrogator misses you completely
+[ 2026.11.01 17:38:57 ] (combat) Your Civilian Gatling Railgun misses Pithi Arrogator completely - Civilian Gatling Railgun
+[ 2026.11.01 17:38:59 ] (combat) Pithi Arrogator misses you completely
+[ 2026.11.01 17:38:59 ] (combat) Your Civilian Gatling Railgun misses Pithi Arrogator completely - Civilian Gatling Railgun
+[ 2026.11.01 17:39:01 ] (combat) Your Civilian Gatling Railgun misses Pithi Arrogator completely - Civilian Gatling Railgun
+[ 2026.11.01 17:39:02 ] (combat) Pithi Arrogator misses you completely
+[ 2026.11.01 17:39:03 ] (combat) Your Civilian Gatling Railgun misses Pithi Arrogator completely - Civilian Gatling Railgun
+[ 2026.11.01 17:39:04 ] (combat) Pithi Arrogator misses you completely
+[ 2026.11.01 17:39:04 ] (combat) Your Civilian Gatling Railgun misses Pithi Arrogator completely - Civilian Gatling Railgun
+[ 2026.11.01 17:39:06 ] (combat) Your Civilian Gatling Railgun misses Pithi Arrogator completely - Civilian Gatling Railgun
+[ 2026.11.01 17:39:07 ] (combat) Pithi Arrogator misses you completely
+[ 2026.11.01 17:39:08 ] (combat) Your Civilian Gatling Railgun misses Pithi Arrogator completely - Civilian Gatling Railgun
+[ 2026.11.01 17:39:09 ] (combat) Pithi Arrogator misses you completely
+[ 2026.11.01 17:39:09 ] (combat) Your Civilian Gatling Railgun misses Pithi Arrogator completely - Civilian Gatling Railgun
+[ 2026.11.01 17:39:11 ] (combat) Your Civilian Gatling Railgun misses Pithi Arrogator completely - Civilian Gatling Railgun
+[ 2026.11.01 17:39:12 ] (combat) Pithi Arrogator misses you completely
+[ 2026.11.01 17:39:13 ] (combat) Your Civilian Gatling Railgun misses Pithi Arrogator completely - Civilian Gatling Railgun
+[ 2026.11.01 17:39:14 ] (combat) Pithi Arrogator misses you completely
+[ 2026.11.01 17:39:15 ] (combat) <color=0xff00ffff><b>8</b> <color=0x77ffffff><font size=10>to</font> <b><color=0xffffffff>Pithi Arrogator</b><font size=10><color=0x77ffffff> - Civilian Gatling Railgun - Smashes
+[ 2026.11.01 17:39:16 ] (combat) <color=0xff00ffff><b>8</b> <color=0x77ffffff><font size=10>to</font> <b><color=0xffffffff>Pithi Arrogator</b><font size=10><color=0x77ffffff> - Civilian Gatling Railgun - Smashes
+[ 2026.11.01 17:39:17 ] (combat) Pithi Arrogator misses you completely
+[ 2026.11.01 17:39:18 ] (combat) <color=0xff00ffff><b>5</b> <color=0x77ffffff><font size=10>to</font> <b><color=0xffffffff>Pithi Arrogator</b><font size=10><color=0x77ffffff> - Civilian Gatling Railgun - Hits
+[ 2026.11.01 17:39:19 ] (combat) <color=0xffcc0000><b>1</b> <color=0x77ffffff><font size=10>from</font> <b><color=0xffffffff>Pithi Arrogator</b><font size=10><color=0x77ffffff> - Grazes
+[ 2026.11.01 17:39:20 ] (combat) <color=0xff00ffff><b>7</b> <color=0x77ffffff><font size=10>to</font> <b><color=0xffffffff>Pithi Arrogator</b><font size=10><color=0x77ffffff> - Civilian Gatling Railgun - Penetrates
+[ 2026.11.01 17:39:21 ] (combat) <color=0xff00ffff><b>12</b> <color=0x77ffffff><font size=10>to</font> <b><color=0xffffffff>Pithi Arrogator</b><font size=10><color=0x77ffffff> - Civilian Gatling Railgun - Wrecks
+[ 2026.11.01 17:39:22 ] (bounty) <font size=12><b><color=0xff00aa00>3,000 ISK</b><color=0x77ffffff> added to next bounty payout
+[ 2026.11.01 17:40:45 ] (combat) Your Civilian Gatling Railgun misses Pithi Arrogator completely - Civilian Gatling Railgun
+[ 2026.11.01 17:40:47 ] (combat) Your Civilian Gatling Railgun misses Pithi Arrogator completely - Civilian Gatling Railgun
+[ 2026.11.01 17:40:49 ] (combat) Your Civilian Gatling Railgun misses Pithi Arrogator completely - Civilian Gatling Railgun
+[ 2026.11.01 17:40:50 ] (combat) Your Civilian Gatling Railgun misses Pithi Arrogator completely - Civilian Gatling Railgun
+[ 2026.11.01 17:40:52 ] (combat) Your Civilian Gatling Railgun misses Pithi Arrogator completely - Civilian Gatling Railgun
+[ 2026.11.01 17:40:54 ] (combat) <color=0xff00ffff><b>3</b> <color=0x77ffffff><font size=10>to</font> <b><color=0xffffffff>Pithi Arrogator</b><font size=10><color=0x77ffffff> - Civilian Gatling Railgun - Grazes
+[ 2026.11.01 17:40:55 ] (combat) Your Civilian Gatling Railgun misses Pithi Arrogator completely - Civilian Gatling Railgun
+[ 2026.11.01 17:40:57 ] (combat) Your Civilian Gatling Railgun misses Pithi Arrogator completely - Civilian Gatling Railgun
+[ 2026.11.01 17:40:59 ] (combat) Your Civilian Gatling Railgun misses Pithi Arrogator completely - Civilian Gatling Railgun
+[ 2026.11.01 17:41:00 ] (combat) <color=0xff00ffff><b>7</b> <color=0x77ffffff><font size=10>to</font> <b><color=0xffffffff>Pithi Arrogator</b><font size=10><color=0x77ffffff> - Civilian Gatling Railgun - Penetrates
+[ 2026.11.01 17:41:02 ] (combat) <color=0xff00ffff><b>8</b> <color=0x77ffffff><font size=10>to</font> <b><color=0xffffffff>Pithi Arrogator</b><font size=10><color=0x77ffffff> - Civilian Gatling Railgun - Smashes
+[ 2026.11.01 17:41:04 ] (combat) <color=0xffcc0000><b>1</b> <color=0x77ffffff><font size=10>from</font> <b><color=0xffffffff>Pithi Arrogator</b><font size=10><color=0x77ffffff> - Hits
+[ 2026.11.01 17:41:04 ] (combat) <color=0xff00ffff><b>6</b> <color=0x77ffffff><font size=10>to</font> <b><color=0xffffffff>Pithi Arrogator</b><font size=10><color=0x77ffffff> - Civilian Gatling Railgun - Penetrates
+[ 2026.11.01 17:41:06 ] (combat) <color=0xff00ffff><b>3</b> <color=0x77ffffff><font size=10>to</font> <b><color=0xffffffff>Pithi Arrogator</b><font size=10><color=0x77ffffff> - Civilian Gatling Railgun - Grazes
+[ 2026.11.01 17:41:06 ] (combat) <color=0xffcc0000><b>1</b> <color=0x77ffffff><font size=10>from</font> <b><color=0xffffffff>Pithi Arrogator</b><font size=10><color=0x77ffffff> - Hits
+[ 2026.11.01 17:41:07 ] (combat) <color=0xff00ffff><b>7</b> <color=0x77ffffff><font size=10>to</font> <b><color=0xffffffff>Pithi Arrogator</b><font size=10><color=0x77ffffff> - Civilian Gatling Railgun - Penetrates
+[ 2026.11.01 17:41:09 ] (combat) Pithi Arrogator misses you completely
+[ 2026.11.01 17:41:09 ] (combat) <color=0xff00ffff><b>4</b> <color=0x77ffffff><font size=10>to</font> <b><color=0xffffffff>Pithi Arrogator</b><font size=10><color=0x77ffffff> - Civilian Gatling Railgun - Glances Off
+[ 2026.11.01 17:41:11 ] (combat) <color=0xff00ffff><b>8</b> <color=0x77ffffff><font size=10>to</font> <b><color=0xffffffff>Pithi Arrogator</b><font size=10><color=0x77ffffff> - Civilian Gatling Railgun - Smashes
+[ 2026.11.01 17:41:11 ] (combat) <color=0xffcc0000><b>1</b> <color=0x77ffffff><font size=10>from</font> <b><color=0xffffffff>Pithi Arrogator</b><font size=10><color=0x77ffffff> - Glances Off
+[ 2026.11.01 17:41:12 ] (combat) <color=0xff00ffff><b>6</b> <color=0x77ffffff><font size=10>to</font> <b><color=0xffffffff>Pithi Arrogator</b><font size=10><color=0x77ffffff> - Civilian Gatling Railgun - Hits
+[ 2026.11.01 17:41:14 ] (combat) <color=0xffcc0000><b>2</b> <color=0x77ffffff><font size=10>from</font> <b><color=0xffffffff>Pithi Arrogator</b><font size=10><color=0x77ffffff> - Penetrates
+[ 2026.11.01 17:41:14 ] (combat) <color=0xff00ffff><b>5</b> <color=0x77ffffff><font size=10>to</font> <b><color=0xffffffff>Pithi Arrogator</b><font size=10><color=0x77ffffff> - Civilian Gatling Railgun - Glances Off
+[ 2026.11.01 17:41:16 ] (combat) <color=0xff00ffff><b>7</b> <color=0x77ffffff><font size=10>to</font> <b><color=0xffffffff>Pithi Arrogator</b><font size=10><color=0x77ffffff> - Civilian Gatling Railgun - Smashes
+[ 2026.11.01 17:41:16 ] (bounty) <font size=12><b><color=0xff00aa00>3,000 ISK</b><color=0x77ffffff> added to next bounty payout
+[ 2026.11.01 17:42:20 ] (notify) You cannot do that while warping.
+[ 2026.11.01 17:42:23 ] (notify) Ship stopping
+[ 2026.11.01 17:42:27 ] (notify) Please wait...
+[ 2026.11.01 17:44:48 ] (None) Undocking from Aldoras VI - Science and Trade Institute to Aldoras solar system.
+[ 2026.11.01 17:45:52 ] (notify) The target <b>Pithi Arrogator</b> is too far away. It must be within <b>30 km</b>.
+[ 2026.11.01 17:45:55 ] (notify) The target <b>Pithi Arrogator</b> is too far away. It must be within <b>30 km</b>.
+[ 2026.11.01 17:46:39 ] (combat) Your 75mm Gatling Rail I misses Pithi Arrogator completely - 75mm Gatling Rail I
+[ 2026.11.01 17:46:41 ] (combat) <color=0xff00ffff><b>22</b> <color=0x77ffffff><font size=10>to</font> <b><color=0xffffffff>Pithi Arrogator</b><font size=10><color=0x77ffffff> - 75mm Gatling Rail I - Penetrates
+[ 2026.11.01 17:46:43 ] (combat) <color=0xff00ffff><b>28</b> <color=0x77ffffff><font size=10>to</font> <b><color=0xffffffff>Pithi Arrogator</b><font size=10><color=0x77ffffff> - 75mm Gatling Rail I - Smashes
+[ 2026.11.01 17:46:45 ] (combat) Pithi Arrogator misses you completely
+[ 2026.11.01 17:46:45 ] (combat) <color=0xff00ffff><b>15</b> <color=0x77ffffff><font size=10>to</font> <b><color=0xffffffff>Pithi Arrogator</b><font size=10><color=0x77ffffff> - 75mm Gatling Rail I - Smashes
+[ 2026.11.01 17:46:46 ] (bounty) <font size=12><b><color=0xff00aa00>3,000 ISK</b><color=0x77ffffff> added to next bounty payout
+[ 2026.11.01 17:46:46 ] (combat) <color=0xffcc0000><b>2</b> <color=0x77ffffff><font size=10>from</font> <b><color=0xffffffff>Pithi Arrogator</b><font size=10><color=0x77ffffff> - Hits
+[ 2026.11.01 17:46:48 ] (combat) <color=0xffcc0000><b>1</b> <color=0x77ffffff><font size=10>from</font> <b><color=0xffffffff>Pithi Arrogator</b><font size=10><color=0x77ffffff> - Hits
+[ 2026.11.01 17:46:48 ] (combat) Your 75mm Gatling Rail I misses Pithi Arrogator completely - 75mm Gatling Rail I
+[ 2026.11.01 17:46:50 ] (combat) Your 75mm Gatling Rail I misses Pithi Arrogator completely - 75mm Gatling Rail I
+[ 2026.11.01 17:46:51 ] (combat) Pithi Arrogator misses you completely
+[ 2026.11.01 17:46:53 ] (combat) <color=0xff00ffff><b>10</b> <color=0x77ffffff><font size=10>to</font> <b><color=0xffffffff>Pithi Arrogator</b><font size=10><color=0x77ffffff> - 75mm Gatling Rail I - Grazes
+[ 2026.11.01 17:46:53 ] (combat) <color=0xffcc0000><b>2</b> <color=0x77ffffff><font size=10>from</font> <b><color=0xffffffff>Pithi Arrogator</b><font size=10><color=0x77ffffff> - Penetrates
+[ 2026.11.01 17:46:55 ] (combat) <color=0xff00ffff><b>21</b> <color=0x77ffffff><font size=10>to</font> <b><color=0xffffffff>Pithi Arrogator</b><font size=10><color=0x77ffffff> - 75mm Gatling Rail I - Penetrates
+[ 2026.11.01 17:46:56 ] (combat) <color=0xffcc0000><b>2</b> <color=0x77ffffff><font size=10>from</font> <b><color=0xffffffff>Pithi Arrogator</b><font size=10><color=0x77ffffff> - Hits
+[ 2026.11.01 17:46:57 ] (combat) <color=0xff00ffff><b>22</b> <color=0x77ffffff><font size=10>to</font> <b><color=0xffffffff>Pithi Arrogator</b><font size=10><color=0x77ffffff> - 75mm Gatling Rail I - Penetrates
+[ 2026.11.01 17:46:58 ] (combat) <color=0xffcc0000><b>2</b> <color=0x77ffffff><font size=10>from</font> <b><color=0xffffffff>Pithi Arrogator</b><font size=10><color=0x77ffffff> - Penetrates
+[ 2026.11.01 17:46:59 ] (combat) <color=0xff00ffff><b>1</b> <color=0x77ffffff><font size=10>to</font> <b><color=0xffffffff>Pithi Arrogator</b><font size=10><color=0x77ffffff> - 75mm Gatling Rail I - Hits
+[ 2026.11.01 17:47:00 ] (bounty) <font size=12><b><color=0xff00aa00>3,000 ISK</b><color=0x77ffffff> added to next bounty payout
+[ 2026.11.01 17:47:05 ] (combat) Your 75mm Gatling Rail I misses Pithi Arrogator completely - 75mm Gatling Rail I
+[ 2026.11.01 17:47:07 ] (combat) Your 75mm Gatling Rail I misses Pithi Arrogator completely - 75mm Gatling Rail I
+[ 2026.11.01 17:47:10 ] (combat) Your 75mm Gatling Rail I misses Pithi Arrogator completely - 75mm Gatling Rail I
+[ 2026.11.01 17:47:12 ] (combat) Your 75mm Gatling Rail I misses Pithi Arrogator completely - 75mm Gatling Rail I
+[ 2026.11.01 17:47:14 ] (combat) Your 75mm Gatling Rail I misses Pithi Arrogator completely - 75mm Gatling Rail I
+[ 2026.11.01 17:47:16 ] (combat) Your 75mm Gatling Rail I misses Pithi Arrogator completely - 75mm Gatling Rail I
+[ 2026.11.01 17:47:19 ] (combat) <color=0xff00ffff><b>12</b> <color=0x77ffffff><font size=10>to</font> <b><color=0xffffffff>Pithi Arrogator</b><font size=10><color=0x77ffffff> - 75mm Gatling Rail I - Grazes
+[ 2026.11.01 17:47:21 ] (combat) <color=0xff00ffff><b>17</b> <color=0x77ffffff><font size=10>to</font> <b><color=0xffffffff>Pithi Arrogator</b><font size=10><color=0x77ffffff> - 75mm Gatling Rail I - Hits
+[ 2026.11.01 17:47:23 ] (combat) <color=0xff00ffff><b>24</b> <color=0x77ffffff><font size=10>to</font> <b><color=0xffffffff>Pithi Arrogator</b><font size=10><color=0x77ffffff> - 75mm Gatling Rail I - Penetrates
+[ 2026.11.01 17:47:25 ] (combat) <color=0xff00ffff><b>3</b> <color=0x77ffffff><font size=10>to</font> <b><color=0xffffffff>Pithi Arrogator</b><font size=10><color=0x77ffffff> - 75mm Gatling Rail I - Grazes
+[ 2026.11.01 17:47:26 ] (bounty) <font size=12><b><color=0xff00aa00>3,000 ISK</b><color=0x77ffffff> added to next bounty payout
+[ 2026.11.01 17:48:09 ] (combat) <color=0xffcc0000><b>1</b> <color=0x77ffffff><font size=10>from</font> <b><color=0xffffffff>Pithi Arrogator</b><font size=10><color=0x77ffffff> - Glances Off
+[ 2026.11.01 17:48:10 ] (combat) Pithi Arrogator misses you completely
+[ 2026.11.01 17:48:11 ] (combat) Pithi Arrogator misses you completely
+[ 2026.11.01 17:48:12 ] (combat) <color=0xffcc0000><b>2</b> <color=0x77ffffff><font size=10>from</font> <b><color=0xffffffff>Pithi Arrogator</b><font size=10><color=0x77ffffff> - Penetrates
+[ 2026.11.01 17:48:14 ] (combat) Pithi Arrogator misses you completely
+[ 2026.11.01 17:48:15 ] (combat) <color=0xffcc0000><b>2</b> <color=0x77ffffff><font size=10>from</font> <b><color=0xffffffff>Pithi Arrogator</b><font size=10><color=0x77ffffff> - Penetrates
+[ 2026.11.01 17:48:16 ] (combat) <color=0xff00ffff><b>20</b> <color=0x77ffffff><font size=10>to</font> <b><color=0xffffffff>Pithi Arrogator</b><font size=10><color=0x77ffffff> - 75mm Gatling Rail I - Penetrates
+[ 2026.11.01 17:48:16 ] (combat) <color=0xffcc0000><b>1</b> <color=0x77ffffff><font size=10>from</font> <b><color=0xffffffff>Pithi Arrogator</b><font size=10><color=0x77ffffff> - Hits
+[ 2026.11.01 17:48:17 ] (combat) Pithi Arrogator misses you completely
+[ 2026.11.01 17:48:18 ] (combat) <color=0xff00ffff><b>13</b> <color=0x77ffffff><font size=10>to</font> <b><color=0xffffffff>Pithi Arrogator</b><font size=10><color=0x77ffffff> - 75mm Gatling Rail I - Glances Off
+[ 2026.11.01 17:48:19 ] (combat) Pithi Arrogator misses you completely
+[ 2026.11.01 17:48:20 ] (combat) <color=0xffcc0000><b>2</b> <color=0x77ffffff><font size=10>from</font> <b><color=0xffffffff>Pithi Arrogator</b><font size=10><color=0x77ffffff> - Penetrates
+[ 2026.11.01 17:48:20 ] (combat) <color=0xff00ffff><b>11</b> <color=0x77ffffff><font size=10>to</font> <b><color=0xffffffff>Pithi Arrogator</b><font size=10><color=0x77ffffff> - 75mm Gatling Rail I - Grazes
+[ 2026.11.01 17:48:21 ] (combat) <color=0xffcc0000><b>1</b> <color=0x77ffffff><font size=10>from</font> <b><color=0xffffffff>Pithi Arrogator</b><font size=10><color=0x77ffffff> - Grazes
+[ 2026.11.01 17:48:22 ] (combat) <color=0xffcc0000><b>2</b> <color=0x77ffffff><font size=10>from</font> <b><color=0xffffffff>Pithi Arrogator</b><font size=10><color=0x77ffffff> - Hits
+[ 2026.11.01 17:48:23 ] (combat) <color=0xff00ffff><b>11</b> <color=0x77ffffff><font size=10>to</font> <b><color=0xffffffff>Pithi Arrogator</b><font size=10><color=0x77ffffff> - 75mm Gatling Rail I - Hits
+[ 2026.11.01 17:48:23 ] (bounty) <font size=12><b><color=0xff00aa00>3,000 ISK</b><color=0x77ffffff> added to next bounty payout
+[ 2026.11.01 17:48:25 ] (combat) Pithi Arrogator misses you completely
+[ 2026.11.01 17:48:27 ] (combat) <color=0xffcc0000><b>1</b> <color=0x77ffffff><font size=10>from</font> <b><color=0xffffffff>Pithi Arrogator</b><font size=10><color=0x77ffffff> - Glances Off
+[ 2026.11.01 17:48:30 ] (combat) Pithi Arrogator misses you completely
+[ 2026.11.01 17:48:32 ] (combat) Pithi Arrogator misses you completely
+[ 2026.11.01 17:48:35 ] (combat) Pithi Arrogator misses you completely
+[ 2026.11.01 17:48:37 ] (combat) Pithi Arrogator misses you completely
+[ 2026.11.01 17:48:40 ] (combat) Pithi Arrogator misses you completely
+[ 2026.11.01 17:48:42 ] (combat) Pithi Arrogator misses you completely
+[ 2026.11.01 17:48:45 ] (combat) Pithi Arrogator misses you completely
+[ 2026.11.01 17:48:47 ] (combat) Pithi Arrogator misses you completely
+[ 2026.11.01 17:48:50 ] (combat) Pithi Arrogator misses you completely
+[ 2026.11.01 17:48:52 ] (combat) Pithi Arrogator misses you completely
+[ 2026.11.01 17:48:55 ] (combat) Pithi Arrogator misses you completely
+[ 2026.11.01 17:48:57 ] (combat) Pithi Arrogator misses you completely
+[ 2026.11.01 17:49:00 ] (combat) Pithi Arrogator misses you completely
+[ 2026.11.01 17:49:02 ] (combat) Pithi Arrogator misses you completely
+[ 2026.11.01 17:49:05 ] (combat) Pithi Arrogator misses you completely
+[ 2026.11.01 17:49:07 ] (combat) Pithi Arrogator misses you completely
+[ 2026.11.01 17:49:10 ] (combat) Pithi Arrogator misses you completely
+[ 2026.11.01 17:49:12 ] (combat) Your 75mm Gatling Rail I misses Pithi Arrogator completely - 75mm Gatling Rail I
+[ 2026.11.01 17:49:12 ] (combat) Pithi Arrogator misses you completely
+[ 2026.11.01 17:49:14 ] (combat) Your 75mm Gatling Rail I misses Pithi Arrogator completely - 75mm Gatling Rail I
+[ 2026.11.01 17:49:15 ] (combat) Pithi Arrogator misses you completely
+[ 2026.11.01 17:49:17 ] (combat) Your 75mm Gatling Rail I misses Pithi Arrogator completely - 75mm Gatling Rail I
+[ 2026.11.01 17:49:17 ] (combat) Pithi Arrogator misses you completely
+[ 2026.11.01 17:49:19 ] (combat) Your 75mm Gatling Rail I misses Pithi Arrogator completely - 75mm Gatling Rail I
+[ 2026.11.01 17:49:20 ] (combat) Pithi Arrogator misses you completely
+[ 2026.11.01 17:49:21 ] (combat) Your 75mm Gatling Rail I misses Pithi Arrogator completely - 75mm Gatling Rail I
+[ 2026.11.01 17:49:23 ] (combat) Pithi Arrogator misses you completely
+[ 2026.11.01 17:49:23 ] (combat) Your 75mm Gatling Rail I misses Pithi Arrogator completely - 75mm Gatling Rail I
+[ 2026.11.01 17:49:25 ] (combat) Pithi Arrogator misses you completely
+[ 2026.11.01 17:49:25 ] (combat) Your 75mm Gatling Rail I misses Pithi Arrogator completely - 75mm Gatling Rail I
+[ 2026.11.01 17:49:28 ] (combat) Pithi Arrogator misses you completely
+[ 2026.11.01 17:49:28 ] (combat) Your 75mm Gatling Rail I misses Pithi Arrogator completely - 75mm Gatling Rail I
+[ 2026.11.01 17:49:30 ] (combat) Your 75mm Gatling Rail I misses Pithi Arrogator completely - 75mm Gatling Rail I
+[ 2026.11.01 17:49:30 ] (combat) Pithi Arrogator misses you completely
+[ 2026.11.01 17:49:32 ] (combat) Your 75mm Gatling Rail I misses Pithi Arrogator completely - 75mm Gatling Rail I
+[ 2026.11.01 17:49:33 ] (combat) Pithi Arrogator misses you completely
+[ 2026.11.01 17:49:34 ] (combat) <color=0xff00ffff><b>20</b> <color=0x77ffffff><font size=10>to</font> <b><color=0xffffffff>Pithi Arrogator</b><font size=10><color=0x77ffffff> - 75mm Gatling Rail I - Penetrates
+[ 2026.11.01 17:49:35 ] (combat) Pithi Arrogator misses you completely
+[ 2026.11.01 17:49:37 ] (combat) <color=0xff00ffff><b>21</b> <color=0x77ffffff><font size=10>to</font> <b><color=0xffffffff>Pithi Arrogator</b><font size=10><color=0x77ffffff> - 75mm Gatling Rail I - Penetrates
+[ 2026.11.01 17:49:38 ] (combat) <color=0xffcc0000><b>1</b> <color=0x77ffffff><font size=10>from</font> <b><color=0xffffffff>Pithi Arrogator</b><font size=10><color=0x77ffffff> - Grazes
+[ 2026.11.01 17:49:39 ] (combat) <color=0xff00ffff><b>14</b> <color=0x77ffffff><font size=10>to</font> <b><color=0xffffffff>Pithi Arrogator</b><font size=10><color=0x77ffffff> - 75mm Gatling Rail I - Penetrates
+[ 2026.11.01 17:49:39 ] (bounty) <font size=12><b><color=0xff00aa00>3,000 ISK</b><color=0x77ffffff> added to next bounty payout
+[ 2026.11.01 17:49:45 ] (notify) Cargo is too far away. Ship is on automatic approach to cargo.
+[ 2026.11.01 17:54:34 ] (question) Do you really want to log off and return to the character selection screen now?
