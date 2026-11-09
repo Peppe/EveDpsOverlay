@@ -73,8 +73,8 @@ public sealed class DpsAggregator
 
     public DpsAggregator(
         IReadOnlyList<int> windowSeconds,
-        WeaponTypeProfiles? profiles,
-        AttackerTypeProfiles? attackerProfiles)
+        WeaponTypeProfiles? profiles = null,
+        AttackerTypeProfiles? attackerProfiles = null)
     {
         _windowSeconds = windowSeconds.Count == 0
             ? DefaultWindows
