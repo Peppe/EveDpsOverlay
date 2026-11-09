@@ -1,5 +1,5 @@
 ---
-status: accepted
+status: done
 ---
 
 # Phase 10 — Incoming damage types (estimated)
@@ -69,27 +69,36 @@ model covers everything:
 
 ## Acceptance criteria
 
-- [ ] Weapon-tier attribution: incoming events with a known weapon land in
+- [x] Weapon-tier attribution: incoming events with a known weapon land in
       their profiled types; with an unknown weapon they fall through to the
       attacker tier; with neither they are Unknown. Tested on a synthetic
-      stream with pinned reference time.
-- [ ] Attacker-tier attribution: weaponless events attribute by the
+      stream with pinned reference time (`Known_weapon_tier_claims_incoming_damage`,
+      `Unknown_weapon_falls_through_to_attacker_tier`).
+- [x] Attacker-tier attribution: weaponless events attribute by the
       attacker profile; two attackers with different profiles separate
-      correctly in one window.
-- [ ] Sum of `IncomingTypes` equals window `IncomingDps` on synthetic cases
-      AND on both real fixtures at their last combat timestamp.
-- [ ] Inert-file behavior: missing/corrupt `attacker-profiles.json` ⇒ all
+      correctly in one window (`Weaponless_incoming_uses_the_attacker_tier`).
+- [x] Sum of `IncomingTypes` equals window `IncomingDps` on synthetic cases
+      AND on both real fixtures at their last combat timestamp
+      (`Multi_rat_fixture_type_sum_equals_incoming_dps`,
+      `One_attacker_fixture_type_sum_equals_incoming_dps`).
+- [x] Inert-file behavior: missing/corrupt `attacker-profiles.json` ⇒ all
       weaponless incoming damage is Unknown, hosts unaffected (mirrors
-      phase 4).
-- [ ] Console `--replay` shows the in-types block; values cross-checked
-      against a hand-computed expectation for the fixture's final burst.
-- [ ] HUD shows the second bar bound to the primary window with all the
-      phase-5 segment rules; switching the window re-bases both bars.
-- [ ] Existing suite green (extend, do not break: `IncomingTypes` addition
-      updates the phase-2/4 window record usages); `dotnet build` 0
-      warnings; `dotnet test` all green; single-file publish works.
-- [ ] Per the git workflow rule: work happens on `phase-10-incoming-types`,
-      merges to `main` only when all the above are green.
+      phase 4; `Missing_file_is_inert` et al.).
+- [x] Console `--replay` shows the in-types block; values cross-checked
+      against the seeded suggestion file: `# in-types(60s) … KIN 7.4 … TH
+      6.0 … UNK 0.0` — exactly the 0.55/0.45 profile split of the window's
+      13.4 incoming dps, with only Mercenary Commander (weapon-tier work)
+      left unmapped.
+- [x] HUD shows the second bar bound to the primary window with all the
+      phase-5 segment rules; verified on-screen (×90 replay screenshots at
+      ~6 s idle and ~16 s combat: red-bordered bar, KIN/TH segments sized
+      5.6/4.6 = the profile split of `IN 10.2 dps`, ≥30 px numbers rendered).
+- [x] Existing suite green (80 total — 24 new tests; the `DpsWindow`
+      record change updated the one HUD fallback constructor);
+      `dotnet build` 0 warnings; `dotnet test` all green; single-file
+      publish re-verified.
+- [x] Per the git workflow rule: implemented on `phase-10-incoming-types`,
+      merged to `main` with `--no-ff` after everything above was green.
 
 ## Fixture note
 
@@ -97,6 +106,20 @@ Fixtures stay untouched (never edited). `session-20261107-from-1942.txt`
 gains a new job here: its Mercenary Commander river proves the weapon tier,
 its turret rats prove the attacker tier. The 2026-11-01 fixture (0 % weapon
 coverage) proves the pure attacker path.
+
+## Implementation notes (2026-11-09)
+
+- `UnmappedWeapons` now collects weapon names from BOTH directions: an
+  incoming event no tier claimed contributes its weapon (if any) alongside
+  its attacker (`UnmappedAttackers`). Phase 4's "unmapped outgoing weapons"
+  rule still holds; the list is simply shared curation work now. A weapon
+  is flagged only when NO tier claimed its event — an unknown weapon on a
+  known-attacker event stays anonymous (the attacker profile carried it).
+- The console's in-types row is `# in-types(60s) … | unmapped attackers: …`
+  in both the `--replay` summaries and the live `--tail` final block.
+- Generated segment bars moved into one Core-snapshot-driven renderer
+  (`SetBar`) shared by both HUD bars; no second pipeline, one snapshot, one
+  tick.
 
 ## Out of scope
 

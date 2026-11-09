@@ -66,6 +66,16 @@ different windows.
 - [x] Drag area, right-click menu, opacity and tray untouched; "Open
       profiles file" added after the Opacity submenu (seeds an empty
       template file first if missing, then opens the default editor).
+
+## Amendment (2026-11-09, phase 10)
+
+"Outgoing only — incoming log lines carry no weapon name, so IN can't be
+attributed" is superseded: incoming damage CAN be type-estimated, two-tier
+(weapon profiles for lines that DO name a weapon, plus a per-attacker
+`attacker-profiles.json` for weaponless turret hits). Phase 10 added a
+second full-width bar directly beneath this one — same five segments,
+colors and ≥ ~30 px number rule — wrapped in a thin red-family border; this
+bar stays borderless. Both bars are now rendered by one shared code path.
 - [x] `dotnet build` 0 warnings, `dotnet test` all green (Core untouched in
       this phase; 41/41).
 

@@ -46,6 +46,9 @@ inference, never measured data — the UI and docs must not pretend otherwise.
       (synthetic events, pinned reference time).
 - [x] An unmapped weapon lands entirely in Unknown and is detectable
       (`UnmappedWeapons` on the snapshot, session-level distinct names).
+      Phase-10 amendment: the list is shared curation work now — incoming
+      events no tier claimed contribute their weapon names to it too (and
+      their attackers to the new `UnmappedAttackers`).
 - [x] Profiles with non-normalized / partial weights normalize deterministically
       (sum to 1); a file-parse failure falls back to "all Unknown" without
       crashing; all-zero rows are rejected into Unknown.
