@@ -57,6 +57,9 @@ public partial class MainWindow : Window
 
     /// <summary>Phase 8 row budget: five slots (4 names + Others when merging); shared by both panels.</summary>
     private const int SourceRowBudget = 5;
+    /// <summary>Phase 12 window widths: horizontal = the historical 300 px, vertical ~half.</summary>
+    private const double HorizontalWidth = 300;
+    private const double VerticalWidth = 156;
     private readonly RowVisual[] _attackerSlots = new RowVisual[SourceRowBudget];
     private readonly RowVisual[] _outSlots = new RowVisual[SourceRowBudget];
     /// <summary>True until the initial layout settles; SizeChanged growth
@@ -94,14 +97,16 @@ public partial class MainWindow : Window
         _barIn[4] = (InColUnknown, InSegUnknown, InUnknownLabel);
 
         // Phase 8/11: five row slots per panel (reused every tick, no churn).
+        // Phase 12: the IN panel mirrors the big numbers' alignment — its
+        // rows read from the right edge (name right, dps/misses outermost).
         for (var i = 0; i < SourceRowBudget; i++)
         {
-            var inSlot = MakeSourceSlot();
-            _attackerSlots[i] = inSlot;
-            AttackerRows.Children.Add(inSlot.Root);
-            var outSlot = MakeSourceSlot();
+            var outSlot = MakeSourceSlot(nameRight: false);
             _outSlots[i] = outSlot;
             OutRows.Children.Add(outSlot.Root);
+            var inSlot = MakeSourceSlot(nameRight: true);
+            _attackerSlots[i] = inSlot;
+            AttackerRows.Children.Add(inSlot.Root);
         }
         SizeChanged += OnWindowSizeChanged; // bottom-anchored growth
 
@@ -115,6 +120,10 @@ public partial class MainWindow : Window
         OpacityButton.Content = $"{Math.Round(Opacity * 100)}%";
         PrimaryButton.Click += (_, _) => CyclePrimaryWindow();
         OpacityButton.Click += (_, _) => CycleOpacity();
+        LayoutButton.Click += (_, _) => ToggleLayout();
+        // Phase 12: geometry follows the saved layout BEFORE placement, so
+        // PlaceWindow clamps the right shape into the virtual screen.
+        ApplyLayout(_settings.Layout);
 
         _timer.Tick += (_, _) => UpdateHud();
         _timer.Start();
@@ -195,8 +204,11 @@ public partial class MainWindow : Window
     {
         // Phase 9 race fix: until the replay feed has seen its first
         // timestamped line, CurrentVirtualTime is uninitialized (epoch) and
-        // window math on it overflows — skip this tick instead.
+        // window math on it overflows — skip this tick instead. Phase 12:
+        // ApplyLayout renders from the constructor too, where a replay-mode
+        // feed does not exist yet — skip until StartTailer creates it.
         if (_replay is { TimeKnown: false }) return;
+        if (App.ReplayPath is not null && _replay is null) return;
 
         DpsSnapshot snap;
         lock (_aggGate)
@@ -205,25 +217,40 @@ public partial class MainWindow : Window
         // Big numbers follow the primary window; the small line shows the rest.
         var primary = WindowOf(snap.Windows, _primaryWindow);
 
-        OutText.Text = $"OUT {primary.OutgoingDps:0.#} dps";
+        var outLine = $"OUT {primary.OutgoingDps:0.#} dps";
         // User amendment (2026-11-09): IN shows a numeric zero like OUT; the
         // old "IN —" dash style is retired.
-        InText.Text = $"IN {primary.IncomingDps:0.#} dps";
+        var inLine = $"IN {primary.IncomingDps:0.#} dps";
+        OutText.Text = outLine;
+        InText.Text = inLine;
+        // Phase 12: the vertical layout's stacked number pair shows the same
+        // strings — pure presentation, one source of truth.
+        OutTextV.Text = outLine;
+        InTextV.Text = inLine;
         UpdateTypeBar(primary);
         // Phase 11: both source panels render from the same window snapshot.
         RenderPanel(_outSlots, SourcePanel.DisplayRows(primary.OutgoingSources, SourceRowBudget), OutPanel);
         RenderPanel(_attackerSlots, SourcePanel.DisplayRows(primary.Attackers, SourceRowBudget), InPanel);
 
-        var others = string.Join(" · ", WindowChoices
-            .Where(s => s != _primaryWindow)
-            .Select(s => $"{s}s {WindowOf(snap.Windows, s).OutgoingDps:0.#}"));
         // After a replay finishes, its verdict line must survive — the tick
         // stops replacing the status line (big numbers keep updating).
         if (!_replayFinished)
-            StatusText.Text =
-                $"{others} · session {snap.Session.TotalOutgoing}/{snap.Session.TotalIncoming} · " +
-                $"{snap.Session.Misses} misses";
+        {
+            // Phase 12: vertical is too narrow for the other-windows line —
+            // the status abbreviates to session totals only.
+            StatusText.Text = VerticalLayout
+                ? $"session {snap.Session.TotalOutgoing}/{snap.Session.TotalIncoming} · " +
+                  $"{snap.Session.Misses} misses"
+                : $"{string.Join(" · ", WindowChoices
+                    .Where(s => s != _primaryWindow)
+                    .Select(s => $"{s}s {WindowOf(snap.Windows, s).OutgoingDps:0.#}"))}" +
+                  $" · session {snap.Session.TotalOutgoing}/{snap.Session.TotalIncoming} · " +
+                  $"{snap.Session.Misses} misses";
+        }
     }
+
+    /// <summary>Phase 12: the persisted layout as a plain flag.</summary>
+    private bool VerticalLayout => _settings.Layout == "vertical";
 
     // ── phase 5 / phase 10: damage-type bars ─────────────────────────────
 
@@ -306,7 +333,12 @@ public partial class MainWindow : Window
         Grid Root, ColumnDefinition FillCol, ColumnDefinition RestCol,
         Grid BarSegs, ColumnDefinition[] SegmentCols, TextBlock Name, TextBlock Value);
 
-    private static RowVisual MakeSourceSlot()
+    /// <summary>
+    /// One source row's UI parts (slot reused across ticks). Phase 12:
+    /// <paramref name="nameRight"/> mirrors the IN panel to read from the
+    /// window's right edge, like the big IN number.
+    /// </summary>
+    private static RowVisual MakeSourceSlot(bool nameRight)
     {
         // Two-column fill grid: stars carry the bar's proportional width so
         // WPF layout, not pixel math, keeps leader = 100 % exactly.
@@ -336,8 +368,9 @@ public partial class MainWindow : Window
         };
         fill.Children.Add(barSegs);
 
-        // Overlay text spans both fill columns: name left (with truncation),
-        // value right; "small light text readable over the bar's fill".
+        // Overlay text spans both fill columns: name on the anchored edge
+        // (with truncation), value at the opposite outer edge; "small light
+        // text readable over the bar's fill".
         var overlay = new Grid();
         overlay.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
         overlay.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
@@ -347,7 +380,8 @@ public partial class MainWindow : Window
             Foreground = new SolidColorBrush(Color.FromRgb(0xE6, 0xED, 0xF3)),
             TextTrimming = TextTrimming.CharacterEllipsis,
             VerticalAlignment = VerticalAlignment.Center,
-            Margin = new Thickness(5, 0, 2, 0),
+            HorizontalAlignment = nameRight ? System.Windows.HorizontalAlignment.Right : System.Windows.HorizontalAlignment.Left,
+            Margin = nameRight ? new Thickness(2, 0, 2, 0) : new Thickness(5, 0, 2, 0),
         };
         var value = new TextBlock
         {
@@ -538,10 +572,92 @@ public partial class MainWindow : Window
         _settings.Save();
     }
 
+    // ── phase 12: layout toggle (horizontal ↔ vertical) ───────────────
+
+    /// <summary>Button click: flips the persisted layout and re-renders.</summary>
+    private void ToggleLayout() =>
+        ApplyLayout(VerticalLayout ? "horizontal" : "vertical");
+
+    /// <summary>
+    /// Applies a layout: chrome (title hidden, numbers stacked, status
+    /// abbreviated — handled by UpdateHud + visibility here), panel
+    /// restacking (columns vs rows inside PanelArea), and the right-edge
+    /// anchored window width (the HUD lives bottom-right; the LEFT edge
+    /// moves). Height growth stays bottom-anchored via OnWindowSizeChanged.
+    /// </summary>
+    private void ApplyLayout(string layout)
+    {
+        _settings.Layout = layout;
+        _settings.Save();
+        var vertical = layout == "vertical";
+
+        // Chrome: the title text hides; the cycle buttons stay in one row
+        // and tighten to near-icon size; the toggle's icon shows the layout
+        // clicking it will switch TO (action-oriented, like the spec says).
+        TitleText.Visibility = vertical ? Visibility.Collapsed : Visibility.Visible;
+        NumberRow.Visibility = vertical ? Visibility.Collapsed : Visibility.Visible;
+        NumberStack.Visibility = vertical ? Visibility.Visible : Visibility.Collapsed;
+        var tight = vertical ? new Thickness(2, 0, 2, 0) : new Thickness(4, 0, 4, 0);
+        PrimaryButton.Padding = tight;
+        OpacityButton.Padding = tight;
+        LayoutButton.Padding = tight;
+        LayoutButton.Content = vertical ? "\u2194" : "\u2195";
+
+        // Panels: horizontal = side-by-side halves (columns); vertical =
+        // stacked at full width (rows). Rebuild the definitions; the panels'
+        // attached indices point into whichever axis is active.
+        PanelArea.ColumnDefinitions.Clear();
+        PanelArea.RowDefinitions.Clear();
+        if (vertical)
+        {
+            PanelArea.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
+            PanelArea.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
+            Grid.SetColumn(OutPanel, 0);
+            Grid.SetColumn(InPanel, 0);
+            Grid.SetRow(OutPanel, 0);
+            Grid.SetRow(InPanel, 1);
+            OutPanel.Margin = new Thickness(0);
+            InPanel.Margin = new Thickness(0, 4, 0, 0);
+        }
+        else
+        {
+            PanelArea.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+            PanelArea.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+            Grid.SetRow(OutPanel, 0);
+            Grid.SetRow(InPanel, 0);
+            Grid.SetColumn(OutPanel, 0);
+            Grid.SetColumn(InPanel, 1);
+            OutPanel.Margin = new Thickness(0, 0, 4, 0);
+            InPanel.Margin = new Thickness(4, 0, 0, 0);
+        }
+
+        // Right edge stays fixed on width change: move the left edge by the
+        // width delta, then clamp into the virtual screen.
+        var newWidth = vertical ? VerticalWidth : HorizontalWidth;
+        if (Math.Abs(Width - newWidth) > 0.5)
+        {
+            Left += Width - newWidth;
+            Width = newWidth;
+        }
+        var virtualScreen =
+            new Rect(SystemParameters.VirtualScreenLeft, SystemParameters.VirtualScreenTop,
+                     SystemParameters.VirtualScreenWidth, SystemParameters.VirtualScreenHeight);
+        if (Left + ActualWidth > virtualScreen.Right)
+            Left = virtualScreen.Right - ActualWidth;
+        if (Left < virtualScreen.Left)
+            Left = virtualScreen.Left;
+        // Constructor-time ApplyLayout runs before PlaceWindow sets Left/Top
+        // (still NaN — unserializable JSON); placement persists geometry
+        // right after, and post-startup toggles save for real.
+        if (!double.IsNaN(Left) && !double.IsNaN(Top))
+            SavePosition();
+
+        UpdateHud(); // both panels re-render synchronously, same tick
+    }
+
     // ── phase 6 cycle buttons ─────────────────────────────────────────
 
-    private void CyclePrimaryWindow()
-    {
+    private void CyclePrimaryWindow()    {
         var index = Array.IndexOf(WindowChoices, _primaryWindow);
         ApplyPrimaryWindow(WindowChoices[(index + 1) % WindowChoices.Length]);
     }

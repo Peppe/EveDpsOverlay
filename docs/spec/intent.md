@@ -75,15 +75,16 @@ change that implements them.
 | 9 | Replay mode (virtual clock, paced feed; console + HUD) | `phase-9-replay.md` |
 | 10 | Incoming damage types (two-tier weapon/attacker attribution) | `phase-10-incoming-types.md` |
 | 11 | Outgoing per-weapon sources panel; type-colored segmented row bars | `phase-11-out-sources.md` |
+| 12 | Layout toggle: horizontal ↔ vertical source panels | `phase-12-layout-toggle.md` |
 
 Implementation order: phases ship by number, with one constraint:
 **6 (the primary-window selection) must precede 5 and 8**, since both HUD
 extensions bind to that selection. Done: phases 1–9 (5 on 2026-11-08, 7 the
 same day, 8 on 2026-11-09), then **10 — incoming damage types via two-tier
 weapon/attacker profiles** (2026-11-09, the first backlog item promoted to
-a full phase), then **11 — the OUT sources panel + type-colored row bars**
-(2026-11-14, second backlog item promoted). Backlog items below remain
-open.
+a full phase), **11 — the OUT sources panel + type-colored row bars**
+(2026-11-14, second backlog item promoted), and **12 — the layout toggle**
+(2026-11-14). Backlog items below remain open.
 
 ## Deferred backlog (not yet specced; revisit after a real play session)
 

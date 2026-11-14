@@ -45,7 +45,6 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
@@ -59,13 +58,19 @@
                     <Button x:Name="OpacityButton" Style="{StaticResource HudButton}"
                             Margin="4,0,0,0"
                             ToolTip="HUD opacity (click to cycle)" />
+                    <!-- Phase 12: layout toggle — shows the icon of the layout
+                         clicking it will switch TO (↕ = go vertical). -->
+                    <Button x:Name="LayoutButton" Style="{StaticResource HudButton}"
+                            Margin="4,0,0,0"
+                            ToolTip="Layout (click to toggle horizontal/vertical)" />
                 </StackPanel>
             </Grid>
 
             <!-- Phase 8 compact layout amendment: OUT and IN share one row
                  (left / right-aligned pair, reduced font), freeing vertical
-                 room for the attackers panel. -->
-            <Grid Grid.Row="1" Margin="0,2,0,0">
+                 room for the attackers panel. Phase 12: in vertical mode this
+                 row hides and the numbers stack instead (NumberStack). -->
+            <Grid Grid.Row="1" x:Name="NumberRow" Margin="0,2,0,0">
                 <TextBlock x:Name="OutText"
                            Text="OUT — dps" FontSize="16" FontWeight="Bold"
                            Foreground="#66d9ff" HorizontalAlignment="Left" />
@@ -73,6 +78,14 @@
                            Text="IN 0 dps" FontSize="16" FontWeight="Bold"
                            Foreground="#ff6b6b" HorizontalAlignment="Right" />
             </Grid>
+            <StackPanel Grid.Row="1" x:Name="NumberStack" Visibility="Collapsed">
+                <TextBlock x:Name="OutTextV"
+                           Text="OUT — dps" FontSize="16" FontWeight="Bold"
+                           Foreground="#66d9ff" HorizontalAlignment="Left" />
+                <TextBlock x:Name="InTextV"
+                           Text="IN 0 dps" FontSize="16" FontWeight="Bold"
+                           Foreground="#ff6b6b" HorizontalAlignment="Left" />
+            </StackPanel>
 
             <!-- Phase 5: outgoing damage-type bar. The 2026-11-09 phase-10
                  amendment replaces the old "IN can't be attributed" note:
@@ -157,28 +170,26 @@
                 </Border>
             </Grid>
 
-            <!-- Phase 11: the OUT panel mirrors the IN panel — your damage
-                 sources (weapons/drone bays) as rows. Phase-11 decision:
-                 BOTH panels' bars are type-colored (segmented by each
-                 source's profiled EM/TH/KIN/EX split, remainder Unknown
-                 gray), superseding phase 8's solid red row bars. -->
-            <StackPanel Grid.Row="4" x:Name="OutPanel" Margin="0,3,0,0">
-                <TextBlock Text="OUT" FontSize="8" FontWeight="SemiBold"
-                           Foreground="#68707c" Margin="1,0,0,1" />
-                <StackPanel x:Name="OutRows" />
-            </StackPanel>
+            <!-- Phase 11/12: the two source panels share one layout area so
+                 the toggle can restack them: horizontal = side-by-side
+                 halves (columns), vertical = stacked full-width (rows).
+                 Column/row definitions are rebuilt in ApplyLayout(). -->
+            <Grid Grid.Row="4" x:Name="PanelArea" Margin="0,3,0,0">
+                <StackPanel x:Name="OutPanel">
+                    <TextBlock x:Name="OutCaption" Text="OUT" FontSize="8" FontWeight="SemiBold"
+                               Foreground="#68707c" Margin="1,0,0,1" />
+                    <StackPanel x:Name="OutRows" />
+                </StackPanel>
 
-            <!-- Phase 8: incoming attackers panel — up to five rows, filled
-                 in code from phase 7 snapshot rows; empty = collapsed so the
-                 HUD never blocks view when idle. -->
-            <StackPanel Grid.Row="5" x:Name="InPanel" Margin="0,2,0,0">
-                <TextBlock Text="IN" FontSize="8" FontWeight="SemiBold"
-                           Foreground="#68707c" Margin="1,0,0,1" />
-                <StackPanel x:Name="AttackerRows" />
-            </StackPanel>
+                <StackPanel x:Name="InPanel">
+                    <TextBlock x:Name="InCaption" Text="IN" FontSize="8" FontWeight="SemiBold"
+                               Foreground="#68707c" Margin="1,0,0,1" />
+                    <StackPanel x:Name="AttackerRows" />
+                </StackPanel>
+            </Grid>
 
-            <TextBlock Grid.Row="6" x:Name="StatusText"
-                       Text="waiting for combat…" FontSize="10"
+            <TextBlock Grid.Row="5" x:Name="StatusText"
+                       Text="waiting for combat…" FontSize="10" TextWrapping="Wrap"
                        Foreground="#68707c" VerticalAlignment="Bottom" />
         </Grid>
     </Border>

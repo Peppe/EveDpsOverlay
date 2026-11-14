@@ -9,7 +9,7 @@ via `AGENTS.md` + `instructions` in `opencode.jsonc`. Git: features ship on
 feature branches, `main` always holds the last known-good state (see
 `AGENTS.md`).
 
-## Current status: phases 1–11 done (2026-11-14); backlog in intent.md
+## Current status: phases 1–12 done (2026-11-14); backlog in intent.md
 
 ```sh
 dotnet build
@@ -30,6 +30,10 @@ dotnet publish src/EveDps.Wpf -c Release -r win-x64 -p:PublishSingleFile=true --
   Miss-only rows render dimmed with a miss count. Every row bar is
   **type-colored** (phase 11): segmented by the row's profiled
   EM/thermal/kinetic/explosive split, unknown remainder gray.
+- The third title-row button (`↔`/`↕`) toggles the **layout** (phase 12):
+  horizontal = panels side-by-side at the classic width; vertical = a
+  ~half-width narrow HUD with stacked numbers/panels (title hidden,
+  status abbreviated). The choice persists in `settings.json`.
 - **Phase 10**: a second, red-bordered type bar under the first one shows
   the *incoming* damage types — inferred two-tier (weapon profiles where
   the log names the weapon, per-attacker profiles for turret hits).
