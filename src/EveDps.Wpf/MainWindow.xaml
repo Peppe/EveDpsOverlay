@@ -189,7 +189,7 @@
             </Grid>
 
             <TextBlock Grid.Row="5" x:Name="StatusText"
-                       Text="waiting for combat…" FontSize="10"
+                       Text="waiting for combat…" FontSize="10" TextWrapping="Wrap"
                        Foreground="#68707c" VerticalAlignment="Bottom" />
         </Grid>
     </Border>

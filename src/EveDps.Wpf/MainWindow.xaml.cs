@@ -204,8 +204,11 @@ public partial class MainWindow : Window
     {
         // Phase 9 race fix: until the replay feed has seen its first
         // timestamped line, CurrentVirtualTime is uninitialized (epoch) and
-        // window math on it overflows — skip this tick instead.
+        // window math on it overflows — skip this tick instead. Phase 12:
+        // ApplyLayout renders from the constructor too, where a replay-mode
+        // feed does not exist yet — skip until StartTailer creates it.
         if (_replay is { TimeKnown: false }) return;
+        if (App.ReplayPath is not null && _replay is null) return;
 
         DpsSnapshot snap;
         lock (_aggGate)
@@ -643,7 +646,11 @@ public partial class MainWindow : Window
             Left = virtualScreen.Right - ActualWidth;
         if (Left < virtualScreen.Left)
             Left = virtualScreen.Left;
-        SavePosition();
+        // Constructor-time ApplyLayout runs before PlaceWindow sets Left/Top
+        // (still NaN — unserializable JSON); placement persists geometry
+        // right after, and post-startup toggles save for real.
+        if (!double.IsNaN(Left) && !double.IsNaN(Top))
+            SavePosition();
 
         UpdateHud(); // both panels re-render synchronously, same tick
     }
