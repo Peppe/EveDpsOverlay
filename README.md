@@ -9,7 +9,7 @@ via `AGENTS.md` + `instructions` in `opencode.jsonc`. Git: features ship on
 feature branches, `main` always holds the last known-good state (see
 `AGENTS.md`).
 
-## Current status: phases 1–10 done (2026-11-09); backlog in intent.md
+## Current status: phases 1–11 done (2026-11-14); backlog in intent.md
 
 ```sh
 dotnet build
@@ -25,10 +25,11 @@ dotnet publish src/EveDps.Wpf -c Release -r win-x64 -p:PublishSingleFile=true --
 ### Overlay usage
 
 - A small cyan `OUT` / red `IN` DPS meter appears bottom-right, always on top.
-- Below the type bar, up to five **attackers rows** (top-5 incoming dps +
-  `Others`) show who is shooting you and how hard; miss-only attackers
-  render dimmed with a miss count. From your real combat data (phase-8
-  replay-verified on the 2026-11-07 ratting session).
+- Below the type bars, up to five **sources rows per side** (top-5 +
+  `Others`) — OUT: your damage sources (weapons/drone bays); IN: attackers.
+  Miss-only rows render dimmed with a miss count. Every row bar is
+  **type-colored** (phase 11): segmented by the row's profiled
+  EM/thermal/kinetic/explosive split, unknown remainder gray.
 - **Phase 10**: a second, red-bordered type bar under the first one shows
   the *incoming* damage types — inferred two-tier (weapon profiles where
   the log names the weapon, per-attacker profiles for turret hits).

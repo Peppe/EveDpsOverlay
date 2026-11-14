@@ -1,5 +1,5 @@
 ---
-status: accepted
+status: done
 ---
 
 # Phase 11 — Outgoing damage sources panel (per-weapon, type-colored)
@@ -64,24 +64,40 @@ direction-colored: every damage bar shows its **damage type colors**.
 
 ## Acceptance criteria
 
-- [ ] Per-weapon bucketing with miss counts on a synthetic stream at pinned
+- [x] Per-weapon bucketing with miss counts on a synthetic stream at pinned
       reference time; a weapon with only misses yields a dimmed (miss-only)
-      row with zero dps.
-- [ ] Invariants: sum(OutgoingSources) == OutgoingDps and sum(Attackers) ==
+      row with zero dps. (OutgoingSourcesTests, 2026-11-14)
+- [x] Invariants: sum(OutgoingSources) == OutgoingDps and sum(Attackers) ==
       IncomingDps on synthetic cases AND on both real fixtures at their last
       combat timestamp.
-- [ ] Type split correctness: a profiled weapon's split matches its profile
+- [x] Type split correctness: a profiled weapon's split matches its profile
       (weights × damage); an unmapped weapon's split is all-zero.
-- [ ] Display merge rules shared: the existing `DisplayRows` tests pass
+- [x] Display merge rules shared: the existing `DisplayRows` tests pass
       against the renamed/Generalized helper (no behavior change).
-- [ ] Console `--replay` shows the out-sources block, cross-checked against
-      the fixture's known weapons (Vespa/Hornet/Wasp).
-- [ ] HUD screenshot verification at ×90 replay: both panels visible with
+- [x] Console `--replay` shows the out-sources block, cross-checked against
+      the fixture's known weapons (Vespa/Hornet/Wasp): `# out-sources(60s)
+      Vespa I 78.5 | Wasp I 38.4/1m | Hornet I 18.2`.
+- [x] HUD screenshot verification at ×90 replay: both panels visible with
       type-colored segmented bars; miss-only rows dimmed on both sides.
-- [ ] `dotnet build` 0 warnings; `dotnet test` all green (rename fallout in
-      existing tests updated, behavior unchanged); single-file publish works.
-- [ ] Git workflow rule: implemented on `phase-11-out-sources`, merged to
+      OUT rows gray (drones unmapped in user profiles → all Unknown),
+      IN rows segmented thermal-red/kinetic-gray per the seeded attacker
+      profiles; bar lengths match the numbers (e.g. Wasp 51.9/127.3 ≈ 41 %).
+- [x] `dotnet build` 0 warnings; `dotnet test` all green (87/87; rename
+      fallout in existing tests updated, behavior unchanged); single-file
+      publish works.
+- [x] Git workflow rule: implemented on `phase-11-out-sources`, merged to
       `main` only when everything above is green.
+
+## Verification notes (2026-11-14)
+
+- One real bug caught by screenshot verification: the row-bar segment
+  Borders were added to the segment grid without `Grid.SetColumn`, so all
+  five stacked in column 0 and bars rendered invisible. Fixed and
+  re-verified; unit tests had no coverage of the WPF layer, as expected.
+- Renames applied everywhere: `AttackerRow`→`SourceRow` (gains the four
+  split fields, `.IncomingDps`→`.Dps`), `AttackerPanel`→`SourcePanel`
+  (PanelRow gains the merged slices), `RenderAttackers`→`RenderPanel`
+  (shared by both panels), `AttackerRowBudget`→`SourceRowBudget`.
 
 ## Out of scope
 
