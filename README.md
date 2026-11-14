@@ -3,6 +3,8 @@
 A tiny, always-on-top Windows overlay for EVE Online that reads the game's own
 gamelog files and shows outgoing/incoming damage-per-second.
 
+![Screenshot with guide](/docs/hud-guide.png)
+
 **Spec-driven:** the app's intent and per-phase acceptance criteria live in
 `docs/spec/` (`intent.md` + one page per phase). Agents (OpenCode) preload them
 via `AGENTS.md` + `instructions` in `opencode.jsonc`. Git: features ship on
