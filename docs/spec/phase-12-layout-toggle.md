@@ -1,5 +1,5 @@
 ---
-status: draft
+status: accepted
 ---
 
 # Phase 12 — Layout toggle: horizontal ↔ vertical source panels

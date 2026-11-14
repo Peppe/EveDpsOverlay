@@ -23,6 +23,9 @@ public sealed class HudSettings
     /// </summary>
     public int PrimaryWindowSeconds { get; set; } = 15;
 
+    /// <summary>Phase 12: source-panel layout, "horizontal" | "vertical".</summary>
+    public string Layout { get; set; } = "horizontal";
+
     private static string Directory =>
         Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
             "EveDpsOverlay");
@@ -43,6 +46,9 @@ public sealed class HudSettings
                     double.IsNaN(loaded.Opacity) ? 0.85 : loaded.Opacity, 0.40, 1.00);
                 if (loaded.PrimaryWindowSeconds is not (5 or 15 or 60))
                     loaded.PrimaryWindowSeconds = 15;
+                // Phase 12: anything but the exact vertical keyword is horizontal.
+                if (loaded.Layout != "vertical")
+                    loaded.Layout = "horizontal";
                 return loaded;
             }
         }
