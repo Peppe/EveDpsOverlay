@@ -87,6 +87,15 @@ never edited; new sessions are added as new files.
   `name dps[/misses m]` pairs, plus an `others(n)` share line only when more
   rows exist). `Name` ordering is ordinal; rows list may be empty.
 
+## Amendment (2026-11-14, phase 11): renames
+
+- `AttackerRow` is now `SourceRow` — one record type shared by the incoming
+  attackers AND outgoing per-weapon rows; `.IncomingDps` became `.Dps`. It
+  also gains the four profile-attributed split fields (EM/Thermal/Kinetic/
+  Explosive, always ≤ `.Dps`) that phase 11's type-colored row bars consume.
+- `Take`'s per-attacker maps now carry the split dps alongside damage/misses
+  (same events, same pass). See `phase-11-out-sources.md`.
+
 ## Out of scope
 
 HUD rendering (phase 8), outgoing per-target attribution (specced nowhere

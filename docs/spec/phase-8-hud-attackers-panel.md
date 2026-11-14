@@ -106,6 +106,16 @@ wide, now spanning beneath the shared row.
       49 tests unchanged — `AttackerPanel` is an addition, not a rewrite);
       single-file publish re-verified.
 
+## Amendment (2026-11-14, phase 11): renames + type-colored row bars
+
+- `AttackerPanel` (helper + file) is now `SourcePanel`; `PanelRow` gained
+  the merged type slices (the Others merge sums them). The HUD's
+  `RenderAttackers` became the shared `RenderPanel(slots, rows, host)` and
+  `AttackerRowBudget` became `SourceRowBudget` — both panels use them.
+- The solid red row bars are superseded: every row bar (IN and OUT) is
+  segmented by the row's profiled damage-type split (Unknown gray
+  remainder). Specified in `phase-11-out-sources.md`.
+
 ## Amendment (2026-11-09): IN always numeric
 
 User decision: the shared `OUT | IN` row is symmetric — `IN` prints its

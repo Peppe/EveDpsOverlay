@@ -55,9 +55,10 @@ public partial class MainWindow : Window
     private readonly (ColumnDefinition Col, Border Seg, TextBlock Label)[] _barIn =
         new (ColumnDefinition, Border, TextBlock)[DamageTypes.All.Length];
 
-    /// <summary>Phase 8 row budget: five slots (4 names + Others when merging).</summary>
-    private const int AttackerRowBudget = 5;
-    private readonly RowVisual[] _attackerSlots = new RowVisual[AttackerRowBudget];
+    /// <summary>Phase 8 row budget: five slots (4 names + Others when merging); shared by both panels.</summary>
+    private const int SourceRowBudget = 5;
+    private readonly RowVisual[] _attackerSlots = new RowVisual[SourceRowBudget];
+    private readonly RowVisual[] _outSlots = new RowVisual[SourceRowBudget];
     /// <summary>True until the initial layout settles; SizeChanged growth
     /// anchoring must not fight the first render or window placement.</summary>
     private bool _layoutSettling = true;
@@ -92,12 +93,15 @@ public partial class MainWindow : Window
         _barIn[3] = (InColExplosive, InSegExplosive, InExplosiveLabel);
         _barIn[4] = (InColUnknown, InSegUnknown, InUnknownLabel);
 
-        // Phase 8: five attacker-row slots (reused every tick, no child churn).
-        for (var i = 0; i < AttackerRowBudget; i++)
+        // Phase 8/11: five row slots per panel (reused every tick, no churn).
+        for (var i = 0; i < SourceRowBudget; i++)
         {
-            var slot = MakeAttackerSlot();
-            _attackerSlots[i] = slot;
-            AttackerRows.Children.Add(slot.Root);
+            var inSlot = MakeSourceSlot();
+            _attackerSlots[i] = inSlot;
+            AttackerRows.Children.Add(inSlot.Root);
+            var outSlot = MakeSourceSlot();
+            _outSlots[i] = outSlot;
+            OutRows.Children.Add(outSlot.Root);
         }
         SizeChanged += OnWindowSizeChanged; // bottom-anchored growth
 
@@ -206,7 +210,9 @@ public partial class MainWindow : Window
         // old "IN —" dash style is retired.
         InText.Text = $"IN {primary.IncomingDps:0.#} dps";
         UpdateTypeBar(primary);
-        RenderAttackers(primary);
+        // Phase 11: both source panels render from the same window snapshot.
+        RenderPanel(_outSlots, SourcePanel.DisplayRows(primary.OutgoingSources, SourceRowBudget), OutPanel);
+        RenderPanel(_attackerSlots, SourcePanel.DisplayRows(primary.Attackers, SourceRowBudget), InPanel);
 
         var others = string.Join(" · ", WindowChoices
             .Where(s => s != _primaryWindow)
@@ -279,26 +285,56 @@ public partial class MainWindow : Window
         TypeBarInSegs.Clip = new RectangleGeometry(
             new Rect(0, 0, TypeBarInSegs.ActualWidth, TypeBarInSegs.ActualHeight), 2, 2);
 
-    // ── phase 8: incoming attackers panel ─────────────────────────────────
+    // ── phase 8/11: source panels (attackers + outgoing weapons) ─────────
 
-    /// <summary>One attacker row's UI parts (slot reused across ticks).</summary>
+    /// <summary>
+    /// Segment colors in DamageTypes.All order — the established type-bar
+    /// palette, drawn translucent so row text stays readable (the panels'
+    /// established look).
+    /// </summary>
+    private static readonly System.Windows.Media.Brush[] RowSegmentBrushes =
+    [
+        new SolidColorBrush(Color.FromArgb(0x59, 0x4d, 0x7c, 0xff)), // EM
+        new SolidColorBrush(Color.FromArgb(0x59, 0xff, 0x5a, 0x4e)), // Thermal
+        new SolidColorBrush(Color.FromArgb(0x59, 0x9a, 0xa3, 0xad)), // Kinetic
+        new SolidColorBrush(Color.FromArgb(0x59, 0xff, 0x98, 0x54)), // Explosive
+        new SolidColorBrush(Color.FromArgb(0x59, 0x56, 0x5d, 0x66)), // Unknown
+    ];
+
+    /// <summary>One source row's UI parts (slot reused across ticks).</summary>
     private sealed record RowVisual(
-        Grid Root, Border Bar, ColumnDefinition FillCol, ColumnDefinition RestCol,
-        TextBlock Name, TextBlock Value);
+        Grid Root, ColumnDefinition FillCol, ColumnDefinition RestCol,
+        Grid BarSegs, ColumnDefinition[] SegmentCols, TextBlock Name, TextBlock Value);
 
-    private static RowVisual MakeAttackerSlot()
+    private static RowVisual MakeSourceSlot()
     {
         // Two-column fill grid: stars carry the bar's proportional width so
         // WPF layout, not pixel math, keeps leader = 100 % exactly.
         var fill = new Grid();
         fill.ColumnDefinitions.Add(new ColumnDefinition());
         fill.ColumnDefinitions.Add(new ColumnDefinition());
-        var bar = new Border
+
+        // Phase 11: the bar is segmented by the row's profiled type split
+        // (same palette/order as the type bars). Rounded ends come from
+        // clipping the segment grid, mirroring the type-bar approach.
+        var barSegs = new Grid();
+        var segmentCols = new ColumnDefinition[DamageTypes.All.Length];
+        for (var i = 0; i < DamageTypes.All.Length; i++)
         {
-            CornerRadius = new CornerRadius(6),
-            Background = new SolidColorBrush(Color.FromArgb(0x59, 0xFF, 0x6B, 0x6B)), // IN red, translucent
+            var col = new ColumnDefinition { Width = new GridLength(0, GridUnitType.Pixel) };
+            segmentCols[i] = col;
+            barSegs.ColumnDefinitions.Add(col);
+            var seg = new Border { Background = RowSegmentBrushes[i] };
+            Grid.SetColumn(seg, i);
+            barSegs.Children.Add(seg);
+        }
+        barSegs.SizeChanged += (s, _) =>
+        {
+            var g = (Grid)s!;
+            g.Clip = new RectangleGeometry(
+                new Rect(0, 0, g.ActualWidth, g.ActualHeight), 6, 6);
         };
-        fill.Children.Add(bar);
+        fill.Children.Add(barSegs);
 
         // Overlay text spans both fill columns: name left (with truncation),
         // value right; "small light text readable over the bar's fill".
@@ -328,26 +364,27 @@ public partial class MainWindow : Window
         var root = new Grid { Height = 13 };
         root.Children.Add(fill);
         root.Children.Add(overlay);
-        return new RowVisual(root, bar, fill.ColumnDefinitions[0], fill.ColumnDefinitions[1], name, value);
+        return new RowVisual(root, fill.ColumnDefinitions[0], fill.ColumnDefinitions[1], barSegs, segmentCols, name, value);
     }
 
     /// <summary>
-    /// Renders the phase-8 panel from the SAME primary-window snapshot the
-    /// big IN number uses. The display model (ordering + budget merge into a
-    /// trailing Others row) lives in Core's <see cref="AttackerPanel"/> so
-    /// the rules are unit-testable; this method only draws. Leader (a name
-    /// row or Others) is always 100 % wide; miss-only rows render dimmed with
-    /// zero bar.
+    /// Renders ONE panel from the SAME primary-window snapshot the big
+    /// numbers use. The display model (ordering + budget merge into a
+    /// trailing Others row) lives in Core's <see cref="SourcePanel"/> so the
+    /// rules are unit-testable; this method only draws. Leader (a name row
+    /// or Others) is always 100 % wide; miss-only rows render dimmed with
+    /// zero bar; the row bar itself is segmented by the row's profiled type
+    /// split (phase 11), with the unclaimed remainder as the Unknown slice.
     /// </summary>
-    private void RenderAttackers(DpsWindow primary)
+    private void RenderPanel(RowVisual[] slots, IReadOnlyList<PanelRow> display, UIElement panelHost)
     {
-        var display = AttackerPanel.DisplayRows(primary.Attackers, AttackerRowBudget);
+        panelHost.Visibility = display.Count == 0 ? Visibility.Collapsed : Visibility.Visible;
 
-        var leader = display.Count == 0 ? 0 : display.Max(r => r.IncomingDps);
+        var leader = display.Count == 0 ? 0 : display.Max(r => r.Dps);
 
-        for (var i = 0; i < _attackerSlots.Length; i++)
+        for (var i = 0; i < slots.Length; i++)
         {
-            var slot = _attackerSlots[i];
+            var slot = slots[i];
             if (i >= display.Count)
             {
                 slot.Root.Visibility = Visibility.Collapsed;
@@ -357,13 +394,13 @@ public partial class MainWindow : Window
             slot.Root.Visibility = Visibility.Visible;
             slot.Root.Opacity = row.Dimmed ? 0.55 : 1.0;
             slot.Name.Text = row.Name;
-            slot.Value.Text = row.IncomingDps > 0
-                ? row.IncomingDps.ToString("0.#")
+            slot.Value.Text = row.Dps > 0
+                ? row.Dps.ToString("0.#")
                 : row.Misses > 0 ? $"{row.Misses} misses" : "";
 
             if (leader > 0)
             {
-                var share = Math.Min(1.0, row.IncomingDps / leader);
+                var share = Math.Min(1.0, row.Dps / leader);
                 slot.FillCol.Width = new GridLength(share, GridUnitType.Star);
                 slot.RestCol.Width = share < 1.0
                     ? new GridLength(1 - share, GridUnitType.Star)
@@ -374,6 +411,20 @@ public partial class MainWindow : Window
                 // No leader: nothing is 100 % wide (all-miss-only window).
                 slot.FillCol.Width = new GridLength(0, GridUnitType.Star);
                 slot.RestCol.Width = new GridLength(0, GridUnitType.Star);
+            }
+
+            // Segment widths: each type's share OF THIS ROW's dps (the bar
+            // already spans share × panel width). Unclaimed remainder =
+            // Unknown slice; a fully unmapped source renders one gray bar.
+            var rowDps = row.Dps;
+            var slices = new[] { row.Em, row.Thermal, row.Kinetic, row.Explosive };
+            var remainder = Math.Max(0, rowDps - slices.Sum());
+            for (var s = 0; s < slot.SegmentCols.Length; s++)
+            {
+                var sliceDps = s < slices.Length ? slices[s] : remainder;
+                slot.SegmentCols[s].Width = rowDps > 0 && sliceDps > 0
+                    ? new GridLength(sliceDps / rowDps, GridUnitType.Star)
+                    : new GridLength(0, GridUnitType.Pixel);
             }
         }
     }
@@ -587,5 +638,5 @@ public partial class MainWindow : Window
     private static DpsWindow WindowOf(IReadOnlyList<DpsWindow> windows, double seconds) =>
         windows.FirstOrDefault(w => w.Seconds == seconds)
         ?? new DpsWindow(seconds, OutgoingDps: 0, IncomingDps: 0, Shots: 0,
-            OutgoingTypes: [], IncomingTypes: [], Attackers: []);
+            OutgoingTypes: [], IncomingTypes: [], OutgoingSources: [], Attackers: []);
 }
