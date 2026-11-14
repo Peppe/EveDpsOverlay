@@ -275,6 +275,7 @@ async Task<int> Replay()
         Console.WriteLine(FormatWindows(snap));
         Console.WriteLine(FormatTypes(snap));
         Console.WriteLine(FormatIncomingTypes(snap));
+        Console.WriteLine(FormatSources(snap));
         Console.WriteLine(FormatAttackers(snap));
         Summary(events, outgoing, incoming, misses);
         Console.WriteLine();
@@ -354,10 +355,28 @@ static string FormatAttackers(DpsSnapshot snap)
     if (rows.Count == 0) return "# attackers(none)";
     const int MaxRows = 5;
     var lines = new List<string> { $"# attackers({w.Seconds:0}s) " + string.Join(
-        " | ", rows.Take(MaxRows).Select(a => $"{a.Name} {a.IncomingDps:0.#}{(a.Misses > 0 ? $"/{a.Misses}m" : "")}")) };
-    var othersDps = rows.Skip(MaxRows).Sum(a => a.IncomingDps);
+        " | ", rows.Take(MaxRows).Select(a => $"{a.Name} {a.Dps:0.#}{(a.Misses > 0 ? $"/{a.Misses}m" : "")}")) };
+    var othersDps = rows.Skip(MaxRows).Sum(a => a.Dps);
     if (rows.Count > MaxRows)
-        lines.Add($"#   others({rows.Count - MaxRows}) {othersDps:0.#} dps | rows sum {rows.Sum(a => a.IncomingDps):0.#} vs window IN {w.IncomingDps:0.#}");
+        lines.Add($"#   others({rows.Count - MaxRows}) {othersDps:0.#} dps | rows sum {rows.Sum(a => a.Dps):0.#} vs window IN {w.IncomingDps:0.#}");
+    return string.Join("\n", lines);
+}
+
+/// <summary>
+/// Phase 11: the OUT panel's mirror of FormatAttackers — outgoing damage
+/// sources (weapons) by dps at the snapshot's primary window.
+/// </summary>
+static string FormatSources(DpsSnapshot snap)
+{
+    var w = snap.Windows[0]; // aggregates sort windows largest-first
+    var rows = w.OutgoingSources;
+    if (rows.Count == 0) return "# out-sources(none)";
+    const int MaxRows = 5;
+    var lines = new List<string> { $"# out-sources({w.Seconds:0}s) " + string.Join(
+        " | ", rows.Take(MaxRows).Select(a => $"{a.Name} {a.Dps:0.#}{(a.Misses > 0 ? $"/{a.Misses}m" : "")}")) };
+    var othersDps = rows.Skip(MaxRows).Sum(a => a.Dps);
+    if (rows.Count > MaxRows)
+        lines.Add($"#   others({rows.Count - MaxRows}) {othersDps:0.#} dps | rows sum {rows.Sum(a => a.Dps):0.#} vs window OUT {w.OutgoingDps:0.#}");
     return string.Join("\n", lines);
 }
 
