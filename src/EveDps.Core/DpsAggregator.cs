@@ -8,21 +8,32 @@ public sealed record DpsWindow(
     int Shots,
     IReadOnlyList<DpsType> OutgoingTypes,
     IReadOnlyList<DpsType> IncomingTypes,
-    IReadOnlyList<AttackerRow> Attackers);
+    IReadOnlyList<SourceRow> OutgoingSources,
+    IReadOnlyList<SourceRow> Attackers);
 
 /// <summary>One damage type's dps within a window. Buckets follow DamageTypes.All.</summary>
 public sealed record DpsType(string Name, double Dps);
 
 /// <summary>
-/// One attacker's incoming dps and miss count within a window (phase 7).
-/// Rows exist for every attacker with dps &gt; 0 or ≥ 1 miss in the window;
-/// miss-only rows carry zero dps — the HUD renders them dimmed, never hidden.
-/// Descending by IncomingDps, ties broken by Name.
+/// One damage source's row within a window (phase 7: incoming attackers;
+/// phase 11: outgoing weapons). Rows exist for every source with dps &gt; 0
+/// or ≥ 1 miss in the window; miss-only rows carry zero dps — the HUD
+/// renders them dimmed, never hidden. Descending by Dps, ties broken by
+/// Name. The four split fields carry the profile-attributed dps (always
+/// ≤ Dps; the remainder is the Unknown share) so the HUD can draw
+/// type-colored bars without re-touching the profile tables.
 /// </summary>
-public sealed record AttackerRow(string Name, double IncomingDps, int Misses)
+public sealed record SourceRow(
+    string Name,
+    double Dps,
+    int Misses,
+    double Em = 0,
+    double Thermal = 0,
+    double Kinetic = 0,
+    double Explosive = 0)
 {
     /// <summary>Missed everything in this window; no damage is in any row.</summary>
-    public bool IsMissOnly => IncomingDps <= 0 && Misses > 0;
+    public bool IsMissOnly => Dps <= 0 && Misses > 0;
 }
 
 /// <summary>Monotonic totals since the aggregator saw its first event.</summary>
@@ -168,15 +179,17 @@ public sealed class DpsAggregator
         // Phase 7: incoming events additionally bucket by attacker. A rat
         // that stops shooting decays out with the window — window-only rows,
         // no session totals (per the phase-7 spec).
-        // Phase 7: incoming events additionally bucket by attacker. A rat
-        // that stops shooting decays out with the window — window-only rows,
-        // no session totals (per the phase-7 spec).
-        var attackerSums = new Dictionary<string, (double Damage, int Misses)>[_windowSeconds.Length];
+        // Phase 11: outgoing events bucket by weapon the same way, and both
+        // maps additionally accumulate the profile-attributed type slices
+        // (for the HUD's type-colored row bars).
+        var attackerSums = new Dictionary<string, (double Damage, int Misses, double Em, double Thermal, double Kinetic, double Explosive)>[_windowSeconds.Length];
+        var weaponSums = new Dictionary<string, (double Damage, int Misses, double Em, double Thermal, double Kinetic, double Explosive)>[_windowSeconds.Length];
         for (var w = 0; w < _windowSeconds.Length; w++)
         {
             typeSum[w] = new double[DamageTypes.Attributed.Length];
             inTypeSum[w] = new double[DamageTypes.Attributed.Length];
-            attackerSums[w] = new Dictionary<string, (double, int)>(StringComparer.Ordinal);
+            attackerSums[w] = new Dictionary<string, (double, int, double, double, double, double)>(StringComparer.Ordinal);
+            weaponSums[w] = new Dictionary<string, (double, int, double, double, double, double)>(StringComparer.Ordinal);
         }
 
         foreach (var attr in _recent)
@@ -185,11 +198,24 @@ public sealed class DpsAggregator
             {
                 if (attr.Event.Time < reference.AddSeconds(-_windowSeconds[w]) || attr.Event.Time > reference)
                     continue;
-                if (attr.Event.Direction == CombatDirection.Outgoing && !attr.Event.IsMiss && attr.Event.Damage > 0)
+                if (attr.Event.Direction == CombatDirection.Outgoing)
                 {
-                    outSum[w] += attr.Event.Damage;
-                    for (var t = 0; t < DamageTypes.Attributed.Length; t++)
-                        typeSum[w][t] += attr.Type(t);
+                    if (!attr.Event.IsMiss && attr.Event.Damage > 0)
+                    {
+                        outSum[w] += attr.Event.Damage;
+                        for (var t = 0; t < DamageTypes.Attributed.Length; t++)
+                            typeSum[w][t] += attr.Type(t);
+                    }
+                    // Phase 11 row bucket: per weapon, hits and misses both
+                    // count (miss-only weapons get rows). Missing weapon
+                    // names defensively bucket as "unknown".
+                    var weapon = string.IsNullOrEmpty(attr.Event.Weapon) ? "unknown" : attr.Event.Weapon;
+                    var wmap = weaponSums[w];
+                    wmap.TryGetValue(weapon, out var we);
+                    weaponSums[w][weapon] = (we.Item1 + attr.Event.Damage,
+                                             we.Item2 + (attr.Event.IsMiss ? 1 : 0),
+                                             we.Item3 + attr.Type(0), we.Item4 + attr.Type(1),
+                                             we.Item5 + attr.Type(2), we.Item6 + attr.Type(3));
                 }
                 else if (attr.Event.Direction == CombatDirection.Incoming)
                 {
@@ -209,9 +235,10 @@ public sealed class DpsAggregator
                     if (string.IsNullOrEmpty(name)) name = "unknown";
                     var map = attackerSums[w];
                     map.TryGetValue(name, out var entry);
-                    entry = (entry.Damage + attr.Event.Damage,
-                             entry.Misses + (attr.Event.IsMiss ? 1 : 0));
-                    map[name] = entry;
+                    attackerSums[w][name] = (entry.Item1 + attr.Event.Damage,
+                                             entry.Item2 + (attr.Event.IsMiss ? 1 : 0),
+                                             entry.Item3 + attr.Type(0), entry.Item4 + attr.Type(1),
+                                             entry.Item5 + attr.Type(2), entry.Item6 + attr.Type(3));
                 }
                 shots[w]++;
             }
@@ -238,17 +265,27 @@ public sealed class DpsAggregator
 
             // Phase 7 rows: every attacker with dps > 0 or ≥ 1 miss; sorted
             // descending by dps, ties by name (spec tie-breaking rule).
-            var rows = new List<AttackerRow>(attackerSums[w].Count);
+            // Phase 11: the same row shape for outgoing weapons, and both
+            // carry their profile-attributed type slices.
+            var attackers = new List<SourceRow>(attackerSums[w].Count);
             foreach (var kv in attackerSums[w])
             {
-                if (kv.Value.Damage > 0 || kv.Value.Misses > 0)
-                    rows.Add(new AttackerRow(kv.Key, kv.Value.Damage / _windowSeconds[w], kv.Value.Misses));
+                if (kv.Value.Item1 > 0 || kv.Value.Item2 > 0)
+                    attackers.Add(new SourceRow(kv.Key, kv.Value.Item1 / _windowSeconds[w], kv.Value.Item2,
+                        kv.Value.Item3 / _windowSeconds[w], kv.Value.Item4 / _windowSeconds[w],
+                        kv.Value.Item5 / _windowSeconds[w], kv.Value.Item6 / _windowSeconds[w]));
             }
-            rows.Sort(static (a, b) =>
+            attackers.Sort(CompareRows);
+
+            var weapons = new List<SourceRow>(weaponSums[w].Count);
+            foreach (var kv in weaponSums[w])
             {
-                var byDps = b.IncomingDps.CompareTo(a.IncomingDps);
-                return byDps != 0 ? byDps : string.CompareOrdinal(a.Name, b.Name);
-            });
+                if (kv.Value.Item1 > 0 || kv.Value.Item2 > 0)
+                    weapons.Add(new SourceRow(kv.Key, kv.Value.Item1 / _windowSeconds[w], kv.Value.Item2,
+                        kv.Value.Item3 / _windowSeconds[w], kv.Value.Item4 / _windowSeconds[w],
+                        kv.Value.Item5 / _windowSeconds[w], kv.Value.Item6 / _windowSeconds[w]));
+            }
+            weapons.Sort(CompareRows);
 
             windows[w] = new DpsWindow(
                 _windowSeconds[w],
@@ -257,7 +294,8 @@ public sealed class DpsAggregator
                 shots[w],
                 perType,
                 perInType,
-                rows);
+                weapons,
+                attackers);
         }
 
         return new DpsSnapshot(
@@ -266,6 +304,13 @@ public sealed class DpsAggregator
             new DpsSession(_outgoing, _incoming, _events, _misses),
             [.. _unmappedWeapons.OrderBy(n => n, StringComparer.OrdinalIgnoreCase)],
             [.. _unmappedAttackers.OrderBy(n => n, StringComparer.OrdinalIgnoreCase)]);
+    }
+
+    /// <summary>Shared row ordering: dps descending, ties by name (spec tie-break).</summary>
+    private static int CompareRows(SourceRow a, SourceRow b)
+    {
+        var byDps = b.Dps.CompareTo(a.Dps);
+        return byDps != 0 ? byDps : string.CompareOrdinal(a.Name, b.Name);
     }
 
     /// <summary>Type-attributed view of one queued event plus its bookkeeping flags.</summary>

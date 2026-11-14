@@ -1,5 +1,5 @@
 ---
-status: draft
+status: accepted
 ---
 
 # Phase 11 — Outgoing damage sources panel (per-weapon, type-colored)

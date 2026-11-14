@@ -45,6 +45,7 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
@@ -156,12 +157,27 @@
                 </Border>
             </Grid>
 
+            <!-- Phase 11: the OUT panel mirrors the IN panel — your damage
+                 sources (weapons/drone bays) as rows. Phase-11 decision:
+                 BOTH panels' bars are type-colored (segmented by each
+                 source's profiled EM/TH/KIN/EX split, remainder Unknown
+                 gray), superseding phase 8's solid red row bars. -->
+            <StackPanel Grid.Row="4" x:Name="OutPanel" Margin="0,3,0,0">
+                <TextBlock Text="OUT" FontSize="8" FontWeight="SemiBold"
+                           Foreground="#68707c" Margin="1,0,0,1" />
+                <StackPanel x:Name="OutRows" />
+            </StackPanel>
+
             <!-- Phase 8: incoming attackers panel — up to five rows, filled
                  in code from phase 7 snapshot rows; empty = collapsed so the
                  HUD never blocks view when idle. -->
-            <StackPanel Grid.Row="4" x:Name="AttackerRows" Margin="0,3,0,0" />
+            <StackPanel Grid.Row="5" x:Name="InPanel" Margin="0,2,0,0">
+                <TextBlock Text="IN" FontSize="8" FontWeight="SemiBold"
+                           Foreground="#68707c" Margin="1,0,0,1" />
+                <StackPanel x:Name="AttackerRows" />
+            </StackPanel>
 
-            <TextBlock Grid.Row="5" x:Name="StatusText"
+            <TextBlock Grid.Row="6" x:Name="StatusText"
                        Text="waiting for combat…" FontSize="10"
                        Foreground="#68707c" VerticalAlignment="Bottom" />
         </Grid>

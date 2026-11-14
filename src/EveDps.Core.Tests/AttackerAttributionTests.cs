@@ -39,9 +39,9 @@ public class AttackerAttributionTests
         var snap = agg.Take(T0.AddSeconds(10));
         var w = WindowOf(snap, 15);
 
-        Assert.Equal(new AttackerRow("Alpha", 180 / 15.0, 0), w.Attackers.Single(a => a.Name == "Alpha"));
-        Assert.Equal(new AttackerRow("Bravo", 90 / 15.0, 0), w.Attackers.Single(a => a.Name == "Bravo"));
-        Assert.Equal(new AttackerRow("Charlie", 30 / 15.0, 0), w.Attackers.Single(a => a.Name == "Charlie"));
+        Assert.Equal(new SourceRow("Alpha", 180 / 15.0, 0), w.Attackers.Single(a => a.Name == "Alpha"));
+        Assert.Equal(new SourceRow("Bravo", 90 / 15.0, 0), w.Attackers.Single(a => a.Name == "Bravo"));
+        Assert.Equal(new SourceRow("Charlie", 30 / 15.0, 0), w.Attackers.Single(a => a.Name == "Charlie"));
         Assert.Equal(3, w.Attackers.Count); // outgoing damage is not attacker data
     }
 
@@ -54,7 +54,7 @@ public class AttackerAttributionTests
 
         var snap = agg.Take(T0.AddSeconds(10));
         Assert.Null(WindowOf(snap, 5).Attackers.FirstOrDefault(a => a.Name == "Old Rat"));
-        Assert.Equal(50 / 5.0, WindowOf(snap, 5).Attackers.Single(a => a.Name == "New Rat").IncomingDps, 6);
+        Assert.Equal(50 / 5.0, WindowOf(snap, 5).Attackers.Single(a => a.Name == "New Rat").Dps, 6);
         Assert.Equal(2, WindowOf(snap, 15).Attackers.Count);
 
         var later = agg.Take(T0.AddSeconds(60)); // everything decayed everywhere
@@ -72,7 +72,7 @@ public class AttackerAttributionTests
         var w = WindowOf(snap, 15);
 
         var missOnly = w.Attackers.Single(a => a.Name == "Whiffing Rat");
-        Assert.Equal(0, missOnly.IncomingDps);
+        Assert.Equal(0, missOnly.Dps);
         Assert.Equal(1, missOnly.Misses);
         Assert.True(missOnly.IsMissOnly);
         Assert.False(w.Attackers.Single(a => a.Name == "Damaging Rat").IsMissOnly);
@@ -90,7 +90,7 @@ public class AttackerAttributionTests
 
         var snap = agg.Take(T0.AddSeconds(5));
         Assert.All(snap.Windows, w =>
-            Assert.Equal(w.IncomingDps, w.Attackers.Sum(a => a.IncomingDps), 6));
+            Assert.Equal(w.IncomingDps, w.Attackers.Sum(a => a.Dps), 6));
     }
 
     [Fact]
@@ -112,7 +112,7 @@ public class AttackerAttributionTests
             Assert.All(snap.Windows, w =>
             {
                 // No row may carry damage that isn't in the window total.
-                Assert.Equal(w.IncomingDps, w.Attackers.Sum(a => a.IncomingDps), 6);
+                Assert.Equal(w.IncomingDps, w.Attackers.Sum(a => a.Dps), 6);
             });
         }
     }
@@ -156,7 +156,7 @@ public class AttackerAttributionTests
             w60.Attackers.Select(a => a.Name).ToArray());
         Assert.Equal(new[] { 3, 2 }, w60.Attackers.Select(a => a.Misses).ToArray());
         for (var i = 1; i < w60.Attackers.Count; i++)
-            Assert.True(w60.Attackers[i - 1].IncomingDps >= w60.Attackers[i].IncomingDps,
+            Assert.True(w60.Attackers[i - 1].Dps >= w60.Attackers[i].Dps,
                 "rows must be sorted descending by dps");
     }
 }
