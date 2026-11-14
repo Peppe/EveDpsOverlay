@@ -324,7 +324,9 @@ public partial class MainWindow : Window
             var col = new ColumnDefinition { Width = new GridLength(0, GridUnitType.Pixel) };
             segmentCols[i] = col;
             barSegs.ColumnDefinitions.Add(col);
-            barSegs.Children.Add(new Border { Background = RowSegmentBrushes[i] });
+            var seg = new Border { Background = RowSegmentBrushes[i] };
+            Grid.SetColumn(seg, i);
+            barSegs.Children.Add(seg);
         }
         barSegs.SizeChanged += (s, _) =>
         {
