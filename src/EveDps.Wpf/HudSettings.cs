@@ -29,6 +29,13 @@ public sealed class HudSettings
     /// <summary>Phase 14: the bottom damage-type legend row is shown.</summary>
     public bool Legend { get; set; } = true;
 
+    /// <summary>
+    /// Phase 15: reserved row space — each panel always occupies its full
+    /// five row slots so the window height never jumps as sources appear/
+    /// disappear. Default false = auto (hug content, historical behavior).
+    /// </summary>
+    public bool ReserveRows { get; set; } = false;
+
     private static string Directory =>
         Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
             "EveDpsOverlay");

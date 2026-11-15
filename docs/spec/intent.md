@@ -88,7 +88,7 @@ weapon/attacker profiles** (2026-11-09, the first backlog item promoted to
 a full phase), **11 — the OUT sources panel + type-colored row bars**
 (2026-11-14, second backlog item promoted), **12 — the layout toggle**
 (2026-11-14), and the user-decided decluttering round of 2026-11-15:
-**13 — bars into headers** and **14 — damage-type legend**. Planned:
+**13 — bars into headers**, **14 — damage-type legend**, and
 **15 — height stability toggle**. Backlog items below remain open.
 
 ## Deferred backlog (not yet specced; revisit after a real play session)

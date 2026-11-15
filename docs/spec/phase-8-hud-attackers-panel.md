@@ -8,6 +8,12 @@ status: done
 > the rows was replaced by the big IN dps number as the panel's header;
 > the full-width type bar that sat between the numbers and this panel was
 > removed. See `phase-13-bars-into-headers.md`.
+>
+> **Amendment (phase 15, 2026-11-15):** the idle collapse of the panel
+> area described below is now conditional — reserved mode (phase 15)
+> keeps five empty row slots and the window height constant; auto mode
+> (default) keeps the historical collapse. See
+> `phase-15-height-reserve.md`.
 
 Goal: the requested threat visualization. Up to **five rows** below the
 `OUT | IN` row, each for one attacker: a horizontal bar whose width is

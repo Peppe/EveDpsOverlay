@@ -7,6 +7,11 @@ status: done
 > **Amendment (phase 14, 2026-11-15):** the stack below gains one row —
 > the static damage-type legend between the panels and the status line,
 > with a hide toggle in the title row. See `phase-14-damage-legend.md`.
+>
+> **Amendment (phase 15, 2026-11-15):** the title row gains a fifth
+> button (height stability: auto ⇄ reserved 5 row slots); the tightened
+> vertical button row still fits the 156 px width. Row-area sizing is
+> now mode-dependent. See `phase-15-height-reserve.md`.
 
 Goal: declutter the HUD after phase 11/12 made the full-width type bars
 redundant. The top-5 source lists already show per-row type-colored
