@@ -100,7 +100,10 @@ public partial class MainWindow : Window
         LayoutButton.Click += (_, _) => ToggleLayout();
         // Phase 14: the legend's key glyph doubles as its toggle; the
         // glyph's brightness shows the state (bright = shown).
-        LegendButton.Content = "\u25A6"; // ▦
+        // Phase 14: the legend's key glyph doubles as its toggle; the
+        // glyph's brightness shows the state (bright = shown).
+        // 2026-11-15 live feedback: "Le" beats the abstract ▦ glyph.
+        LegendButton.Content = "Le";
         LegendButton.Click += (_, _) => ToggleLegend();
         ApplyLegend();
         // Phase 15: row-space mode on the same bright/dim state scheme.
@@ -209,8 +212,10 @@ public partial class MainWindow : Window
         OutText.Text = outLine;
         InText.Text = inLine;
         // Phase 11: both source panels render from the same window snapshot.
-        RenderPanel(_outSlots, SourcePanel.DisplayRows(primary.OutgoingSources, SourceRowBudget), OutPanel);
-        RenderPanel(_attackerSlots, SourcePanel.DisplayRows(primary.Attackers, SourceRowBudget), InPanel);
+        // 2026-11-15: the rows StackPanels passed separately — headers never
+        // collapse, only the row list does (auto mode).
+        RenderPanel(_outSlots, SourcePanel.DisplayRows(primary.OutgoingSources, SourceRowBudget), OutPanel, OutRows);
+        RenderPanel(_attackerSlots, SourcePanel.DisplayRows(primary.Attackers, SourceRowBudget), InPanel, AttackerRows);
 
         // After a replay finishes, its verdict line must survive — the tick
         // stops replacing the status line (big numbers keep updating).
@@ -231,6 +236,22 @@ public partial class MainWindow : Window
 
     /// <summary>Phase 12: the persisted layout as a plain flag.</summary>
     private bool VerticalLayout => _settings.Layout == "vertical";
+
+    /// <summary>
+    /// 2026-11-15 live feedback: row mirroring is now dynamic — the IN
+    /// panel's rows read from the right edge in horizontal only; vertical
+    /// left-aligns everything. Flips the name's anchored edge in place
+    /// (the slot reuse makes rebuilding unnecessary).
+    /// </summary>
+    private static void ApplyRowAlignment(RowVisual slot, bool nameRight)
+    {
+        slot.Name.HorizontalAlignment = nameRight
+            ? System.Windows.HorizontalAlignment.Right
+            : System.Windows.HorizontalAlignment.Left;
+        slot.Name.Margin = nameRight
+            ? new Thickness(2, 0, 2, 0)
+            : new Thickness(5, 0, 2, 0);
+    }
 
     // ── phase 8/11: source panels (attackers + outgoing weapons) ─────────
 
@@ -329,12 +350,14 @@ public partial class MainWindow : Window
     /// or Others) is always 100 % wide; miss-only rows render dimmed with
     /// zero bar; the row bar itself is segmented by the row's profiled type
     /// split (phase 11), with the unclaimed remainder as the Unknown slice.
+    /// 2026-11-15 live feedback: the big number header is ALWAYS visible —
+    /// in auto mode only the row list collapses when idle, never the panel.
     /// </summary>
-    private void RenderPanel(RowVisual[] slots, IReadOnlyList<PanelRow> display, UIElement panelHost)
+    private void RenderPanel(
+        RowVisual[] slots, IReadOnlyList<PanelRow> display, UIElement panelHost, UIElement rowsHost)
     {
-        // Phase 15: reserved mode keeps the host visible even when idle —
-        // the window height must not collapse as sources come and go.
-        panelHost.Visibility = display.Count == 0 && !_settings.ReserveRows
+        panelHost.Visibility = Visibility.Visible;
+        rowsHost.Visibility = display.Count == 0 && !_settings.ReserveRows
             ? Visibility.Collapsed : Visibility.Visible;
 
         var leader = display.Count == 0 ? 0 : display.Max(r => r.Dps);
@@ -578,10 +601,22 @@ public partial class MainWindow : Window
         _settings.Save();
         var vertical = layout == "vertical";
 
-        // Chrome: the title text hides; the cycle buttons stay in one row
-        // and tighten to near-icon size; the toggle's icon shows the layout
+        // Chrome: 2026-11-15 live feedback — the title shows a short "DPS"
+        // in vertical (the full "EVE DPS" doesn't fit 156 px, but the
+        // shortened one does). The cycle buttons stay in one row and
+        // tighten to near-icon size; the toggle's icon shows the layout
         // clicking it will switch TO (action-oriented, like the spec says).
-        TitleText.Visibility = vertical ? Visibility.Collapsed : Visibility.Visible;
+        TitleText.Text = vertical ? "DPS" : "EVE DPS";
+        // 2026-11-15 live feedback: vertical reads better with BOTH panels
+        // left-aligned — the right-edge mirroring is a horizontal-only rule.
+        InText.HorizontalAlignment = vertical
+            ? System.Windows.HorizontalAlignment.Left
+            : System.Windows.HorizontalAlignment.Right;
+        InText.Margin = vertical ? new Thickness(1, 0, 0, 1) : new Thickness(0, 0, 1, 1);
+        foreach (var slot in _outSlots)
+            ApplyRowAlignment(slot, nameRight: false);
+        foreach (var slot in _attackerSlots)
+            ApplyRowAlignment(slot, nameRight: !vertical);
         var tight = vertical ? new Thickness(2, 0, 2, 0) : new Thickness(4, 0, 4, 0);
         PrimaryButton.Padding = tight;
         OpacityButton.Padding = tight;

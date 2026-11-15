@@ -4,6 +4,11 @@ status: done
 
 # Phase 13 — Bars into headers: remove type bars, numbers join the panels
 
+> **Amendment (2026-11-15 live feedback):** the panel headers (big
+> OUT/IN numbers) are ALWAYS visible in both modes — auto mode's idle
+> collapse now applies only to the row list, never to the numbers.
+> See `phase-15-height-reserve.md`.
+
 > **Amendment (phase 14, 2026-11-15):** the stack below gains one row —
 > the static damage-type legend between the panels and the status line,
 > with a hide toggle in the title row. See `phase-14-damage-legend.md`.

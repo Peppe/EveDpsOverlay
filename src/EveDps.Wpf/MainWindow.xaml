@@ -67,7 +67,7 @@
                             Margin="4,0,0,0"
                             ToolTip="Layout (click to toggle horizontal/vertical)" />
                     <!-- Phase 14: legend visibility toggle. State-colored
-                         glyph (bright = legend shown, dim = hidden). -->
+                         "Le" (bright = legend shown, dim = hidden). -->
                     <Button x:Name="LegendButton" Style="{StaticResource HudButton}"
                             Margin="4,0,0,0"
                             ToolTip="Damage-type legend (click to hide/show)" />
