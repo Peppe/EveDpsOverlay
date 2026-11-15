@@ -1,5 +1,5 @@
 ---
-status: draft
+status: done
 ---
 
 # Phase 14 — Damage-type legend
@@ -53,18 +53,34 @@ no Core changes.
 
 ## Acceptance criteria
 
-- [ ] Legend renders in both layouts with the five exact colors, equal
+- [x] Legend renders in both layouts with the five exact colors, equal
       widths, labels legible (screenshot at 156 px proves vertical fit).
-- [ ] Hide toggle shows/hides instantly; state persists across restart
+- [x] Hide toggle shows/hides instantly; state persists across restart
       via settings.json; default is visible on fresh settings.
-- [ ] No snapshot dependency: legend identical idle vs combat; row bars
+- [x] No snapshot dependency: legend identical idle vs combat; row bars
       and panels unaffected.
-- [ ] `dotnet build` 0 warnings; `dotnet test` all green; single-file
+- [x] `dotnet build` 0 warnings; `dotnet test` all green; single-file
       publish runs.
-- [ ] Specs amended in the same branch; `intent.md` phase table gains
+- [x] Specs amended in the same branch; `intent.md` phase table gains
       this phase.
-- [ ] Git workflow: implemented on `phase-14-damage-legend`, merged to
+- [x] Git workflow: implemented on `phase-14-damage-legend`, merged to
       `main` only when green.
+
+## Verification notes (2026-11-15)
+
+- Replay `session-20261107-from-1942` at ×30: horizontal frame shows the
+  legend above the status line — EM blue / TH red / KIN gray / EXP
+  orange / UNK dark-gray, equal segments, labels legible; the fourth
+  title button (▦) sits next to the layout toggle. Vertical frame: all
+  five labels fit the ~31 px segments at FontSize 8 with NO font
+  shrink needed; four tightened buttons still fit the 156 px title row.
+- Hidden path verified via settings (`"Legend": false` → restart):
+  legend row absent (window 245 px → 233 px with legend), glyph dimmed.
+  The app itself serializes `Legend` on any settings save (observed
+  `Legend: true` written by a layout-toggle save before any legend
+  click — default-on serialization confirmed).
+- Toggle glyph state: bright `#9aa3ad` when shown, near-background
+  `#3a414b` when hidden.
 
 ## Out of scope
 

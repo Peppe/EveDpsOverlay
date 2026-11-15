@@ -86,9 +86,9 @@ extensions bind to that selection. Done: phases 1–9 (5 on 2026-11-08, 7 the
 same day, 8 on 2026-11-09), then **10 — incoming damage types via two-tier
 weapon/attacker profiles** (2026-11-09, the first backlog item promoted to
 a full phase), **11 — the OUT sources panel + type-colored row bars**
-(2026-11-14, second backlog item promoted), and **12 — the layout toggle**
-(2026-11-14). Planned 2026-11-15 (user-decided decluttering round):
-**13 — bars into headers** (in progress), **14 — damage-type legend**,
+(2026-11-14, second backlog item promoted), **12 — the layout toggle**
+(2026-11-14), and the user-decided decluttering round of 2026-11-15:
+**13 — bars into headers** and **14 — damage-type legend**. Planned:
 **15 — height stability toggle**. Backlog items below remain open.
 
 ## Deferred backlog (not yet specced; revisit after a real play session)

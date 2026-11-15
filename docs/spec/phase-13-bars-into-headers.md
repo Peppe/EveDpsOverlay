@@ -4,6 +4,10 @@ status: done
 
 # Phase 13 — Bars into headers: remove type bars, numbers join the panels
 
+> **Amendment (phase 14, 2026-11-15):** the stack below gains one row —
+> the static damage-type legend between the panels and the status line,
+> with a hide toggle in the title row. See `phase-14-damage-legend.md`.
+
 Goal: declutter the HUD after phase 11/12 made the full-width type bars
 redundant. The top-5 source lists already show per-row type-colored
 segmented bars, so the two full-width aggregated bars (OUT phase 5/8, IN
