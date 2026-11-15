@@ -10,6 +10,11 @@ status: done
 > align with their panel in both layouts; the IN panel's right-edge
 > mirroring is unchanged). Button row and title behavior unchanged. See
 > `phase-13-bars-into-headers.md`.
+>
+> **Amendment (phase 14, 2026-11-15):** the title row gains a fourth
+> button (legend hide/show, ▦); the tightened vertical button row still
+> fits the 156 px width (screenshot-verified in the phase-14 spec). See
+> `phase-14-damage-legend.md`.
 
 Goal: a button that switches the HUD between the two source-panel layouts.
 Depends on phase 11 (both panels exist; bars are type-colored).

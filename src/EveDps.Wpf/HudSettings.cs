@@ -26,6 +26,9 @@ public sealed class HudSettings
     /// <summary>Phase 12: source-panel layout, "horizontal" | "vertical".</summary>
     public string Layout { get; set; } = "horizontal";
 
+    /// <summary>Phase 14: the bottom damage-type legend row is shown.</summary>
+    public bool Legend { get; set; } = true;
+
     private static string Directory =>
         Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
             "EveDpsOverlay");
