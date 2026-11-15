@@ -15,6 +15,10 @@ status: done
 > button (legend hide/show, ▦); the tightened vertical button row still
 > fits the 156 px width (screenshot-verified in the phase-14 spec). See
 > `phase-14-damage-legend.md`.
+>
+> **Amendment (phase 15, 2026-11-15):** a fifth button joins the title
+> row (height stability, "A"/"5R"); the row still fits 156 px. See
+> `phase-15-height-reserve.md`.
 
 Goal: a button that switches the HUD between the two source-panel layouts.
 Depends on phase 11 (both panels exist; bars are type-colored).
