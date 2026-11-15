@@ -4,6 +4,11 @@ status: done
 
 # Phase 15 — Height stability toggle (reserve row space)
 
+> **Amendment (2026-11-15 live feedback):** in AUTO mode the big OUT/IN
+> number headers are now ALWAYS visible — idle collapses only the row
+> list, never the panel header (previously the whole panel went away).
+> Reserved mode unchanged. See `feat/live-feedback-fixes`.
+
 Goal: the window grows and shrinks as sources enter/leave the lists
 (phase 8 idle-collapse, phase 11/12 row churn). That jumping is annoying
 in combat; but auto-sizing is also what keeps the HUD minimal. A toggle

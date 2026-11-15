@@ -4,6 +4,14 @@ status: done
 
 # Phase 12 — Layout toggle: horizontal ↔ vertical source panels
 
+> **Amendment (2026-11-15 live feedback):** two changes from live use —
+> (1) the title text shows a short **"DPS"** in vertical instead of
+> hiding entirely (the full "EVE DPS" doesn't fit 156 px, "DPS" does);
+> (2) the IN panel is LEFT-aligned in vertical — the right-edge
+> mirroring is now a horizontal-only rule (vertical left-aligns both
+> panels: IN number + row names hug the left edge, row values stay on
+> the outer edge).
+
 > **Amendment (phase 13, 2026-11-15):** the type bars referenced below
 > were removed, and the big OUT/IN numbers moved INTO the panels as their
 > header rows — the NumberRow/NumberStack distinction is gone (headers

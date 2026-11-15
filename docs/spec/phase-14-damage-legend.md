@@ -4,6 +4,10 @@ status: done
 
 # Phase 14 — Damage-type legend
 
+> **Amendment (2026-11-15 live feedback):** the toggle button shows "Le"
+> instead of the abstract ▦ glyph (user preference: easier to remember).
+> Bright = shown, dim = hidden, tooltip unchanged.
+
 Goal: after phase 13 removes the full-width type bars, damage-type
 colors appear only inside the tiny per-row bar segments with no
 anywhere to decode them. A static legend bar gives every player a
