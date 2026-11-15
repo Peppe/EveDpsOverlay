@@ -4,6 +4,11 @@ status: done
 
 # Phase 8 — HUD incoming attackers panel
 
+> **Amendment (phase 13, 2026-11-15):** the small gray `IN` caption above
+> the rows was replaced by the big IN dps number as the panel's header;
+> the full-width type bar that sat between the numbers and this panel was
+> removed. See `phase-13-bars-into-headers.md`.
+
 Goal: the requested threat visualization. Up to **five rows** below the
 `OUT | IN` row, each for one attacker: a horizontal bar whose width is
 proportional to their share of the incoming dps, with name + dps written

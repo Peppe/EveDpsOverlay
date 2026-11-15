@@ -47,14 +47,6 @@ public partial class MainWindow : Window
         Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
         "EveDpsOverlay", "attacker-profiles.json");
 
-    /// <summary>Segments in DamageTypes.All order, paired with their UI parts.</summary>
-    private readonly (ColumnDefinition Col, Border Seg, TextBlock Label)[] _bar =
-        new (ColumnDefinition, Border, TextBlock)[DamageTypes.All.Length];
-
-    /// <summary>Phase 10: the IN bar's same-shape segment table.</summary>
-    private readonly (ColumnDefinition Col, Border Seg, TextBlock Label)[] _barIn =
-        new (ColumnDefinition, Border, TextBlock)[DamageTypes.All.Length];
-
     /// <summary>Phase 8 row budget: five slots (4 names + Others when merging); shared by both panels.</summary>
     private const int SourceRowBudget = 5;
     /// <summary>Phase 12 window widths: horizontal = the historical 300 px, vertical ~half.</summary>
@@ -80,21 +72,6 @@ public partial class MainWindow : Window
         _clock = App.ReplayPath is not null
             ? () => _replay!.CurrentVirtualTime
             : () => DateTimeOffset.UtcNow;
-
-        // Phase 5: fill the segment table in DamageTypes.All order (EM, TH,
-        // KIN, EX, Unknown) so snapshot indices map straight onto UI parts.
-        _bar[0] = (ColEm, SegEm, EmLabel);
-        _bar[1] = (ColThermal, SegThermal, ThermalLabel);
-        _bar[2] = (ColKinetic, SegKinetic, KineticLabel);
-        _bar[3] = (ColExplosive, SegExplosive, ExplosiveLabel);
-        _bar[4] = (ColUnknown, SegUnknown, UnknownLabel);
-
-        // Phase 10: the IN bar's table, same order, same mapping.
-        _barIn[0] = (InColEm, InSegEm, InEmLabel);
-        _barIn[1] = (InColThermal, InSegThermal, InThermalLabel);
-        _barIn[2] = (InColKinetic, InSegKinetic, InKineticLabel);
-        _barIn[3] = (InColExplosive, InSegExplosive, InExplosiveLabel);
-        _barIn[4] = (InColUnknown, InSegUnknown, InUnknownLabel);
 
         // Phase 8/11: five row slots per panel (reused every tick, no churn).
         // Phase 12: the IN panel mirrors the big numbers' alignment — its
@@ -223,11 +200,6 @@ public partial class MainWindow : Window
         var inLine = $"IN {primary.IncomingDps:0.#} dps";
         OutText.Text = outLine;
         InText.Text = inLine;
-        // Phase 12: the vertical layout's stacked number pair shows the same
-        // strings — pure presentation, one source of truth.
-        OutTextV.Text = outLine;
-        InTextV.Text = inLine;
-        UpdateTypeBar(primary);
         // Phase 11: both source panels render from the same window snapshot.
         RenderPanel(_outSlots, SourcePanel.DisplayRows(primary.OutgoingSources, SourceRowBudget), OutPanel);
         RenderPanel(_attackerSlots, SourcePanel.DisplayRows(primary.Attackers, SourceRowBudget), InPanel);
@@ -251,66 +223,6 @@ public partial class MainWindow : Window
 
     /// <summary>Phase 12: the persisted layout as a plain flag.</summary>
     private bool VerticalLayout => _settings.Layout == "vertical";
-
-    // ── phase 5 / phase 10: damage-type bars ─────────────────────────────
-
-    /// <summary>
-    /// Renders both bars from the SAME window snapshot the text uses. Stars
-    /// are set to each type's dps share (sum of stars is the total, so
-    /// segments always sum to exactly 100 % of bar width); a zero-dps type
-    /// occupies zero width; a fully idle pass-through shows the neutral
-    /// full-width gray bar. Phase 10 renders the IN bar from IncomingTypes
-    /// with identical rules (the IN frame adds no logic — Core already
-    /// guarantees the five buckets sum to the window's IncomingDps).
-    /// </summary>
-    private void UpdateTypeBar(DpsWindow primary)
-    {
-        SetBar(_bar, primary.OutgoingTypes, TypeBarEmpty, TypeBarSegs);
-        SetBar(_barIn, primary.IncomingTypes, TypeBarInEmpty, TypeBarInSegs);
-    }
-
-    private static void SetBar(
-        (ColumnDefinition Col, Border Seg, TextBlock Label)[] bar,
-        IReadOnlyList<DpsType> types,
-        UIElement emptyFallback,
-        UIElement segments)
-    {
-        var total = types.Sum(t => t.Dps);
-        if (total <= 0)
-        {
-            emptyFallback.Visibility = Visibility.Visible;
-            segments.Visibility = Visibility.Collapsed;
-            return;
-        }
-
-        emptyFallback.Visibility = Visibility.Collapsed;
-        segments.Visibility = Visibility.Visible;
-
-        // ActualWidth is 0 before first layout; numbers were hidden anyway.
-        var px = ((FrameworkElement)segments).ActualWidth;
-        for (var i = 0; i < bar.Length; i++)
-        {
-            var dps = types[i].Dps; // same fixed order as bar
-            bar[i].Col.Width = dps > 0
-                ? new GridLength(dps / total, GridUnitType.Star)
-                : new GridLength(0, GridUnitType.Pixel);
-            // Per-segment number only on segments ~30 logical px wide —
-            // never overlap text between adjacent segments.
-            bar[i].Label.Text =
-                dps > 0 && Double.IsFinite(px) && px * (dps / total) >= 30
-                    ? dps.ToString("0.#")
-                    : "";
-        }
-    }
-
-    /// <summary>Rounds off the bar's ends by clipping its segment grid.</summary>
-    private void TypeBar_SizeChanged(object sender, SizeChangedEventArgs e) =>
-        TypeBarSegs.Clip = new RectangleGeometry(
-            new Rect(0, 0, TypeBarSegs.ActualWidth, TypeBarSegs.ActualHeight), 3, 3);
-
-    private void TypeBarIn_SizeChanged(object sender, SizeChangedEventArgs e) =>
-        TypeBarInSegs.Clip = new RectangleGeometry(
-            new Rect(0, 0, TypeBarInSegs.ActualWidth, TypeBarInSegs.ActualHeight), 2, 2);
 
     // ── phase 8/11: source panels (attackers + outgoing weapons) ─────────
 
@@ -595,8 +507,6 @@ public partial class MainWindow : Window
         // and tighten to near-icon size; the toggle's icon shows the layout
         // clicking it will switch TO (action-oriented, like the spec says).
         TitleText.Visibility = vertical ? Visibility.Collapsed : Visibility.Visible;
-        NumberRow.Visibility = vertical ? Visibility.Collapsed : Visibility.Visible;
-        NumberStack.Visibility = vertical ? Visibility.Visible : Visibility.Collapsed;
         var tight = vertical ? new Thickness(2, 0, 2, 0) : new Thickness(4, 0, 4, 0);
         PrimaryButton.Padding = tight;
         OpacityButton.Padding = tight;

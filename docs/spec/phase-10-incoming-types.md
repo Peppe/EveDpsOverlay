@@ -4,6 +4,11 @@ status: done
 
 # Phase 10 — Incoming damage types (estimated)
 
+> **Amendment (phase 13, 2026-11-15):** the IN HUD bar described here was
+> REMOVED along with the OUT bar; the two-tier Core attribution stays in
+> use for the phase-11 row-bar segmentation. See
+> `phase-13-bars-into-headers.md`.
+
 Goal: bring the type breakdown to the **other half** of the HUD. Fixtures
 proved (2026-11-09, `session-20261107-from-1942.txt`) that incoming lines DO
 sometimes name the weapon — `103 from Mercenary Commander - Scourge Heavy

@@ -4,6 +4,12 @@ status: done
 
 # Phase 5 — HUD damage-type bar
 
+> **Amendment (phase 13, 2026-11-15):** this HUD bar was REMOVED — the
+> phase-11 row bars made it redundant. The phase-4 Core type-split
+> pipeline stays in use (it feeds the row-bar segmentation). The bar's
+> rendering rules below are historical; see
+> `phase-13-bars-into-headers.md`.
+
 Goal: the requested visualization. A slim, 100 %-wide bar under the
 `OUT | IN` row, segmented by damage type, with each segment's dps printed in
 its middle. Data source: phase 4's per-type snapshot values for **the HUD's

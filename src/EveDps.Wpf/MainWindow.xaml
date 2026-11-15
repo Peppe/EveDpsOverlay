@@ -40,12 +40,13 @@
     <Border x:Name="Root" CornerRadius="10" Background="#C0101418" Padding="14,8">
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
+                <!-- Phase 13: three rows — title chrome, the panel area
+                     (each panel carries its own big number header), and
+                     the status line. The shared number row and both
+                     full-width type bars are gone. -->
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
             <Grid Grid.Row="0">
@@ -66,129 +67,35 @@
                 </StackPanel>
             </Grid>
 
-            <!-- Phase 8 compact layout amendment: OUT and IN share one row
-                 (left / right-aligned pair, reduced font), freeing vertical
-                 room for the attackers panel. Phase 12: in vertical mode this
-                 row hides and the numbers stack instead (NumberStack). -->
-            <Grid Grid.Row="1" x:Name="NumberRow" Margin="0,2,0,0">
-                <TextBlock x:Name="OutText"
-                           Text="OUT — dps" FontSize="16" FontWeight="Bold"
-                           Foreground="#66d9ff" HorizontalAlignment="Left" />
-                <TextBlock x:Name="InText"
-                           Text="IN 0 dps" FontSize="16" FontWeight="Bold"
-                           Foreground="#ff6b6b" HorizontalAlignment="Right" />
-            </Grid>
-            <StackPanel Grid.Row="1" x:Name="NumberStack" Visibility="Collapsed">
-                <TextBlock x:Name="OutTextV"
-                           Text="OUT — dps" FontSize="16" FontWeight="Bold"
-                           Foreground="#66d9ff" HorizontalAlignment="Left" />
-                <TextBlock x:Name="InTextV"
-                           Text="IN 0 dps" FontSize="16" FontWeight="Bold"
-                           Foreground="#ff6b6b" HorizontalAlignment="Left" />
-            </StackPanel>
-
-            <!-- Phase 5: outgoing damage-type bar. The 2026-11-09 phase-10
-                 amendment replaces the old "IN can't be attributed" note:
-                 two-tier inference (weapon profiles + attacker profiles)
-                 gives incoming lines a type breakdown of their own. -->
-            <Grid Grid.Row="2" Height="9" Margin="0,3,0,0" IsHitTestVisible="True">
-                <Border x:Name="TypeBarEmpty" CornerRadius="3"
-                        Background="#3A414B" Visibility="Visible" />
-                <Grid x:Name="TypeBarSegs" SizeChanged="TypeBar_SizeChanged">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition x:Name="ColEm" Width="1*" />
-                        <ColumnDefinition x:Name="ColThermal" Width="1*" />
-                        <ColumnDefinition x:Name="ColKinetic" Width="1*" />
-                        <ColumnDefinition x:Name="ColExplosive" Width="1*" />
-                        <ColumnDefinition x:Name="ColUnknown" Width="1*" />
-                    </Grid.ColumnDefinitions>
-                    <Border Grid.Column="0" x:Name="SegEm" Background="#4d7cff">
-                        <TextBlock x:Name="EmLabel" FontSize="8" FontWeight="SemiBold"
-                                   Foreground="#bfd2ff" HorizontalAlignment="Center" VerticalAlignment="Center" />
-                    </Border>
-                    <Border Grid.Column="1" x:Name="SegThermal" Background="#ff5a4e">
-                        <TextBlock x:Name="ThermalLabel" FontSize="8" FontWeight="SemiBold"
-                                   Foreground="#ffc9c4" HorizontalAlignment="Center" VerticalAlignment="Center" />
-                    </Border>
-                    <Border Grid.Column="2" x:Name="SegKinetic" Background="#9aa3ad">
-                        <TextBlock x:Name="KineticLabel" FontSize="8" FontWeight="SemiBold"
-                                   Foreground="#dde2e8" HorizontalAlignment="Center" VerticalAlignment="Center" />
-                    </Border>
-                    <Border Grid.Column="3" x:Name="SegExplosive" Background="#ff9854">
-                        <TextBlock x:Name="ExplosiveLabel" FontSize="8" FontWeight="SemiBold"
-                                   Foreground="#ffd8b4" HorizontalAlignment="Center" VerticalAlignment="Center" />
-                    </Border>
-                    <Border Grid.Column="4" x:Name="SegUnknown" Background="#565d66">
-                        <TextBlock x:Name="UnknownLabel" FontSize="8" FontWeight="SemiBold"
-                                   Foreground="#a7adb5" HorizontalAlignment="Center" VerticalAlignment="Center" />
-                    </Border>
-                </Grid>
-            </Grid>
-
-            <!-- Phase 10: incoming damage-type bar — same five segments and
-                 colors as the OUT bar, but wrapped in a thin red-family
-                 border tying it to the IN number (decided 2026-11-09; the
-                 OUT bar stays borderless). Filled from DpsWindow.IncomingTypes
-                 by the same rules: star widths share out the dps, middle
-                 numbers only on ~30 px+ segments, idle = neutral gray. -->
-            <Grid Grid.Row="3" Height="11" Margin="0,3,0,0" IsHitTestVisible="True">
-                <Border x:Name="TypeBarInFrame" CornerRadius="3"
-                        BorderBrush="#66ff8a8a" BorderThickness="1" Padding="1">
-                    <Grid>
-                        <Border x:Name="TypeBarInEmpty" CornerRadius="2"
-                                Background="#3A414B" Visibility="Visible" />
-                        <Grid x:Name="TypeBarInSegs" SizeChanged="TypeBarIn_SizeChanged">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition x:Name="InColEm" Width="1*" />
-                                <ColumnDefinition x:Name="InColThermal" Width="1*" />
-                                <ColumnDefinition x:Name="InColKinetic" Width="1*" />
-                                <ColumnDefinition x:Name="InColExplosive" Width="1*" />
-                                <ColumnDefinition x:Name="InColUnknown" Width="1*" />
-                            </Grid.ColumnDefinitions>
-                            <Border Grid.Column="0" x:Name="InSegEm" Background="#4d7cff">
-                                <TextBlock x:Name="InEmLabel" FontSize="8" FontWeight="SemiBold"
-                                           Foreground="#bfd2ff" HorizontalAlignment="Center" VerticalAlignment="Center" />
-                            </Border>
-                            <Border Grid.Column="1" x:Name="InSegThermal" Background="#ff5a4e">
-                                <TextBlock x:Name="InThermalLabel" FontSize="8" FontWeight="SemiBold"
-                                           Foreground="#ffc9c4" HorizontalAlignment="Center" VerticalAlignment="Center" />
-                            </Border>
-                            <Border Grid.Column="2" x:Name="InSegKinetic" Background="#9aa3ad">
-                                <TextBlock x:Name="InKineticLabel" FontSize="8" FontWeight="SemiBold"
-                                           Foreground="#dde2e8" HorizontalAlignment="Center" VerticalAlignment="Center" />
-                            </Border>
-                            <Border Grid.Column="3" x:Name="InSegExplosive" Background="#ff9854">
-                                <TextBlock x:Name="InExplosiveLabel" FontSize="8" FontWeight="SemiBold"
-                                           Foreground="#ffd8b4" HorizontalAlignment="Center" VerticalAlignment="Center" />
-                            </Border>
-                            <Border Grid.Column="4" x:Name="InSegUnknown" Background="#565d66">
-                                <TextBlock x:Name="InUnknownLabel" FontSize="8" FontWeight="SemiBold"
-                                           Foreground="#a7adb5" HorizontalAlignment="Center" VerticalAlignment="Center" />
-                            </Border>
-                        </Grid>
-                    </Grid>
-                </Border>
-            </Grid>
-
+            <!-- Phase 13: the big OUT/IN dps numbers moved into the panels
+                  as their header rows (replacing the small gray captions).
+                  The shared number row, the vertical number stack, and both
+                  full-width type bars are removed; alignment no longer
+                  switches per layout because the headers live inside the
+                  panels. -->
             <!-- Phase 11/12: the two source panels share one layout area so
                  the toggle can restack them: horizontal = side-by-side
                  halves (columns), vertical = stacked full-width (rows).
                  Column/row definitions are rebuilt in ApplyLayout(). -->
-            <Grid Grid.Row="4" x:Name="PanelArea" Margin="0,3,0,0">
+            <Grid Grid.Row="1" x:Name="PanelArea" Margin="0,3,0,0">
                 <StackPanel x:Name="OutPanel">
-                    <TextBlock x:Name="OutCaption" Text="OUT" FontSize="8" FontWeight="SemiBold"
-                               Foreground="#68707c" Margin="1,0,0,1" />
+                    <TextBlock x:Name="OutText"
+                               Text="OUT — dps" FontSize="16" FontWeight="Bold"
+                               Foreground="#66d9ff" HorizontalAlignment="Left"
+                               Margin="1,0,0,1" />
                     <StackPanel x:Name="OutRows" />
                 </StackPanel>
 
                 <StackPanel x:Name="InPanel">
-                    <TextBlock x:Name="InCaption" Text="IN" FontSize="8" FontWeight="SemiBold"
-                               Foreground="#68707c" Margin="1,0,0,1" />
+                    <TextBlock x:Name="InText"
+                               Text="IN 0 dps" FontSize="16" FontWeight="Bold"
+                               Foreground="#ff6b6b" HorizontalAlignment="Right"
+                               Margin="0,0,1,1" />
                     <StackPanel x:Name="AttackerRows" />
                 </StackPanel>
             </Grid>
 
-            <TextBlock Grid.Row="5" x:Name="StatusText"
+            <TextBlock Grid.Row="2" x:Name="StatusText"
                        Text="waiting for combat…" FontSize="10" TextWrapping="Wrap"
                        Foreground="#68707c" VerticalAlignment="Bottom" />
         </Grid>

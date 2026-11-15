@@ -76,6 +76,9 @@ change that implements them.
 | 10 | Incoming damage types (two-tier weapon/attacker attribution) | `phase-10-incoming-types.md` |
 | 11 | Outgoing per-weapon sources panel; type-colored segmented row bars | `phase-11-out-sources.md` |
 | 12 | Layout toggle: horizontal ↔ vertical source panels | `phase-12-layout-toggle.md` |
+| 13 | Remove full-width type bars; big OUT/IN numbers become panel headers | `phase-13-bars-into-headers.md` |
+| 14 | Damage-type legend (static color key above the status line, hide toggle) | `phase-14-damage-legend.md` |
+| 15 | Height stability toggle: reserve five row slots vs hug content | `phase-15-height-reserve.md` |
 
 Implementation order: phases ship by number, with one constraint:
 **6 (the primary-window selection) must precede 5 and 8**, since both HUD
@@ -84,7 +87,9 @@ same day, 8 on 2026-11-09), then **10 — incoming damage types via two-tier
 weapon/attacker profiles** (2026-11-09, the first backlog item promoted to
 a full phase), **11 — the OUT sources panel + type-colored row bars**
 (2026-11-14, second backlog item promoted), and **12 — the layout toggle**
-(2026-11-14). Backlog items below remain open.
+(2026-11-14). Planned 2026-11-15 (user-decided decluttering round):
+**13 — bars into headers** (in progress), **14 — damage-type legend**,
+**15 — height stability toggle**. Backlog items below remain open.
 
 ## Deferred backlog (not yet specced; revisit after a real play session)
 

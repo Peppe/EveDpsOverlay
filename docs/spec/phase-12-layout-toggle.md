@@ -4,6 +4,13 @@ status: done
 
 # Phase 12 — Layout toggle: horizontal ↔ vertical source panels
 
+> **Amendment (phase 13, 2026-11-15):** the type bars referenced below
+> were removed, and the big OUT/IN numbers moved INTO the panels as their
+> header rows — the NumberRow/NumberStack distinction is gone (headers
+> align with their panel in both layouts; the IN panel's right-edge
+> mirroring is unchanged). Button row and title behavior unchanged. See
+> `phase-13-bars-into-headers.md`.
+
 Goal: a button that switches the HUD between the two source-panel layouts.
 Depends on phase 11 (both panels exist; bars are type-colored).
 

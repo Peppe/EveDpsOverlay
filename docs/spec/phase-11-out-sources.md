@@ -4,6 +4,12 @@ status: done
 
 # Phase 11 — Outgoing damage sources panel (per-weapon, type-colored)
 
+> **Amendment (phase 13, 2026-11-15):** the small gray `OUT` caption above
+> the rows was replaced by the big OUT dps number as the panel's header;
+> the full-width type bar above the panels was removed (the row-bar
+> segmentation below is the surviving type visualization). See
+> `phase-13-bars-into-headers.md`.
+
 Goal: make the source panels symmetric. The IN panel (attackers, phase 7/8)
 gains a matching OUT panel: YOUR damage sources — weapons/drone bays — as
 rows. And per the 2026-11-14 decision, source bars stop being solid
