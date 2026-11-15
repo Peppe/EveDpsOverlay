@@ -71,6 +71,12 @@
                     <Button x:Name="LegendButton" Style="{StaticResource HudButton}"
                             Margin="4,0,0,0"
                             ToolTip="Damage-type legend (click to hide/show)" />
+                    <!-- Phase 15: height stability toggle. Shows the row
+                         mode: "A" = auto (hug content, dim), "5R" =
+                         reserve five row slots (bright). -->
+                    <Button x:Name="ReserveButton" Style="{StaticResource HudButton}"
+                            Margin="4,0,0,0"
+                            ToolTip="Row space (click to toggle): auto = hug content, 5R = reserve 5 rows (no window jumping)" />
                 </StackPanel>
             </Grid>
 

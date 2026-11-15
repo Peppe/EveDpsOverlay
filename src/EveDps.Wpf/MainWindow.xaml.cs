@@ -103,6 +103,9 @@ public partial class MainWindow : Window
         LegendButton.Content = "\u25A6"; // ▦
         LegendButton.Click += (_, _) => ToggleLegend();
         ApplyLegend();
+        // Phase 15: row-space mode on the same bright/dim state scheme.
+        ReserveButton.Click += (_, _) => ToggleReserve();
+        ApplyReserve();
         // Phase 12: geometry follows the saved layout BEFORE placement, so
         // PlaceWindow clamps the right shape into the virtual screen.
         ApplyLayout(_settings.Layout);
@@ -329,7 +332,10 @@ public partial class MainWindow : Window
     /// </summary>
     private void RenderPanel(RowVisual[] slots, IReadOnlyList<PanelRow> display, UIElement panelHost)
     {
-        panelHost.Visibility = display.Count == 0 ? Visibility.Collapsed : Visibility.Visible;
+        // Phase 15: reserved mode keeps the host visible even when idle —
+        // the window height must not collapse as sources come and go.
+        panelHost.Visibility = display.Count == 0 && !_settings.ReserveRows
+            ? Visibility.Collapsed : Visibility.Visible;
 
         var leader = display.Count == 0 ? 0 : display.Max(r => r.Dps);
 
@@ -338,7 +344,21 @@ public partial class MainWindow : Window
             var slot = slots[i];
             if (i >= display.Count)
             {
-                slot.Root.Visibility = Visibility.Collapsed;
+                slot.Root.Visibility = _settings.ReserveRows
+                    ? Visibility.Visible   // empty slot = silent spacer (fixed 13 px Root)
+                    : Visibility.Collapsed;
+                if (_settings.ReserveRows)
+                {
+                    // Scrub everything the slot rendered last tick: an
+                    // empty reserved slot must be pure background.
+                    slot.Root.Opacity = 1.0;
+                    slot.Name.Text = "";
+                    slot.Value.Text = "";
+                    slot.FillCol.Width = new GridLength(0, GridUnitType.Star);
+                    slot.RestCol.Width = new GridLength(0, GridUnitType.Star);
+                    foreach (var seg in slot.SegmentCols)
+                        seg.Width = new GridLength(0, GridUnitType.Pixel);
+                }
                 continue;
             }
             var row = display[i];
@@ -521,6 +541,30 @@ public partial class MainWindow : Window
                 : Color.FromRgb(0x3a, 0x41, 0x4b)); // near-background = hidden
     }
 
+    // ── phase 15: height stability (reserve row space) ─────────────────
+
+    /// <summary>Button click: flips the persisted row-space mode, saves,
+    /// re-renders synchronously (ApplyLayout's same-tick rule).</summary>
+    private void ToggleReserve()
+    {
+        _settings.ReserveRows = !_settings.ReserveRows;
+        _settings.Save();
+        ApplyReserve();
+        UpdateHud();
+    }
+
+    /// <summary>Toggle button state: "5R" bright = reserved (window height
+    /// constant), "A" dim = auto (hug content, historical behavior).</summary>
+    private void ApplyReserve()
+    {
+        var reserved = _settings.ReserveRows;
+        ReserveButton.Content = reserved ? "5R" : "A";
+        ReserveButton.Foreground = new SolidColorBrush(
+            reserved
+                ? Color.FromRgb(0x9a, 0xa3, 0xad)   // brighter = the odd mode
+                : Color.FromRgb(0x68, 0x70, 0x7c)); // idle chrome gray = default
+    }
+
     /// <summary>
     /// Applies a layout: chrome (title hidden, numbers stacked, status
     /// abbreviated — handled by UpdateHud + visibility here), panel
@@ -543,6 +587,7 @@ public partial class MainWindow : Window
         OpacityButton.Padding = tight;
         LayoutButton.Padding = tight;
         LegendButton.Padding = tight;
+        ReserveButton.Padding = tight;
         LayoutButton.Content = vertical ? "\u2194" : "\u2195";
 
         // Panels: horizontal = side-by-side halves (columns); vertical =
