@@ -43,9 +43,11 @@
                 <!-- Phase 13: three rows — title chrome, the panel area
                      (each panel carries its own big number header), and
                      the status line. The shared number row and both
-                     full-width type bars are gone. -->
+                     full-width type bars are gone. Phase 14 adds the
+                     static damage-type legend row between them. -->
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
@@ -64,6 +66,11 @@
                     <Button x:Name="LayoutButton" Style="{StaticResource HudButton}"
                             Margin="4,0,0,0"
                             ToolTip="Layout (click to toggle horizontal/vertical)" />
+                    <!-- Phase 14: legend visibility toggle. State-colored
+                         glyph (bright = legend shown, dim = hidden). -->
+                    <Button x:Name="LegendButton" Style="{StaticResource HudButton}"
+                            Margin="4,0,0,0"
+                            ToolTip="Damage-type legend (click to hide/show)" />
                 </StackPanel>
             </Grid>
 
@@ -95,7 +102,43 @@
                 </StackPanel>
             </Grid>
 
-            <TextBlock Grid.Row="2" x:Name="StatusText"
+            <!-- Phase 14: static damage-type legend — a pure color key.
+                 Five EQUAL segments, always all visible (never bound to
+                 snapshot data), one per type in DamageTypes.All order,
+                 using the exact row-bar colors so the tiny per-row
+                 segments are decodable. Labels use the old bar-label
+                 text colors. Hidden via the title-row toggle. -->
+            <Grid Grid.Row="2" x:Name="LegendRow" Height="9" Margin="0,3,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="1*" />
+                </Grid.ColumnDefinitions>
+                <Border Grid.Column="0" Background="#4d7cff" CornerRadius="3,0,0,3">
+                    <TextBlock Text="EM" FontSize="8" FontWeight="SemiBold" Foreground="#bfd2ff"
+                               HorizontalAlignment="Center" VerticalAlignment="Center" />
+                </Border>
+                <Border Grid.Column="1" Background="#ff5a4e">
+                    <TextBlock Text="TH" FontSize="8" FontWeight="SemiBold" Foreground="#ffc9c4"
+                               HorizontalAlignment="Center" VerticalAlignment="Center" />
+                </Border>
+                <Border Grid.Column="2" Background="#9aa3ad">
+                    <TextBlock Text="KIN" FontSize="8" FontWeight="SemiBold" Foreground="#dde2e8"
+                               HorizontalAlignment="Center" VerticalAlignment="Center" />
+                </Border>
+                <Border Grid.Column="3" Background="#ff9854">
+                    <TextBlock Text="EXP" FontSize="8" FontWeight="SemiBold" Foreground="#ffd8b4"
+                               HorizontalAlignment="Center" VerticalAlignment="Center" />
+                </Border>
+                <Border Grid.Column="4" Background="#565d66" CornerRadius="0,3,3,0">
+                    <TextBlock Text="UNK" FontSize="8" FontWeight="SemiBold" Foreground="#a7adb5"
+                               HorizontalAlignment="Center" VerticalAlignment="Center" />
+                </Border>
+            </Grid>
+
+            <TextBlock Grid.Row="3" x:Name="StatusText"
                        Text="waiting for combat…" FontSize="10" TextWrapping="Wrap"
                        Foreground="#68707c" VerticalAlignment="Bottom" />
         </Grid>

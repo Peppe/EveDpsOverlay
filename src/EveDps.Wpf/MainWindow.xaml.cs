@@ -98,6 +98,11 @@ public partial class MainWindow : Window
         PrimaryButton.Click += (_, _) => CyclePrimaryWindow();
         OpacityButton.Click += (_, _) => CycleOpacity();
         LayoutButton.Click += (_, _) => ToggleLayout();
+        // Phase 14: the legend's key glyph doubles as its toggle; the
+        // glyph's brightness shows the state (bright = shown).
+        LegendButton.Content = "\u25A6"; // ▦
+        LegendButton.Click += (_, _) => ToggleLegend();
+        ApplyLegend();
         // Phase 12: geometry follows the saved layout BEFORE placement, so
         // PlaceWindow clamps the right shape into the virtual screen.
         ApplyLayout(_settings.Layout);
@@ -490,6 +495,32 @@ public partial class MainWindow : Window
     private void ToggleLayout() =>
         ApplyLayout(VerticalLayout ? "horizontal" : "vertical");
 
+    // ── phase 14: damage-type legend visibility ────────────────────────
+
+    /// <summary>
+    /// Button click: flips the persisted legend flag, saves, re-applies.
+    /// The legend row is static (never snapshot-bound), so hiding/showing
+    /// is a pure visibility flip — no data resets anywhere.
+    /// </summary>
+    private void ToggleLegend()
+    {
+        _settings.Legend = !_settings.Legend;
+        _settings.Save();
+        ApplyLegend();
+    }
+
+    /// <summary>Legend row visibility + the toggle glyph's state color
+    /// (bright = shown, dim = hidden) so the button reads at a glance.</summary>
+    private void ApplyLegend()
+    {
+        var visible = _settings.Legend;
+        LegendRow.Visibility = visible ? Visibility.Visible : Visibility.Collapsed;
+        LegendButton.Foreground = new SolidColorBrush(
+            visible
+                ? Color.FromRgb(0x9a, 0xa3, 0xad)   // brighter than the idle chrome gray
+                : Color.FromRgb(0x3a, 0x41, 0x4b)); // near-background = hidden
+    }
+
     /// <summary>
     /// Applies a layout: chrome (title hidden, numbers stacked, status
     /// abbreviated — handled by UpdateHud + visibility here), panel
@@ -511,6 +542,7 @@ public partial class MainWindow : Window
         PrimaryButton.Padding = tight;
         OpacityButton.Padding = tight;
         LayoutButton.Padding = tight;
+        LegendButton.Padding = tight;
         LayoutButton.Content = vertical ? "\u2194" : "\u2195";
 
         // Panels: horizontal = side-by-side halves (columns); vertical =
