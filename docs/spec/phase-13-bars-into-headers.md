@@ -1,5 +1,5 @@
 ---
-status: draft
+status: done
 ---
 
 # Phase 13 — Bars into headers: remove type bars, numbers join the panels
@@ -56,23 +56,39 @@ consumes the same snapshot data the bars did).
 
 ## Acceptance criteria
 
-- [ ] Neither full-width type bar renders; no dead chrome or gaps; the
+- [x] Neither full-width type bar renders; no dead chrome or gaps; the
       window is ~2 bar-heights shorter than the phase-12 build.
-- [ ] Big numbers render as panel headers in BOTH layouts, at the current
+- [x] Big numbers render as panel headers in BOTH layouts, at the current
       16 px size: OUT left-aligned, IN right-aligned; clicking the layout
       toggle re-renders correctly in the same tick.
-- [ ] Numbers keep updating per tick in the selected window (no data
+- [x] Numbers keep updating per tick in the selected window (no data
       resets on layout/window switches — phase 5/6 rules).
-- [ ] Row bars still show per-row type segmentation (Core pipeline
+- [x] Row bars still show per-row type segmentation (Core pipeline
       intact); miss-only dimming, Others merge, idle collapse all hold.
-- [ ] Replay screenshot verification in both layouts (same session
+- [x] Replay screenshot verification in both layouts (same session
       fixture as phase 11/12).
-- [ ] `dotnet build` 0 warnings; `dotnet test` all green (87/87 expected —
+- [x] `dotnet build` 0 warnings; `dotnet test` all green (87/87 expected —
       Core untouched); single-file publish runs.
-- [ ] Specs amended in the same branch (pointers above); `intent.md`
+- [x] Specs amended in the same branch (pointers above); `intent.md`
       phase table gains this phase.
-- [ ] Git workflow: implemented on `phase-13-bars-into-headers`, merged
+- [x] Git workflow: implemented on `phase-13-bars-into-headers`, merged
       to `main` only when green.
+
+## Verification notes (2026-11-15)
+
+- Replay `session-20261107-from-1942` at ×30, both layouts: horizontal —
+  no bars, big OUT number left-aligned atop OUT rows, big IN
+  right-aligned atop attacker rows, row bars still type-segmented,
+  miss-only row present and dimmed; window height shrank (193/206 px
+  captures before → 135 px window after). Vertical — title hidden,
+  3 tight buttons fit, stacked panels each carry their own number header
+  (IN right-mirrored), abbreviated wrapped status, no dead chrome.
+- App-launch note for future verification runs: the framework-dependent
+  publish exe needs `DOTNET_ROOT` (and `DOTNET_ROOT_X64`) pointed at the
+  local SDK dir (`C:\Users\jensj\AppData\Local\dotnet-sdk`) when
+  launched directly, or it dies with "You must install .NET" — an
+  event-log red herring, not a code crash (cost one false-alarm
+  debugging round).
 
 ## Out of scope
 
