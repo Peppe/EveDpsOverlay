@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="Resources\weapon-type-profiles.json" />
+    <EmbeddedResource Include="Resources\*.json" />
   </ItemGroup>
 
 </Project>
