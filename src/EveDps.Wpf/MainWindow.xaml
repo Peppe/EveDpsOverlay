@@ -138,8 +138,8 @@
                     <TextBlock Text="EXP" FontSize="8" FontWeight="SemiBold" Foreground="#ffd8b4"
                                HorizontalAlignment="Center" VerticalAlignment="Center" />
                 </Border>
-                <Border Grid.Column="4" Background="#565d66" CornerRadius="0,3,3,0">
-                    <TextBlock Text="UNK" FontSize="8" FontWeight="SemiBold" Foreground="#a7adb5"
+                <Border Grid.Column="4" Background="#a06bf5" CornerRadius="0,3,3,0">
+                    <TextBlock Text="UNK" FontSize="8" FontWeight="SemiBold" Foreground="#e6d9ff"
                                HorizontalAlignment="Center" VerticalAlignment="Center" />
                 </Border>
             </Grid>

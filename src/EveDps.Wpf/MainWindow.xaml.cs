@@ -266,7 +266,7 @@ public partial class MainWindow : Window
         new SolidColorBrush(Color.FromArgb(0x59, 0xff, 0x5a, 0x4e)), // Thermal
         new SolidColorBrush(Color.FromArgb(0x59, 0x9a, 0xa3, 0xad)), // Kinetic
         new SolidColorBrush(Color.FromArgb(0x59, 0xff, 0x98, 0x54)), // Explosive
-        new SolidColorBrush(Color.FromArgb(0x59, 0x56, 0x5d, 0x66)), // Unknown
+        new SolidColorBrush(Color.FromArgb(0x59, 0xa0, 0x6b, 0xf5)), // Unknown (purple — not a damage type)
     ];
 
     /// <summary>One source row's UI parts (slot reused across ticks).</summary>
@@ -409,7 +409,7 @@ public partial class MainWindow : Window
 
             // Segment widths: each type's share OF THIS ROW's dps (the bar
             // already spans share × panel width). Unclaimed remainder =
-            // Unknown slice; a fully unmapped source renders one gray bar.
+            // Unknown slice; a fully unmapped source renders one purple bar.
             var rowDps = row.Dps;
             var slices = new[] { row.Em, row.Thermal, row.Kinetic, row.Explosive };
             var remainder = Math.Max(0, rowDps - slices.Sum());

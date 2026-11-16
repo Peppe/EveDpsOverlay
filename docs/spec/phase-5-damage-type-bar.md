@@ -30,10 +30,11 @@ different windows.
   e.g. idle) shows as one neutral full-width gray bar.
 - Segment colors follow EVE-informed conventions and reuse the HUD palette:
   EM blues/purples, Thermal red, Kinetic neutral gray, Explosive orange,
-  Unknown muted gray. Implemented palette (segment fill / number tint):
-  EM `#4d7cff` / `#bfd2ff`, Thermal `#ff5a4e` / `#ffc9c4`, Kinetic
+  Unknown purple (2026-11-16 amendment — was muted gray `#565d66`, too
+  close to Kinetic's gray). Implemented palette (segment fill / number
+  tint): EM `#4d7cff` / `#bfd2ff`, Thermal `#ff5a4e` / `#ffc9c4`, Kinetic
   `#9aa3ad` / `#dde2e8`, Explosive `#ff9854` / `#ffd8b4`, Unknown
-  `#565d66` / `#a7adb5`; idle pass-through bar `#3a414b`.
+  `#a06bf5` / `#e6d9ff`; idle pass-through bar `#3a414b`.
 - Bar height 9 px inside the existing border padding; the segment grid is
   rounded (radius 3) via a RectangleGeometry clip that tracks SizeChanged.
 - Per-segment number: centered, "0.#" dps format, tinted by the segment

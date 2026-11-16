@@ -26,8 +26,9 @@ no Core changes.
   vanish, defeating the key's purpose.
 - Segments in the canonical `DamageTypes.All` order with the exact row-bar
   colors: **EM `#4d7cff`** (blue) · **TH `#ff5a4e`** (red) · **KIN
-  `#9aa3ad`** (gray) · **EXP `#ff9854`** (orange) · **UNK `#565d66`**
-  (dark gray).
+  `#9aa3ad`** (gray) · **EXP `#ff9854`** (orange) · **UNK `#a06bf5`**
+  (purple — 2026-11-16 amendment; was dark gray `#565d66`, which users
+  could not tell apart from Kinetic's gray).
 - Each segment carries its abbreviation as in-segment text (FontSize 8
   SemiBold, same styling family as the old bar labels): `EM / TH / KIN /
   EXP / UNK`.
@@ -74,8 +75,9 @@ no Core changes.
 
 - Replay `session-20261107-from-1942` at ×30: horizontal frame shows the
   legend above the status line — EM blue / TH red / KIN gray / EXP
-  orange / UNK dark-gray, equal segments, labels legible; the fourth
-  title button (▦) sits next to the layout toggle. Vertical frame: all
+  orange / UNK purple, equal segments, labels legible; the fourth
+  title button (Le) sits next to the layout toggle. Vertical
+  frame: all
   five labels fit the ~31 px segments at FontSize 8 with NO font
   shrink needed; four tightened buttons still fit the 156 px title row.
 - Hidden path verified via settings (`"Legend": false` → restart):
