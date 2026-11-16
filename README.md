@@ -3,6 +3,10 @@
 A tiny, always-on-top Windows overlay for EVE Online that reads the game's own
 gamelog files and shows outgoing/incoming damage-per-second.
 
+# Example UI
+![Example of UI](/docs/eve-dps-counter-name.png)
+
+# Guide to UI components
 ![Screenshot with guide](/docs/hud-guide.png)
 
 **Spec-driven:** the app's intent and per-phase acceptance criteria live in
