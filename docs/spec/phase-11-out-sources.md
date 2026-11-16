@@ -54,8 +54,9 @@ direction-colored: every damage bar shows its **damage type colors**.
 - **Bars are type-colored**: each row's bar is a miniature segmented bar —
   segments in the established type colors (EM `#4d7cff`, TH `#ff5a4e`,
   KIN `#9aa3ad`, EX `#ff9854`) sized by the row's profiled split, and the
-  unclaimed remainder in the Unknown gray (`#565d66`). A fully unmapped
-  source renders as one gray bar. This supersedes phase 8's solid red row
+  unclaimed remainder in the Unknown purple `#a06bf5` (2026-11-16
+  amendment; was gray `#565d66`, too close to Kinetic). A fully unmapped
+  source renders as one purple bar. This supersedes phase 8's solid red row
   bars for the IN panel too (same treatment for both lists).
 - Row text (name + dps/misses) unchanged in style; phase 11 keeps the
   window at its current width with both panels full-width, stacked.
