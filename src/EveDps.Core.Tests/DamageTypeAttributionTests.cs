@@ -45,17 +45,17 @@ public class DamageTypeAttributionTests
     // ── profile loading ────────────────────────────────────────────────
 
     [Fact]
-    public void Missing_file_is_inert()
+    public void Missing_file_falls_back_to_built_in()
     {
         var profiles = WeaponTypeProfiles.Load("no-such-directory/no-such-file.json");
-        Assert.Empty(profiles.Weapons);
+        Assert.Contains("Hobgoblin I", profiles.Weapons);
     }
 
     [Fact]
-    public void Corrupt_file_is_inert()
+    public void Corrupt_file_falls_back_to_built_in()
     {
         var profiles = LoadJson("{ not valid json");
-        Assert.Empty(profiles.Weapons);
+        Assert.Contains("Hobgoblin I", profiles.Weapons);
     }
 
     [Fact]

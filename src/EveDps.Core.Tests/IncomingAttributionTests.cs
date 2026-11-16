@@ -93,7 +93,7 @@ public class IncomingAttributionTests
         var weapons = WeaponProfiles("""{ "profiles": { "Civilian Gatling Railgun": { "EM": 1 } } }""");
         var attackers = AttackerProfiles("""{ "attackers": { "Mercenary Commander": { "Thermal": 1 } } }""");
         var agg = new DpsAggregator([60], weapons, attackers);
-        agg.Add(In(120, 1, "Mercenary Commander", "Scourge Heavy Missile"));
+        agg.Add(In(120, 1, "Mercenary Commander", "Frost Mini Blaster"));
 
         var snap = agg.Take(T0.AddSeconds(5));
         var w = WindowOf(snap, 60);
@@ -111,14 +111,14 @@ public class IncomingAttributionTests
     public void No_tier_claims_when_both_names_are_unknown()
     {
         var agg = new DpsAggregator([60], WeaponProfiles("""{ "profiles": {} }"""), AttackerProfiles("""{ "attackers": {} }"""));
-        agg.Add(In(80, 1, "Coreli Initiate", "Scourge Heavy Missile"));
+        agg.Add(In(80, 1, "Coreli Initiate", "Frost Mini Blaster"));
 
         var snap = agg.Take(T0.AddSeconds(5));
         var w = WindowOf(snap, 60);
 
         Assert.Equal(80 / 60.0, TypeOf(w, DamageTypes.Unknown).Dps, 6);
         // Final Unknown feeds BOTH curation lists (spec decision).
-        Assert.Equal(["Scourge Heavy Missile"], snap.UnmappedWeapons);
+        Assert.Equal(["Frost Mini Blaster"], snap.UnmappedWeapons);
         Assert.Equal(["Coreli Initiate"], snap.UnmappedAttackers);
     }
 
