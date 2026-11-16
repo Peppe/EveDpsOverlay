@@ -17,9 +17,20 @@ inference, never measured data — the UI and docs must not pretend otherwise.
 - A weapon profile maps a weapon name to a 4-part weight vector
   (EM, Thermal, Kinetic, Explosive). Weights are normalized to sum to 1 at
   load time; names are matched case-insensitively.
-- Profiles live in `%APPDATA%\EveDpsOverlay\type-profiles.json` (user-edited;
-  the app never writes dynamic state into it). Missing/empty file = the
-  feature is inert: every hit lands in the **Unknown** bucket.
+- The **main source** is a built-in table **embedded in `EveDps.Core`**
+  (`Resources/weapon-type-profiles.json`, shipped in the assembly —
+  2026-11-16 amendment). It covers drones by race (light/medium/heavy +
+  sentries, T1/T2, 'Integrated'/'Augmented' at 50/50 primary/secondary)
+  and the Gecko (omni). Missile ammo is NOT enumerated per name: the name
+  always carries its element (`Inferno` = Thermal, `Mjolnir` = EM,
+  `Scourge` = Kinetic, `Nova` = Explosive — T1, T2 and faction variants
+  alike), so a keyword rule resolves any missile ammo. Turret weapons are
+  deliberately absent — turret damage depends on loaded ammo, which the
+  gamelog does not reveal — and stay Unknown unless the user overrides.
+- `%APPDATA%\EveDpsOverlay\type-profiles.json` is now an **optional
+  override**: per-weapon entries replace built-in ones (file wins). A
+  missing, empty or broken file leaves the built-in table active; it can
+  no longer make the feature inert.
 - Weapons without a profile fall into an gray **Unknown** bucket treated as
   a fifth type everywhere downstream. Detection of "unmapped weapons exist"
   is reported, not hidden.
@@ -64,6 +75,31 @@ inference, never measured data — the UI and docs must not pretend otherwise.
       match and Unknown is absent.
 - [x] `dotnet build` / `dotnet test` stay 0-warning; parser and prior tests
       untouched in behavior. Suite grew 24 → 37 tests, all green.
+
+## Amendment (2026-11-16): built-in default profiles
+
+Product decision: **no user should need to configure anything**. The
+built-in table embedded in the assembly is the main source;
+`type-profiles.json` becomes an optional per-weapon override.
+
+- Embedded resource `Resources/weapon-type-profiles.json` in
+  `EveDps.Core` (manifest resource `EveDps.Core.Resources.weapon-type-profiles.json`),
+  loaded via `WeaponTypeProfiles.LoadDefaults()`; `Load(path)` merges
+  built-in + file (file wins) with the same normalization and the same
+  missing/corrupt-file-crash-never rule (now keeping the defaults).
+- Missile element rule inside `GetWeights`: `Inferno`/`Mjolnir`/
+  `Scourge`/`Nova` keywords (case-insensitive) resolve to Thermal/EM/
+  Kinetic/Explosive regardless of size, T2 variant word (Precision/Fury/
+  Rage/Javelin) or faction prefix. `WeaponTypeProfiles.Empty` stays fully
+  inert (no rule) so explicit no-profiles tests keep their meaning.
+- Verification: new `BuiltinTypeProfilesTests` (drones per race, sentries,
+  Gecko, integrated mix, missile rule, file override, Empty inertness);
+  `Missing_file_is_inert`/`Corrupt_file_is_inert` updated to assert the
+  built-in fallback. Two incoming-attribution tests swapped their
+  stand-in unknown weapon (`Scourge Heavy Missile` → `Frost Mini Blaster`)
+  because the missile rule now correctly claims missile weapons at the
+  weapon tier before attacker profiles are consulted. Suite 87 → 118, all
+  green, 0-warning build.
 
 ## Verification (2026-11-08)
 

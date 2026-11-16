@@ -22,15 +22,25 @@ public static class DamageTypes
 }
 
 /// <summary>
-/// User-curated weapon → damage-type weight table (phase 4). EVE's gamelog
-/// lines do not carry the damage type, so this is INFERRED data, never
-/// measured — see docs/spec/phase-4-damage-types.md. Pointed at
-/// %APPDATA%\EveDpsOverlay\type-profiles.json by the host apps; a missing or
-/// broken file makes the feature inert (everything attributes to Unknown).
+/// Weapon → damage-type weight table (phase 4). EVE's gamelog lines do not
+/// carry the damage type, so this is INFERRED data, never measured — see
+/// docs/spec/phase-4-damage-types.md. The main source is a built-in table
+/// embedded in this assembly (2026-11-16 amendment: drones by race, sentries,
+/// Gecko; missile ammo names are covered by an element-keyword rule). The
+/// optional file at %APPDATA%\EveDpsOverlay\type-profiles.json, pointed at
+/// by the host apps, only OVERRIDES per-weapon entries — a missing or broken
+/// file leaves the built-in table active.
 /// </summary>
 public sealed class WeaponTypeProfiles
 {
     private readonly Dictionary<string, double[]> _profiles = new(StringComparer.OrdinalIgnoreCase);
+
+    /// <summary>Missile ammo always carries its element in the name (Inferno
+    /// = Thermal, Mjolnir = EM, Scourge = Kinetic, Nova = Explosive), so one
+    /// keyword rule covers every size, T2 variant word and faction prefix.
+    /// Only instances built from data have this enabled; <see cref="Empty"/>
+    /// stays fully inert.</summary>
+    private bool _missileRule;
 
     public static WeaponTypeProfiles Empty { get; } = new();
 
@@ -40,16 +50,35 @@ public sealed class WeaponTypeProfiles
     public IReadOnlyCollection<string> Weapons => _profiles.Keys;
 
     public bool HasProfile(string weapon) =>
-        !string.IsNullOrEmpty(weapon) && _profiles.ContainsKey(weapon);
+        !string.IsNullOrEmpty(weapon) &&
+        (_profiles.ContainsKey(weapon) || MissileWeights(weapon) is not null);
 
     /// <summary>
     /// Weight vector for a weapon in fixed order EM/Thermal/Kinetic/Explosive,
     /// normalized to sum to 1; null when the weapon has no usable profile.
-    /// Lookup is case-insensitive.
+    /// Lookup is case-insensitive; falls back to the missile element rule.
     /// </summary>
     public double[]? GetWeights(string weapon) =>
         string.IsNullOrEmpty(weapon) ? null
-            : _profiles.TryGetValue(weapon.Trim(), out var w) ? w : null;
+            : _profiles.TryGetValue(weapon.Trim(), out var w) ? w
+            : MissileWeights(weapon);
+
+    private double[]? MissileWeights(string weapon) =>
+        _missileRule ? weapon.Contains("Inferno", StringComparison.OrdinalIgnoreCase) ? MissileVectors.Thermal
+            : weapon.Contains("Mjolnir", StringComparison.OrdinalIgnoreCase) ? MissileVectors.Em
+            : weapon.Contains("Scourge", StringComparison.OrdinalIgnoreCase) ? MissileVectors.Kinetic
+            : weapon.Contains("Nova", StringComparison.OrdinalIgnoreCase) ? MissileVectors.Explosive
+            : null
+        : null;
+
+    /// <summary>Fixed-order vectors for the missile element rule.</summary>
+    private static class MissileVectors
+    {
+        public static readonly double[] Em = [1, 0, 0, 0];
+        public static readonly double[] Thermal = [0, 1, 0, 0];
+        public static readonly double[] Kinetic = [0, 0, 1, 0];
+        public static readonly double[] Explosive = [0, 0, 0, 1];
+    }
 
     // JSON shape:
     // { "profiles": { "Civilian Gatling Railgun": { "EM": 0.4, "Kinetic": 0.6 } } }
@@ -61,16 +90,50 @@ public sealed class WeaponTypeProfiles
     /// <summary>Case-insensitive so hand-edited JSON ("profiles" vs "Profiles") just works.</summary>
     private static readonly JsonSerializerOptions Json = new() { PropertyNameCaseInsensitive = true };
 
+    /// <summary>
+    /// Built-in defaults shipped inside the assembly (main source, 2026-11-16
+    /// amendment): drones per race, sentries, Gecko. Missile ammo resolves via
+    /// the element-keyword rule rather than per-name entries.
+    /// </summary>
+    public static WeaponTypeProfiles LoadDefaults() => FromJson(EmbeddedProfilesJson());
+
+    /// <summary>
+    /// Built-in defaults as the base, with the optional file at <paramref
+    /// name="path"/> overriding per-weapon entries (file wins). Missing,
+    /// empty or corrupt file → defaults only, never a crash.
+    /// </summary>
     public static WeaponTypeProfiles Load(string path)
     {
+        var merged = LoadDefaults();
         try
         {
             var json = File.ReadAllText(path);
             var file = JsonSerializer.Deserialize<FileShape>(json, Json);
-            if (file?.Profiles is null || file.Profiles.Count == 0)
-                return Empty;
+            if (file?.Profiles is null) return merged;
 
-            var store = new WeaponTypeProfiles();
+            foreach (var (weapon, weights) in file.Profiles)
+            {
+                var normalized = Normalize(weights);
+                if (normalized is not null)
+                    merged._profiles[weapon.Trim()] = normalized;
+            }
+            return merged;
+        }
+        catch (Exception)
+        {
+            // Missing/corrupt file must never break the host app: defaults stand.
+            return merged;
+        }
+    }
+
+    private static WeaponTypeProfiles FromJson(string json)
+    {
+        try
+        {
+            var file = JsonSerializer.Deserialize<FileShape>(json, Json);
+            if (file?.Profiles is null) return Empty;
+
+            var store = new WeaponTypeProfiles { _missileRule = true };
             foreach (var (weapon, weights) in file.Profiles)
             {
                 var normalized = Normalize(weights);
@@ -81,9 +144,20 @@ public sealed class WeaponTypeProfiles
         }
         catch (Exception)
         {
-            // Missing/corrupt file must never break the host app: all Unknown.
+            // A broken embedded table must never break the host app either.
             return Empty;
         }
+    }
+
+    private const string ResourceName = "EveDps.Core.Resources.weapon-type-profiles.json";
+
+    private static string EmbeddedProfilesJson()
+    {
+        using var stream = typeof(WeaponTypeProfiles).Assembly.GetManifestResourceStream(ResourceName);
+        if (stream is null)
+            throw new InvalidOperationException($"embedded resource {ResourceName} missing");
+        using var reader = new StreamReader(stream);
+        return reader.ReadToEnd();
     }
 
     /// <summary>

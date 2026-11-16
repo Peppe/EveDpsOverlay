@@ -131,3 +131,14 @@ coverage) proves the pure attacker path.
 Per-attacker type breakdowns (composable later), NPC-faction auto-prefill
 of profiles from the SDE (backlog), EM/TH/KIN/EX split per attacker row
 display, any second multiplier for incoming view.
+
+## Amendment (2026-11-16): missile weapons claim the weapon tier
+
+With the built-in weapon table (phase-4 amendment), missile ammo now
+resolves at the weapon tier via the element-keyword rule (`Inferno`/
+`Mjolnir`/`Scourge`/`Nova`). Incoming events whose weapon is missile ammo
+are therefore attributed by the ammo's real element — strictly more
+accurate than the attacker-tier guess — BEFORE attacker profiles are
+consulted. Turret-wielding rats (weapon = turret module, ammo unknown)
+keep falling through to the attacker tier as before; the fixture
+behavior in "Fixture note" is unchanged.
