@@ -48,12 +48,16 @@ dotnet publish src/EveDps.Wpf -c Release -r win-x64 -p:PublishSingleFile=true --
   always present — that is how you get the window back or quit (a frameless
   window has no close button).
 - Settings live in `%APPDATA%\EveDpsOverlay\settings.json`. Damage types
-  work out of the box: the app ships a built-in table (drones per race,
-  missile ammo by element keyword). `%APPDATA%\EveDpsOverlay\type-profiles.json`
-  is an optional override for turret weapons (their damage depends on loaded
-  ammo, which logs don't reveal), and `%APPDATA%\EveDpsOverlay\attacker-profiles.json`
-  maps weaponless incoming damage (rat names); missing files = only those
-  parts show Unknown. Right-click has open-menu items for both.
+  work out of the box: the app ships built-in tables for outgoing weapons
+  (drones per race, missile ammo by element keyword) and for incoming NPC
+  factions (Serpentis, Guristas, Sansha, Blood Raiders, Angels, … by
+  rat-name prefix). `%APPDATA%\EveDpsOverlay\type-profiles.json` is an
+  optional override for turret weapons (their damage depends on loaded
+  ammo, which logs don't reveal), and
+  `%APPDATA%\EveDpsOverlay\attacker-profiles.json` overrides the built-in
+  faction table for anything that deviates; missing files = only turret
+  and unknown-name damage shows Unknown. Right-click has open-menu items
+  for both.
 - **Run EVE in windowed or borderless mode** — in exclusive fullscreen the
   overlay (like any topmost window) is not drawn on top of the game.
 
