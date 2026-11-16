@@ -21,32 +21,34 @@ public class AttackerTypeProfilesTests
     // ---------- profile loading (mirrors the weapon table's inert rules) ----------
 
     [Fact]
-    public void Missing_file_is_inert()
+    public void Missing_file_falls_back_to_built_in()
     {
         var profiles = AttackerTypeProfiles.Load("no-such-directory/no-such-file.json");
-        Assert.Empty(profiles.Attackers);
-        Assert.Null(profiles.GetWeights("Coreli Guard"));
+        Assert.Contains("Core*", profiles.Attackers);
     }
 
     [Fact]
-    public void Corrupt_file_is_inert()
+    public void Corrupt_file_falls_back_to_built_in()
     {
         var profiles = LoadJson("{ not valid json");
-        Assert.Empty(profiles.Attackers);
+        Assert.Contains("Core*", profiles.Attackers);
     }
 
     [Fact]
-    public void Empty_table_is_inert()
+    public void Empty_table_falls_back_to_built_in()
     {
         var profiles = LoadJson("""{ "attackers": {} }""");
-        Assert.Empty(profiles.Attackers);
+        Assert.Contains("Core*", profiles.Attackers);
     }
 
     [Fact]
     public void Zero_weight_row_is_unusable()
     {
-        var profiles = LoadJson("""{ "attackers": { "Coreli Guard": { "EM": 0 } } }""");
-        Assert.Empty(profiles.Attackers);
+        var profiles = LoadJson("""{ "attackers": { "Frost Guard": { "EM": 0 } } }""");
+        // The unusable file row is dropped; the built-in table stands for
+        // everything else.
+        Assert.False(profiles.HasProfile("Frost Guard"));
+        Assert.Contains("Core*", profiles.Attackers);
     }
 
     [Fact]
@@ -93,7 +95,9 @@ public class AttackerTypeProfilesTests
         var profiles = LoadJson("""{ "attackers": { "Coreli*": { "Kinetic": 1 } } }""");
         Assert.NotNull(profiles.GetWeights("Coreli Guard"));
         Assert.NotNull(profiles.GetWeights("CORELI INITIATE"));
-        Assert.Null(profiles.GetWeights("Pithi Arrogator"));
+        // Not covered by the file — but the built-in table profiles this family.
+        Assert.True(profiles.HasProfile("Pithi Arrogator"));
+        Assert.Null(profiles.GetWeights("Some PvPer Name"));
     }
 
     [Fact]
