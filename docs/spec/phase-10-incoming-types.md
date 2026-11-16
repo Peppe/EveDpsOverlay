@@ -142,3 +142,39 @@ accurate than the attacker-tier guess — BEFORE attacker profiles are
 consulted. Turret-wielding rats (weapon = turret module, ammo unknown)
 keep falling through to the attacker tier as before; the fixture
 behavior in "Fixture note" is unchanged.
+
+## Amendment (2026-11-16): built-in attacker profiles
+
+Product decision (same as the phase-4 amendment): **no user should need
+to configure anything**. The attacker tier's main source is now a
+built-in table embedded in `EveDps.Core`
+(`Resources/attacker-type-profiles.json`, manifest resource
+`EveDps.Core.Resources.attacker-type-profiles.json`), keyed by NPC
+rat-name prefix wildcards with weights from EVE University's measured
+faction damage mixes: Serpentis `TH 55 / KIN 45`, Guristas
+`KIN 79 / TH 18`, Sansha `EM 53 / TH 47`, Blood Raiders `EM 50 / TH 48`,
+Angel Cartel `EX 62 / KIN 22`, Mordu's `KIN 70 / TH 30`, mercenaries
+`KIN/TH 50/50`, the four empire navies, and omni buckets for Sleepers
+and CONCORD. Rat families covered by prefix: `Core*`/`Pith*`/`Cent*`/
+`Corp*`/`Gist*`/`Arch Gist*` plus faction-word fallbacks
+(`Serpentis*`, `Guristas*`, `Sansha*`, `Blood*`, `Angel*`,
+`Domination*`, `True Sansha*`, `Shadow Serpentis*`, `Dark Blood*`,
+`Dread Guristas*`, `Imperial*`, `State*`, `Federal*`, `Republic*`,
+`Mercenary*`, `Mordu's*`, `Sleeper*`, `CONCORD*`).
+
+- `AttackerTypeProfiles.LoadDefaults()` reads the embedded table;
+  `Load(path)` merges built-in + file (file wins per key: same-prefix
+  wildcards replace, exact names replace, longer file wildcards
+  outrank shorter built-ins naturally via longest-pattern-wins).
+  Missing/empty/corrupt file → defaults stand.
+- This retires the "NPC-faction auto-prefill from the SDE" backlog item
+  (curated table, not SDE-generated; still inferred, never measured —
+  individual special NPCs may deviate from their faction pattern).
+- Note: the user's hand-curated `Coreli*` = `KIN 0.55/TH 0.45` had the
+  Serpentis mix flipped (authoritative: TH 55 / KIN 45); the built-in
+  table now supplies the correct direction.
+- Verification: new `BuiltinAttackerProfilesTests` (families per
+  faction, omni mixes, file-override precedence). Old inert-file tests
+  updated to assert the built-in fallback; two incoming-attribution
+  tests swapped stand-in attacker/weapon names that the defaults now
+  legitimately claim. Suite 118 → 139, all green, 0-warning build.

@@ -111,7 +111,7 @@ public class IncomingAttributionTests
     public void No_tier_claims_when_both_names_are_unknown()
     {
         var agg = new DpsAggregator([60], WeaponProfiles("""{ "profiles": {} }"""), AttackerProfiles("""{ "attackers": {} }"""));
-        agg.Add(In(80, 1, "Coreli Initiate", "Frost Mini Blaster"));
+        agg.Add(In(80, 1, "Some PvPer Name", "Frost Mini Blaster"));
 
         var snap = agg.Take(T0.AddSeconds(5));
         var w = WindowOf(snap, 60);
@@ -119,7 +119,7 @@ public class IncomingAttributionTests
         Assert.Equal(80 / 60.0, TypeOf(w, DamageTypes.Unknown).Dps, 6);
         // Final Unknown feeds BOTH curation lists (spec decision).
         Assert.Equal(["Frost Mini Blaster"], snap.UnmappedWeapons);
-        Assert.Equal(["Coreli Initiate"], snap.UnmappedAttackers);
+        Assert.Equal(["Some PvPer Name"], snap.UnmappedAttackers);
     }
 
     [Fact]

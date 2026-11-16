@@ -1,0 +1,35 @@
+{
+  "attackers": {
+    "Core*": { "Thermal": 55, "Kinetic": 45 },
+    "Serpentis*": { "Thermal": 55, "Kinetic": 45 },
+    "Shadow Serpentis*": { "Thermal": 55, "Kinetic": 45 },
+
+    "Pith*": { "Kinetic": 79, "Thermal": 18 },
+    "Guristas*": { "Kinetic": 79, "Thermal": 18 },
+    "Dread Guristas*": { "Kinetic": 79, "Thermal": 18 },
+
+    "Cent*": { "EM": 53, "Thermal": 47 },
+    "Sansha*": { "EM": 53, "Thermal": 47 },
+    "True Sansha*": { "EM": 53, "Thermal": 47 },
+
+    "Corp*": { "EM": 50, "Thermal": 48 },
+    "Blood*": { "EM": 50, "Thermal": 48 },
+    "Dark Blood*": { "EM": 50, "Thermal": 48 },
+
+    "Gist*": { "Explosive": 62, "Kinetic": 22 },
+    "Arch Gist*": { "Explosive": 62, "Kinetic": 22 },
+    "Domination*": { "Explosive": 62, "Kinetic": 22 },
+    "Angel*": { "Explosive": 62, "Kinetic": 22 },
+
+    "Mercenary*": { "Kinetic": 50, "Thermal": 50 },
+    "Mordu's*": { "Kinetic": 70, "Thermal": 30 },
+
+    "Imperial*": { "EM": 47, "Thermal": 42 },
+    "State*": { "Kinetic": 51, "Thermal": 48 },
+    "Federal*": { "Kinetic": 60, "Thermal": 39 },
+    "Republic*": { "Explosive": 50, "Kinetic": 31 },
+
+    "Sleeper*": { "EM": 0.25, "Thermal": 0.25, "Kinetic": 0.25, "Explosive": 0.25 },
+    "CONCORD*": { "EM": 0.25, "Thermal": 0.25, "Kinetic": 0.25, "Explosive": 0.25 }
+  }
+}
